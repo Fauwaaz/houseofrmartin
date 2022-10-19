@@ -1,0 +1,11 @@
+/* Footer */
+
+.footer {
+  width: 100%;
+  text-align: center;
+  padding: 1em 2em;
+}
+
+.footer a span:nth-child(2) {
+  font-weight: 600;
+}

@@ -1,0 +1,23 @@
+/* Navbar */
+
+.header {
+  background-color: #fff;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 4em;
+}
+
+.nav h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+@media screen and (max-width: 768px) {
+  .nav {
+    padding: 1em 1.5em;
+  }
+}
