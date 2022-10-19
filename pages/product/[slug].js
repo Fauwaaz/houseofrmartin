@@ -1,33 +1,21 @@
-import React from "react";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../api/queries";
+import { Layout } from "../../components";
 import client from "../../libs/apollo";
+import styles from "../../styles/ProductDetails.module.css";
 
 const ProductDetails = ({ product }) => {
-  // const [slideImage, setSlideImage] = useState(0);
-  // const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isMounted, setMount] = useState(false);
+  const [slideImage, setSlideImage] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   // const { onAdd, qty } = useStateContext();
-  // const [product, setProduct] = useState(item);
-
-  // useEffect(() => {
-  //   if (product.price) {
-  //     // Replacing the default price from comma to dot
-  //     let removeComa = product.price.toString().replace(",", ".");
-  //     // Parsing the number from String to Number
-  //     let parsedPrice = parseFloat(removeComa);
-  //     // Updating the queried project with the Parsed Price
-  //     setProduct({
-  //       ...product,
-  //       price: parsedPrice,
-  //     });
-  //   }
-  // }, [item, product]);
-
   // const galleryImages = product.galleryImages.nodes;
 
-  // const selectImage = (i) => {
-  //   setSlideImage(i);
-  //   setSelectedIndex(i);
-  // };
+  const selectImage = (i) => {
+    setSlideImage(i);
+    setSelectedIndex(i);
+  };
 
   // const handleBuyButton = (e) => {};
 
@@ -35,11 +23,82 @@ const ProductDetails = ({ product }) => {
   //   onAdd(product, qty)
   //   setShowCart(true)
   // }
+
+  useEffect(() => {
+    setMount(true);
+  }, []);
+
   console.log(product);
+
   return (
-    <div className="layout-pt">
-      <h2>product</h2>
-    </div>
+    <Layout>
+      <div className={styles.layout}>
+        <div className={styles.wrapper}>
+          <section className={styles.left}>
+            <div className={styles.featured}>
+              <Image
+                key={slideImage}
+                src={product.galleryImages.nodes[slideImage].sourceUrl}
+                priority
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
+            <ol className={styles.gallery}>
+              {product.galleryImages.nodes.map((image, i) => {
+                // let image = item.localFile?.childrenImageSharp[0].gatsbyImageData;
+                return (
+                  <li
+                    key={i}
+                    slide={i}
+                    className={
+                      i === selectedIndex
+                        ? `${styles.gallery_image_selected}`
+                        : `${styles.gallery_image_not_selected}`
+                    }
+                  >
+                    <button
+                      onClick={() => selectImage(i)}
+                      slide={i}
+                      className={styles.gallery_image}
+                    >
+                      <Image
+                        key={i}
+                        src={image.sourceUrl}
+                        priority
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+          <section className={styles.right}>
+            <h2 className={styles.name}>{product.name}</h2>
+            {isMounted ? (
+              <p
+                className={styles.description}
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
+            ) : (
+              "Loading..."
+            )}
+
+            <span className={styles.price}>${product.price}</span>
+            <div className={styles.quantity}>
+              <button className={`${styles.button} ${styles.white_button}`}>
+                Add to cart
+              </button>
+              <button className={`${styles.button} ${styles.dark_button}`}>
+                Buy now
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </Layout>
   );
 };
 
