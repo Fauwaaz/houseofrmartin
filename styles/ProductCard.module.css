@@ -76,9 +76,10 @@
 }
 
 .price font {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.09rem;
+  font-weight: 700;
   margin-left: 0.2em;
+  opacity: 0.97;
 }
 
 .name:hover {
