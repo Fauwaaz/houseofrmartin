@@ -1,0 +1,153 @@
+/* Product Details */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.featured {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2em;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.featured span {
+  margin: 2em !important;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gallery li {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.gallery_image {
+  position: relative;
+  width: 100%;
+}
+
+.gallery_image_not_selected {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.gallery_image_selected {
+  border: 1px solid rgba(0, 0, 0, 1);
+}
+
+.name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.8em;
+}
+
+.description {
+  opacity: 0.9;
+  margin-bottom: 2em;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.quantity {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1.5em;
+}
+
+.button {
+  padding: 0.7em 2em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.white_button {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #000;
+}
+
+.dark_button {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+@media (min-width: 280px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    margin: 2em 1em;
+  }
+  .left {
+    width: 100%;
+  }
+  .right {
+    width: 100%;
+  }
+  .featured {
+    height: 320px;
+  }
+  .gallery {
+    gap: 0.5em;
+  }
+  .gallery li {
+    width: 68px;
+    height: 68px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    padding: 0em 3em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .wrapper {
+    gap: 5em;
+    display: flex;
+    flex-direction: row;
+    margin: 4em 5em;
+    width: 1280px;
+  }
+  .left {
+    width: 50%;
+  }
+  .right {
+    width: 50%;
+  }
+  .featured {
+    height: 500px;
+  }
+  .gallery {
+    gap: 1em;
+  }
+  .gallery li {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* @media (max-width: 767px) {
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+} */
