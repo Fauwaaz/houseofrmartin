@@ -36,7 +36,7 @@ const ProductCard = ({ name, description, slug, price, image }) => {
           <Link href={`/product/${slug}`} id="price">
             <div>
               <span>from </span>
-              <font>{price}</font>
+              <font>${price}</font>
             </div>
           </Link>
         </div>
