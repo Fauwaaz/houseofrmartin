@@ -1,11 +1,113 @@
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+import {
+  AiOutlineCloseCircle,
+  AiOutlineMinus,
+  AiOutlinePlus,
+} from "react-icons/ai";
+import { FiShoppingBag } from "react-icons/fi";
+import { HiOutlineChevronLeft } from "react-icons/hi";
+import { useStateContext } from "../context/StateContext";
+import styles from "../styles/Cart.module.css";
 
 const Cart = () => {
-  return (
-    <div>
-      <h2>ad</h2>
-    </div>
-  );
+  const {
+    showCart,
+    setShowCart,
+    totalQuantities,
+    totalPrice,
+    cartItems,
+    toggleCartItemQuantity,
+    onRemove,
+  } = useStateContext();
+
+  // console.log(totalQuantities);
+  console.log(cartItems);
+
+  if (showCart === true)
+    return (
+      <div className={styles.cart}>
+        <div className={styles.container}>
+          <button
+            className={styles.heading}
+            onClick={() => setShowCart(!showCart)}
+          >
+            <HiOutlineChevronLeft />
+            <h3>Your Cart</h3>
+            <span>( {totalQuantities} items )</span>
+          </button>
+
+          {cartItems.length < 1 && (
+            <div className={styles.empty}>
+              <FiShoppingBag />
+              <h3>Your shopping bag is empty</h3>
+              <Link href="/">Continue Shopping</Link>
+            </div>
+          )}
+          {cartItems.length >= 1 && (
+            <div className={styles.content}>
+              <ol className={styles.items}>
+                {cartItems.map((item, i) => (
+                  <li className={styles.item} key={i}>
+                    <div className={styles.image}>
+                      <Image
+                        src={item.featuredImage.node.sourceUrl}
+                        priority
+                        layout="fill"
+                        objectFit="contain"
+                      />
+                    </div>
+                    <div className={styles.info}>
+                      <div>
+                        <h3 className={`${styles.name} ${styles.line_clamp}`}>
+                          {item.name}
+                        </h3>
+                      </div>
+
+                      <div className={styles.quantity}>
+                        <span
+                          id={styles.minus}
+                          onClick={() => toggleCartItemQuantity(item.id, "dec")}
+                        >
+                          <AiOutlineMinus />
+                        </span>
+                        <span id={styles.count}>{item.quantity}</span>
+                        <span
+                          id={styles.plus}
+                          onClick={() => toggleCartItemQuantity(item.id, "inc")}
+                        >
+                          <AiOutlinePlus />
+                        </span>
+                      </div>
+                    </div>
+                    <div className={styles.price}>
+                      <button id={styles.delete} onClick={() => onRemove()}>
+                        <AiOutlineCloseCircle />
+                      </button>
+                      <div>
+                        <span id={styles.price}>${item.price}</span>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <div className={styles.totals}>
+                <div>
+                  <h4>Subtotal:</h4>
+                  {/* <span>${totalPrice}</span> */}
+                  <span>${totalPrice.toFixed(2)}</span>
+                </div>
+                <div className={styles.checkout}>
+                  <button>Pay with Stripe</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  return null;
 };
 
 export default Cart;
