@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import styles from "../styles/Layout.module.css";
+import Cart from "./Cart";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
@@ -16,6 +17,7 @@ const Layout = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
+      <Cart />
       <main>{children}</main>
       <Footer />
     </section>
