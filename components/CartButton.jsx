@@ -1,19 +1,18 @@
 import React from "react";
 import { FiShoppingBag } from "react-icons/fi";
+import { useStateContext } from "../context/StateContext";
 import styles from "../styles/CartButton.module.css";
 
 const CartButton = () => {
+  const { showCart, setShowCart, totalQuantities } = useStateContext();
   return (
-    <button className={styles.container}>
+    <button className={styles.container} onClick={() => setShowCart(!showCart)}>
       <div className={styles.inner}>
         <FiShoppingBag />
-        <span>3</span>
-        {/* <span>{totalQuantities}</span> */}
+        <span>{totalQuantities}</span>
       </div>
     </button>
-  )
-}
+  );
+};
 
-export default CartButton
-
-
+export default CartButton;
