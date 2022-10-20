@@ -9,6 +9,7 @@ import {
 import { FiShoppingBag } from "react-icons/fi";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { useStateContext } from "../context/StateContext";
+import getStripe from "../libs/getStripe";
 import styles from "../styles/Cart.module.css";
 
 const Cart = () => {
@@ -22,8 +23,22 @@ const Cart = () => {
     onRemove,
   } = useStateContext();
 
-  // console.log(totalQuantities);
-  console.log(cartItems);
+  const handleCheckout = async () => {
+    const stripe = await getStripe();
+
+    const response = await fetch("/api/stripe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartItems),
+    });
+    if (response.statusCode === 500) return;
+
+    const data = await response.json();
+
+    stripe.redirectToCheckout({ sessionId: data.id });
+  };
 
   if (showCart === true)
     return (
@@ -99,7 +114,7 @@ const Cart = () => {
                   <span>${totalPrice.toFixed(2)}</span>
                 </div>
                 <div className={styles.checkout}>
-                  <button>Pay with Stripe</button>
+                  <button onClick={handleCheckout}>Pay with Stripe</button>
                 </div>
               </div>
             </div>
