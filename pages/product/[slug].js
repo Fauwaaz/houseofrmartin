@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../api/queries";
 import { Layout } from "../../components";
 import { useStateContext } from "../../context/StateContext";
 import client from "../../libs/apollo";
 import styles from "../../styles/ProductDetails.module.css";
+import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../utils/queries";
 
 const ProductDetails = ({ item }) => {
   const [isMounted, setMount] = useState(false);
@@ -35,7 +35,7 @@ const ProductDetails = ({ item }) => {
     setMount(true);
   }, []);
 
-  console.log(product);
+  // console.log(product);
 
   return (
     <Layout>

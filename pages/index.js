@@ -1,7 +1,7 @@
-import { GET_ALL_PRODUCTS } from "../api/queries";
 import { Layout, ProductCard } from "../components";
 import client from "../libs/apollo";
 import styles from "../styles/Home.module.css";
+import { GET_ALL_PRODUCTS } from "../utils/queries";
 
 const Home = ({ products }) => {
   return (
