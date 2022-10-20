@@ -2,22 +2,23 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../api/queries";
 import { Layout } from "../../components";
+import { useStateContext } from "../../context/StateContext";
 import client from "../../libs/apollo";
 import styles from "../../styles/ProductDetails.module.css";
 
-const ProductDetails = ({ product }) => {
+const ProductDetails = ({ item }) => {
   const [isMounted, setMount] = useState(false);
+  const [product, setProduct] = useState(item);
   const [slideImage, setSlideImage] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  // const { onAdd, qty } = useStateContext();
-  // const galleryImages = product.galleryImages.nodes;
+  const { onAdd, qty } = useStateContext();
 
   const selectImage = (i) => {
     setSlideImage(i);
     setSelectedIndex(i);
   };
 
-  // const handleBuyButton = (e) => {};
+  const handleBuyButton = (e) => {};
 
   // const handleAddToCart = () => {
   //   onAdd(product, qty)
@@ -25,6 +26,12 @@ const ProductDetails = ({ product }) => {
   // }
 
   useEffect(() => {
+    if (product.price) {
+      setProduct({
+        ...product,
+        price: parseFloat(product.price),
+      });
+    }
     setMount(true);
   }, []);
 
@@ -45,34 +52,31 @@ const ProductDetails = ({ product }) => {
               />
             </div>
             <ol className={styles.gallery}>
-              {product.galleryImages.nodes.map((image, i) => {
-                // let image = item.localFile?.childrenImageSharp[0].gatsbyImageData;
-                return (
-                  <li
-                    key={i}
+              {product.galleryImages.nodes.map((image, i) => (
+                <li
+                  key={i}
+                  slide={i}
+                  className={
+                    i === selectedIndex
+                      ? `${styles.gallery_image_selected}`
+                      : `${styles.gallery_image_not_selected}`
+                  }
+                >
+                  <button
+                    onClick={() => selectImage(i)}
                     slide={i}
-                    className={
-                      i === selectedIndex
-                        ? `${styles.gallery_image_selected}`
-                        : `${styles.gallery_image_not_selected}`
-                    }
+                    className={styles.gallery_image}
                   >
-                    <button
-                      onClick={() => selectImage(i)}
-                      slide={i}
-                      className={styles.gallery_image}
-                    >
-                      <Image
-                        key={i}
-                        src={image.sourceUrl}
-                        priority
-                        layout="fill"
-                        objectFit="cover"
-                      />
-                    </button>
-                  </li>
-                );
-              })}
+                    <Image
+                      key={i}
+                      src={image.sourceUrl}
+                      priority
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </button>
+                </li>
+              ))}
             </ol>
           </section>
           <section className={styles.right}>
@@ -88,10 +92,16 @@ const ProductDetails = ({ product }) => {
 
             <span className={styles.price}>${product.price}</span>
             <div className={styles.quantity}>
-              <button className={`${styles.button} ${styles.white_button}`}>
+              <button
+                className={`${styles.button} ${styles.white_button}`}
+                onClick={() => onAdd(product, qty)}
+              >
                 Add to cart
               </button>
-              <button className={`${styles.button} ${styles.dark_button}`}>
+              <button
+                className={`${styles.button} ${styles.dark_button}`}
+                onClick={handleBuyButton}
+              >
                 Buy now
               </button>
             </div>
@@ -127,7 +137,7 @@ export const getStaticProps = async ({ params: { slug } }) => {
 
   return {
     props: {
-      product: data.product,
+      item: data.product,
     },
   };
 };
