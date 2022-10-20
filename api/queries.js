@@ -45,6 +45,11 @@ const GET_PRODUCT_DETAILS = (slug) => {
         description
         price(format: RAW)
         uri
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
         galleryImages {
           nodes {
             sourceUrl
