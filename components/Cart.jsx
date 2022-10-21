@@ -1,16 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import {
-  AiOutlineCloseCircle,
-  AiOutlineMinus,
-  AiOutlinePlus,
-} from "react-icons/ai";
 import { FiShoppingBag } from "react-icons/fi";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { useStateContext } from "../context/StateContext";
 import getStripe from "../libs/getStripe";
 import styles from "../styles/Cart.module.css";
+import CartItem from "./CartItem";
 
 const Cart = () => {
   const {
@@ -66,47 +61,18 @@ const Cart = () => {
             <div className={styles.content}>
               <ol className={styles.items}>
                 {cartItems.map((item, i) => (
-                  <li className={styles.item} key={i}>
-                    <div className={styles.image}>
-                      <Image
-                        src={item.featuredImage.node.sourceUrl}
-                        priority
-                        layout="fill"
-                        objectFit="contain"
-                      />
-                    </div>
-                    <div className={styles.info}>
-                      <div>
-                        <h3 className={`${styles.name} ${styles.line_clamp}`}>
-                          {item.name}
-                        </h3>
-                      </div>
-
-                      <div className={styles.quantity}>
-                        <span
-                          id={styles.minus}
-                          onClick={() => toggleCartItemQuantity(item.id, "dec")}
-                        >
-                          <AiOutlineMinus />
-                        </span>
-                        <span id={styles.count}>{item.quantity}</span>
-                        <span
-                          id={styles.plus}
-                          onClick={() => toggleCartItemQuantity(item.id, "inc")}
-                        >
-                          <AiOutlinePlus />
-                        </span>
-                      </div>
-                    </div>
-                    <div className={styles.price}>
-                      <button id={styles.delete} onClick={() => onRemove(item)}>
-                        <AiOutlineCloseCircle />
-                      </button>
-                      <div>
-                        <span id={styles.price}>${item.price}</span>
-                      </div>
-                    </div>
-                  </li>
+                  <>
+                    <CartItem
+                      key={i}
+                      name={item.name}
+                      quantity={item.quantity}
+                      price={item.price}
+                      image={item.featuredImage.node.sourceUrl}
+                      decrease={() => toggleCartItemQuantity(item.id, "dec")}
+                      increase={() => toggleCartItemQuantity(item.id, "inc")}
+                      remove={() => onRemove(item)}
+                    />
+                  </>
                 ))}
               </ol>
               <div className={styles.totals}>
