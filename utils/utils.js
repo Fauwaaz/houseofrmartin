@@ -1,8 +1,14 @@
 import confetti from "canvas-confetti";
 
-export function getLocalValues(key, initialValue) {
+export function getLocalCart(key, initialValue) {
   return (
     (typeof window !== "undefined" && JSON.parse(localStorage.getItem(key))) ||
+    initialValue
+  );
+}
+export function getLocalValues(key, initialValue) {
+  return (
+    (typeof window !== "undefined" && parseFloat(localStorage.getItem(key))) ||
     initialValue
   );
 }

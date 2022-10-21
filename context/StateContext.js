@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getLocalValues } from "../utils/utils";
+import { getLocalCart, getLocalValues } from "../utils/utils";
 
 const Context = createContext();
 
@@ -9,8 +9,8 @@ export const StateContext = ({ children }) => {
   // []
   ///
   const [showCart, setShowCart] = useState(false);
-  const [cartItems, setCartItems] = useState(getLocalValues("cartItems", []));
-  console.log(cartItems);
+  const [cartItems, setCartItems] = useState(getLocalCart("cartItems", []));
+
   const [totalPrice, setTotalPrice] = useState(getLocalValues("total", 0));
   const [totalQuantities, setTotalQuantities] = useState(
     getLocalValues("quantities", 0)
@@ -49,6 +49,7 @@ export const StateContext = ({ children }) => {
 
   const onRemove = (product) => {
     foundProduct = cartItems.find((item) => item.id === product.id);
+
     const newCartItems = cartItems.filter((item) => item.id !== product.id);
     setTotalPrice(
       (prevTotalPrice) =>
@@ -110,12 +111,21 @@ export const StateContext = ({ children }) => {
   }, [totalQuantities]);
 
   useEffect(() => {
-    localStorage.setItem("quantity", qty);
-  }, [qty]);
-
-  useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
+  }, [
+    cartItems,
+    setCartItems,
+    setTotalPrice,
+    setTotalQuantities,
+    totalPrice,
+    totalQuantities,
+    qty,
+    incQty,
+    decQty,
+    onAdd,
+    toggleCartItemQuantity,
+    onRemove,
+  ]);
 
   return (
     <Context.Provider
