@@ -1,0 +1,70 @@
+/* Success Page */
+
+.section {
+  height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  margin-top: -3em;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: rgba(50, 50, 93, 0.15) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.2) 0px 30px 60px -30px;
+}
+
+.icon {
+  font-size: 2rem;
+  color: darkgreen;
+}
+
+.wrapper h2 {
+  font-size: 1.26rem;
+  font-weight: 600;
+  margin-bottom: 0.4em;
+}
+
+.wrapper p {
+  font-weight: 400;
+}
+
+.mail {
+  color: cadetblue;
+}
+
+.button {
+  margin-top: 2em;
+  text-transform: uppercase;
+  padding: 0.7em 2em;
+  border-radius: 8px;
+  color: #fff;
+  background-color: black;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+@media (min-width: 280px) {
+  .section {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+  }
+  .wrapper {
+    padding: 3em 1em;
+  }
+}
+
+@media (min-width: 480px) {
+  .section {
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+  .wrapper {
+    padding: 3em 3em;
+  }
+}

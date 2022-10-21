@@ -11,19 +11,17 @@ const ProductDetails = ({ item }) => {
   const [product, setProduct] = useState(item);
   const [slideImage, setSlideImage] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { onAdd, qty } = useStateContext();
+  const { onAdd, qty, setShowCart } = useStateContext();
 
   const selectImage = (i) => {
     setSlideImage(i);
     setSelectedIndex(i);
   };
 
-  const handleBuyButton = (e) => {};
-
-  // const handleAddToCart = () => {
-  //   onAdd(product, qty)
-  //   setShowCart(true)
-  // }
+  const handleBuyNow = (e) => {
+    onAdd(product, qty);
+    setShowCart(true);
+  };
 
   useEffect(() => {
     if (product.price) {
@@ -100,7 +98,7 @@ const ProductDetails = ({ item }) => {
               </button>
               <button
                 className={`${styles.button} ${styles.dark_button}`}
-                onClick={handleBuyButton}
+                onClick={handleBuyNow}
               >
                 Buy now
               </button>

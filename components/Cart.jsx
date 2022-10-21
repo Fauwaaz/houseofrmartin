@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AiOutlineCloseCircle,
   AiOutlineMinus,
@@ -11,6 +11,7 @@ import { HiOutlineChevronLeft } from "react-icons/hi";
 import { useStateContext } from "../context/StateContext";
 import getStripe from "../libs/getStripe";
 import styles from "../styles/Cart.module.css";
+import { getCartItems } from "../utils/utils";
 
 const Cart = () => {
   const {
@@ -21,6 +22,8 @@ const Cart = () => {
     cartItems,
     toggleCartItemQuantity,
     onRemove,
+    onAdd,
+    setCartItems,
   } = useStateContext();
 
   const handleCheckout = async () => {
