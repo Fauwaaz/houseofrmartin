@@ -13,7 +13,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   border-radius: 8px;
   background-color: #fff;
 }
@@ -33,11 +33,13 @@
   overflow: hidden;
   cursor: pointer;
   transition: all 0.1s ease-in-out;
+  background-color: #fff;
 }
 
 .gallery_image {
   position: relative;
   width: 100%;
+  margin: 5px;
 }
 
 .gallery_image_not_selected {
@@ -73,6 +75,7 @@
 .button {
   padding: 0.7em 2em;
   font-size: 0.95rem;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -109,14 +112,21 @@
     gap: 0.5em;
   }
   .gallery li {
-    width: 68px;
-    height: 68px;
+    width: 52px;
+    height: 52px;
+  }
+  .quantity {
+    justify-content: center;
   }
 }
 
 @media screen and (min-width: 768px) {
   .wrapper {
     padding: 0em 3em;
+  }
+  .gallery li {
+    width: 62px;
+    height: 62px;
   }
 }
 

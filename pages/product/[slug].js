@@ -70,7 +70,7 @@ const ProductDetails = ({ item }) => {
                       src={image.sourceUrl}
                       priority
                       layout="fill"
-                      objectFit="cover"
+                      objectFit="contain"
                     />
                   </button>
                 </li>
