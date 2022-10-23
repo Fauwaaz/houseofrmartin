@@ -1,6 +1,6 @@
 /* Cart */
 
-.cart {
+.background {
   width: 100vw;
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -9,16 +9,19 @@
   right: 0;
   left: 0;
   z-index: 100;
-  will-change: transform;
-  transition: all 1s ease-in-out;
+  /* will-change: transform;
+  transition: all 1s ease-in-out; */
 }
 
-.container {
+.cart {
+  position: fixed;
   height: 100vh;
-
+  top: 0;
+  right: 0;
   background-color: white;
   float: right;
   position: relative;
+  z-index: 200;
 }
 
 .content {
@@ -126,8 +129,9 @@
 }
 
 @media screen and (min-width: 320px) {
-  .container {
+  .cart {
     width: 100%;
+    position: fixed;
   }
   .name {
     font-size: 0.9rem;
@@ -145,8 +149,9 @@
 }
 
 @media screen and (min-width: 640px) {
-  .container {
+  .cart {
     width: 600px;
+    position: fixed;
   }
   .name {
     font-size: 1.09rem;

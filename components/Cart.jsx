@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import { FiShoppingBag } from "react-icons/fi";
@@ -37,60 +38,113 @@ const Cart = () => {
     stripe.redirectToCheckout({ sessionId: data.id });
   };
 
-  if (showCart === true)
-    return (
-      <div className={styles.cart}>
-        <div className={styles.container}>
-          <button
-            className={styles.heading}
-            onClick={() => setShowCart(!showCart)}
-          >
-            <HiOutlineChevronLeft />
-            <h3>Your Cart</h3>
-            <span>( {totalQuantities} items )</span>
-          </button>
+  const CartAnimation = {
+    initial: {
+      x: 600,
+      transition: {
+        duration: 0.3,
+      },
+    },
+    animate: {
+      x: 0,
+      transition: {
+        duration: 0.3,
+        type: "spring",
+        damping: 20,
+      },
+    },
+    exit: {
+      x: 600,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
 
-          {cartItems.length < 1 && (
-            <div className={styles.empty}>
-              <FiShoppingBag />
-              <h3>Your shopping bag is empty</h3>
-              <Link href="/">Continue Shopping</Link>
-            </div>
-          )}
-          {cartItems.length >= 1 && (
-            <div className={styles.content}>
-              <ol className={styles.items}>
-                {cartItems.map((item, i) => (
-                  <>
-                    <CartItem
-                      key={i}
-                      name={item.name}
-                      quantity={item.quantity}
-                      price={item.price}
-                      image={item.featuredImage.node.sourceUrl}
-                      decrease={() => toggleCartItemQuantity(item.id, "dec")}
-                      increase={() => toggleCartItemQuantity(item.id, "inc")}
-                      remove={() => onRemove(item)}
-                    />
-                  </>
-                ))}
-              </ol>
-              <div className={styles.totals}>
-                <div>
-                  <h4>Subtotal:</h4>
-                  {/* <span>${totalPrice}</span> */}
-                  <span>${totalPrice.toFixed(2)}</span>
-                </div>
-                <div className={styles.checkout}>
-                  <button onClick={handleCheckout}>Pay with Stripe</button>
+  const BackgroundAnimation = {
+    initial: {
+      opacity: 0,
+    },
+    animate: {
+      opacity: 1,
+      duration: 0.2,
+      type: "spring",
+      damping: 20,
+    },
+    exit: {
+      opacity: 0,
+    },
+  };
+
+  return (
+    <AnimatePresence>
+      {showCart && (
+        <>
+          <motion.div
+            className={styles.background}
+            variants={BackgroundAnimation}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          />
+          <motion.div
+            className={styles.cart}
+            variants={CartAnimation}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <button
+              className={styles.heading}
+              onClick={() => setShowCart(!showCart)}
+            >
+              <HiOutlineChevronLeft />
+              <h3>Your Cart</h3>
+              <span>( {totalQuantities} items )</span>
+            </button>
+
+            {cartItems.length < 1 && (
+              <div className={styles.empty}>
+                <FiShoppingBag />
+                <h3>Your shopping bag is empty</h3>
+                <Link href="/">Continue Shopping</Link>
+              </div>
+            )}
+            {cartItems.length >= 1 && (
+              <div className={styles.content}>
+                <ol className={styles.items}>
+                  {cartItems.map((item, i) => (
+                    <>
+                      <CartItem
+                        key={i}
+                        name={item.name}
+                        quantity={item.quantity}
+                        price={item.price}
+                        image={item.featuredImage.node.sourceUrl}
+                        decrease={() => toggleCartItemQuantity(item.id, "dec")}
+                        increase={() => toggleCartItemQuantity(item.id, "inc")}
+                        remove={() => onRemove(item)}
+                      />
+                    </>
+                  ))}
+                </ol>
+                <div className={styles.totals}>
+                  <div>
+                    <h4>Subtotal:</h4>
+                    {/* <span>${totalPrice}</span> */}
+                    <span>${totalPrice.toFixed(2)}</span>
+                  </div>
+                  <div className={styles.checkout}>
+                    <button onClick={handleCheckout}>Pay with Stripe</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  return null;
+            )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
 };
 
 export default Cart;

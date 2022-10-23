@@ -16,10 +16,13 @@ const Layout = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar />
       <Cart />
-      <main>{children}</main>
-      <Footer />
+      <>
+        <Navbar />
+
+        <main>{children}</main>
+        <Footer />
+      </>
     </section>
   );
 };

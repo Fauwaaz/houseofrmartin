@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components";
@@ -35,19 +36,41 @@ const ProductDetails = ({ item }) => {
 
   // console.log(product);
 
+  const FeaturedAnimation = {
+    initial: {
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+    animate: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
     <Layout>
       <div className={styles.layout}>
         <div className={styles.wrapper}>
           <section className={styles.left}>
             <div className={styles.featured}>
-              <Image
+              <motion.div
                 key={slideImage}
-                src={product.galleryImages.nodes[slideImage].sourceUrl}
-                priority
-                layout="fill"
-                objectFit="contain"
-              />
+                className={styles.featuredInner}
+                variants={FeaturedAnimation}
+                initial="initial"
+                animate="animate"
+              >
+                <Image
+                  src={product.galleryImages.nodes[slideImage].sourceUrl}
+                  priority
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </motion.div>
             </div>
             <ol className={styles.gallery}>
               {product.galleryImages.nodes.map((image, i) => (

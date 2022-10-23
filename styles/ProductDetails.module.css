@@ -16,6 +16,12 @@
   margin-bottom: 1em;
   border-radius: 8px;
   background-color: #fff;
+  overflow: hidden;
+}
+
+.featuredInner {
+  width: 100%;
+  height: 100%;
 }
 
 .featured span {
