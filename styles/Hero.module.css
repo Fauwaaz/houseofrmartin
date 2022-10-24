@@ -1,0 +1,187 @@
+/* Hero */
+
+.hero {
+  display: flex;
+  margin-bottom: 3em;
+}
+
+.left {
+  width: 48%;
+  padding-top: 5em;
+  padding-bottom: 5em;
+}
+
+.title {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 0.3em;
+}
+
+.description {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 2em;
+  width: 60%;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+}
+
+.addToCart {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 1.03rem;
+  font-weight: 500;
+  color: #fff;
+  background: #000;
+  border-radius: 8px;
+  padding: 0.8em 2em;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.button {
+  display: flex;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.buttonImage {
+  width: 50px;
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.buttonImage > span {
+  margin: 5px !important;
+}
+
+.buttonText {
+  display: flex;
+  align-items: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.8em 2em 0.8em 0.8em;
+}
+
+.buttonText svg {
+  margin-top: 1.7px;
+}
+
+.button:hover {
+  opacity: 0.94;
+}
+
+.right {
+  width: 52%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-startd;
+}
+
+.image {
+  position: relative;
+  width: 350px;
+  height: 350px;
+}
+.image :nth-child(1) {
+  overflow: visible !important;
+  inset: -12em !important;
+}
+
+.offer {
+  width: 20em;
+  position: absolute;
+  top: -2.5em;
+  right: -25em;
+  padding: 1em 1em;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+.offer h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.4em;
+}
+
+.offer p {
+  font-size: 1.07rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.features {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  width: 15em;
+  bottom: -6.5em;
+  right: -26em;
+  padding: 1em 1em;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 8px solid rgba(0, 0, 0, 0.3);
+  padding: 2em;
+  width: 9em;
+  height: 9em;
+  border-radius: 100%;
+}
+
+.top span {
+  line-height: 2.5rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.top p {
+  font-weight: 700;
+  color: rgba(0, 0, 0, 1);
+}
+
+.bottom {
+  font-size: 1.07rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.dots {
+  gap: 0.5em;
+  display: flex;
+}
+
+.dots span {
+  height: 0.7em;
+  width: 0.7em;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.active {
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.inactive {
+  background-color: rgba(0, 0, 0, 0.3);
+}
