@@ -39,6 +39,8 @@ const Cart = () => {
     stripe.redirectToCheckout({ sessionId: data.id });
   };
 
+  console.log(cartItems);
+
   return (
     <AnimatePresence>
       {showCart && (

@@ -22,7 +22,7 @@ const Banner = ({ title, description, uri, image }) => {
           width="746px"
           height="388px"
           objectFit="contain"
-          style={{ marginBottom: "-5px" }}
+          style={{ marginBottom: "-15px" }}
         />
       </div>
     </div>
