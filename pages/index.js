@@ -48,7 +48,7 @@ const Home = ({ products, banner }) => {
 
 export default Home;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await client.query({
     query: GET_ALL,
   });

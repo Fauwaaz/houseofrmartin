@@ -35,8 +35,6 @@ const ProductDetails = ({ item }) => {
     setMount(true);
   }, []);
 
-  // console.log(product);
-
   return (
     <Layout>
       <div className={styles.layout}>

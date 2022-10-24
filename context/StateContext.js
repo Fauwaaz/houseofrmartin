@@ -4,10 +4,6 @@ import { getLocalCart, getLocalValues } from "../utils/utils";
 const Context = createContext();
 
 export const StateContext = ({ children }) => {
-  // (typeof window !== "undefined" &&
-  // JSON.parse(localStorage.getItem("cartItems"))) ||
-  // []
-  ///
   const [showCart, setShowCart] = useState(false);
   const [cartItems, setCartItems] = useState(getLocalCart("cartItems", []));
 
