@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const GET_ALL_PRODUCTS = gql`
+const GET_ALL = gql`
   query Products {
     products {
       nodes {
@@ -14,6 +14,24 @@ const GET_ALL_PRODUCTS = gql`
           shortDescription
           featuredImage {
             node {
+              sourceUrl
+            }
+          }
+        }
+      }
+    }
+    category(id: "Banners", idType: NAME) {
+      id
+      posts {
+        nodes {
+          id
+          banner {
+            title
+            description
+            uri
+            image {
+              id
+              uri
               sourceUrl
             }
           }
@@ -63,4 +81,26 @@ const GET_PRODUCT_DETAILS = (slug) => {
   return getProductDetails;
 };
 
-export { GET_ALL_PRODUCTS, GET_SLUG, GET_PRODUCT_DETAILS };
+const GET_BANNER = gql`
+  query Banner {
+    category(id: "Banners", idType: NAME) {
+      id
+      posts {
+        nodes {
+          id
+          banner {
+            title
+            description
+            uri
+            image {
+              id
+              uri
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export { GET_ALL, GET_SLUG, GET_PRODUCT_DETAILS, GET_BANNER };

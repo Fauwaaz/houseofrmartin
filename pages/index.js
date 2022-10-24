@@ -1,13 +1,27 @@
 import { Layout, ProductCard } from "../components";
+import Banner from "../components/Banner";
+import Hero from "../components/Hero";
+import Services from "../components/Services";
+import { useStateContext } from "../context/StateContext";
 import client from "../libs/apollo";
 import styles from "../styles/Home.module.css";
-import { GET_ALL_PRODUCTS } from "../utils/queries";
+import { GET_ALL } from "../utils/queries";
 
-const Home = ({ products }) => {
+const Home = ({ products, banner }) => {
+  const { onAdd, qty } = useStateContext();
+  console.log(banner);
   return (
     <>
       <Layout>
         <section className={styles.product_cards_section}>
+          <Hero
+            name={products[0].name}
+            description={products[0].shortDescription}
+            url={products[0].slug}
+            image={products[0].featuredImage.node.sourceUrl}
+            addToCart={() => onAdd(products[0], qty)}
+          />
+          <Services />
           <ul className={styles.product_cards}>
             {products.map((product, i) => (
               <ProductCard
@@ -20,6 +34,12 @@ const Home = ({ products }) => {
               />
             ))}
           </ul>
+          <Banner
+            title={banner.title}
+            description={banner.description}
+            uri={banner.uri}
+            image={banner.image.sourceUrl}
+          />
         </section>
       </Layout>
     </>
@@ -28,14 +48,27 @@ const Home = ({ products }) => {
 
 export default Home;
 
-export async function getServerSideProps() {
+// export async function getServerSideProps() {
+//   const { data } = await client.query({
+//     query: GET_BANNER,
+//   });
+
+//   return {
+//     props: {
+//       banner: data,
+//     },
+//   };
+// }
+
+export async function getStaticProps() {
   const { data } = await client.query({
-    query: GET_ALL_PRODUCTS,
+    query: GET_ALL,
   });
 
   return {
     props: {
       products: data.products.nodes,
+      banner: data.category.posts.nodes[0].banner,
     },
   };
 }

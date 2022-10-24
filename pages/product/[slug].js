@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { FeaturedAnimation } from "../../animations";
 import { Layout } from "../../components";
 import { useStateContext } from "../../context/StateContext";
 import client from "../../libs/apollo";
@@ -35,21 +36,6 @@ const ProductDetails = ({ item }) => {
   }, []);
 
   // console.log(product);
-
-  const FeaturedAnimation = {
-    initial: {
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-      },
-    },
-    animate: {
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
 
   return (
     <Layout>
