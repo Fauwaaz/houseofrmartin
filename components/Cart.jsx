@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { FiShoppingBag } from "react-icons/fi";
 import { HiOutlineChevronLeft } from "react-icons/hi";
+import { BackgroundAnimation, CartAnimation } from "../animations";
 import { useStateContext } from "../context/StateContext";
 import getStripe from "../libs/getStripe";
 import styles from "../styles/Cart.module.css";
@@ -36,44 +37,6 @@ const Cart = () => {
     const data = await response.json();
 
     stripe.redirectToCheckout({ sessionId: data.id });
-  };
-
-  const CartAnimation = {
-    initial: {
-      x: 600,
-      transition: {
-        duration: 0.3,
-      },
-    },
-    animate: {
-      x: 0,
-      transition: {
-        duration: 0.3,
-        type: "spring",
-        damping: 20,
-      },
-    },
-    exit: {
-      x: 600,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-
-  const BackgroundAnimation = {
-    initial: {
-      opacity: 0,
-    },
-    animate: {
-      opacity: 1,
-      duration: 0.2,
-      type: "spring",
-      damping: 20,
-    },
-    exit: {
-      opacity: 0,
-    },
   };
 
   return (
