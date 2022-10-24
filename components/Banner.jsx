@@ -17,7 +17,13 @@ const Banner = ({ title, description, uri, image }) => {
         </Link>
       </div>
       <div className={styles.image}>
-        <Image src={image} width="746px" height="388px" objectFit="contain" />
+        <Image
+          src={image}
+          width="746px"
+          height="388px"
+          objectFit="contain"
+          style={{ marginBottom: "-5px" }}
+        />
       </div>
     </div>
   );

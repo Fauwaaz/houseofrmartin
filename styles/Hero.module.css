@@ -7,8 +7,6 @@
 
 .left {
   width: 48%;
-  padding-top: 5em;
-  padding-bottom: 5em;
 }
 
 .title {
@@ -184,4 +182,193 @@
 
 .inactive {
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (min-width: 320px) {
+  .hero {
+    flex-direction: column;
+    padding-bottom: 6em;
+  }
+  .left {
+    width: 100%;
+    padding: 0;
+    text-align: center;
+  }
+
+  .right {
+    width: 100%;
+    padding: 0;
+  }
+  .title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 0.3em;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 2em;
+    width: 100%;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6em;
+  }
+
+  .buttonText {
+    padding: 1em;
+  }
+  .right {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .image {
+    position: relative;
+    width: 250px;
+    height: 250px;
+  }
+
+  .offer {
+    display: none;
+  }
+
+  .features {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+  }
+  .description {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 2em;
+    width: 50%;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 9em;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .hero {
+    flex-direction: row;
+    margin-top: 6em;
+    padding-bottom: 8em;
+  }
+  .left {
+    width: 40%;
+    padding: 0;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .description {
+    width: 90%;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    margin-bottom: 0em;
+  }
+
+  .right {
+    width: 45%;
+    padding: 0;
+  }
+  .offer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    top: -3.5em;
+    right: -22em;
+  }
+
+  .features {
+    display: flex;
+    bottom: -3.5em;
+    right: -19em;
+  }
+
+  .image {
+    width: 340px;
+    height: 340px;
+  }
+}
+
+@media screen and (min-width: 1620px) {
+  .hero {
+    display: flex;
+    margin-bottom: 3em;
+  }
+
+  .left {
+    width: 38%;
+  }
+
+  .title {
+    font-size: 4rem;
+    font-weight: 700;
+  }
+
+  .description {
+    font-size: 1.3rem;
+    font-weight: 500;
+    width: 80%;
+  }
+
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+  }
+
+  .right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-startd;
+  }
+
+  .image {
+    width: 380px;
+    height: 380px;
+  }
+
+  .offer {
+    top: -2.5em;
+    right: -24em;
+  }
+
+  .features {
+    bottom: -4.5em;
+    right: -22em;
+  }
 }

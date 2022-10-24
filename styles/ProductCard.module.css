@@ -40,7 +40,7 @@
 }
 
 .name {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 0.5em;
   display: -webkit-box;
@@ -69,14 +69,14 @@
 }
 
 .price span {
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 400;
   margin-bottom: 0.5em;
   opacity: 0.75;
 }
 
 .price font {
-  font-size: 1.09rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-left: 0.2em;
   opacity: 0.97;

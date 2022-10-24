@@ -20,7 +20,7 @@ const Layout = ({ children }) => {
       <>
         <Navbar />
 
-        <main>{children}</main>
+        <main className={styles.main}>{children}</main>
         <Footer />
       </>
     </section>

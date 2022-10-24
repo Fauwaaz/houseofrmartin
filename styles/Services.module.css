@@ -10,11 +10,10 @@
   display: flex;
   justify-content: center;
   gap: 3.5em;
-  background-color: #fff;
+
   padding: 2em;
   border-radius: 8px;
   width: fit-content;
-  box-shadow: rgba(17, 12, 46, 0.13) 0px 38px 100px 0px;
 }
 
 .service {
@@ -35,10 +34,6 @@
   display: flex;
 }
 
-.info {
-  /* padding: 1em 0em; */
-}
-
 .info h4 {
   font-size: 1.4rem;
   font-weight: 700;
@@ -47,4 +42,133 @@
 .info p {
   font-size: 1.04rem;
   color: rgba(0, 0, 0, 0.7);
+}
+
+@media screen and (min-width: 320px) {
+  .container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4.5em;
+    margin-bottom: 6em;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .services {
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 0em;
+    justify-content: center;
+    gap: 2em;
+    box-shadow: none;
+  }
+
+  .service {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    gap: 1em;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: rgba(17, 12, 46, 0.04) 0px 38px 100px 0px;
+  }
+
+  .info h4 {
+    font-size: 1.26rem;
+    font-weight: 700;
+  }
+
+  .info p {
+    font-size: 1.04rem;
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+@media screen and (min-width: 640px) {
+  .container {
+    margin-top: 3em;
+    margin-bottom: 6em;
+
+    border-radius: 8px;
+    box-shadow: rgba(17, 12, 46, 0.04) 0px 38px 100px 0px;
+  }
+
+  .services {
+    flex-direction: row;
+    gap: 1.5em;
+    padding: 2em 1.5em;
+    width: fit-content;
+    box-shadow: none;
+    background-color: #fff;
+  }
+
+  .service {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .info h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .info p {
+    font-size: 1.02rem;
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 3em;
+    margin-bottom: 6em;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .services {
+    display: flex;
+    justify-content: center;
+    gap: 3.5em;
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 8px;
+    width: fit-content;
+    box-shadow: rgba(17, 12, 46, 0.09) 0px 38px 100px 0px;
+  }
+
+  .service {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    /* border-radius: 8px; */
+  }
+
+  .icon {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.5em;
+    border-radius: 8px;
+    font-size: 2rem;
+  }
+
+  .icon svg {
+    display: flex;
+  }
+
+  .info h4 {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .info p {
+    font-size: 1.04rem;
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
+@media screen and (min-width: 1620px) {
 }

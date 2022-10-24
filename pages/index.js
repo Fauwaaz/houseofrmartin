@@ -13,7 +13,7 @@ const Home = ({ products, banner }) => {
   return (
     <>
       <Layout>
-        <section className={styles.product_cards_section}>
+        <section className={styles.content}>
           <Hero
             name={products[0].name}
             description={products[0].shortDescription}
