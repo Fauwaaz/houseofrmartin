@@ -15,7 +15,13 @@ const ProductCard = ({ name, description, slug, price, image }) => {
         <Link href={`/product/${slug}`}>
           <a>
             <div>
-              <Image src={image} priority layout="fill" objectFit="contain" />
+              <Image
+                src={image}
+                priority
+                layout="fill"
+                objectFit="contain"
+                alt={name}
+              />
             </div>
           </a>
         </Link>

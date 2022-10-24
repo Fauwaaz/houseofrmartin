@@ -51,6 +51,7 @@ const ProductDetails = ({ item }) => {
                 animate="animate"
               >
                 <Image
+                  alt={product.name}
                   src={product.galleryImages.nodes[slideImage].sourceUrl}
                   priority
                   layout="fill"
@@ -75,6 +76,7 @@ const ProductDetails = ({ item }) => {
                     className={styles.gallery_image}
                   >
                     <Image
+                      alt={i}
                       key={i}
                       src={image.sourceUrl}
                       priority

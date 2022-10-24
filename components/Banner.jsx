@@ -18,6 +18,7 @@ const Banner = ({ title, description, uri, image }) => {
       </div>
       <div className={styles.image}>
         <Image
+          alt={title}
           src={image}
           width="746px"
           height="388px"

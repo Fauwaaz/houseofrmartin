@@ -20,7 +20,7 @@ const CartItem = ({
   return (
     <li className={styles.item}>
       <div className={styles.image}>
-        <Image src={image} priority layout="fill" objectFit="contain" />
+        <Image src={image} priority layout="fill" objectFit="contain" alt={name} />
       </div>
       <div className={styles.info}>
         <div>

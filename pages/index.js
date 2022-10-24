@@ -9,7 +9,7 @@ import { GET_ALL } from "../utils/queries";
 
 const Home = ({ products, banner }) => {
   const { onAdd, qty } = useStateContext();
-  console.log(banner);
+
   return (
     <>
       <Layout>
@@ -47,18 +47,6 @@ const Home = ({ products, banner }) => {
 };
 
 export default Home;
-
-// export async function getServerSideProps() {
-//   const { data } = await client.query({
-//     query: GET_BANNER,
-//   });
-
-//   return {
-//     props: {
-//       banner: data,
-//     },
-//   };
-// }
 
 export async function getStaticProps() {
   const { data } = await client.query({

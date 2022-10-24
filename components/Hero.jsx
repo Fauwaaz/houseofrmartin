@@ -74,6 +74,7 @@ const Hero = ({ addToCart, image, url }) => {
             <button className={styles.button}>
               <div className={styles.buttonImage}>
                 <Image
+                  alt="hero image"
                   src={image}
                   priority
                   layout="fill"
@@ -90,8 +91,19 @@ const Hero = ({ addToCart, image, url }) => {
       </div>
       <div className={styles.right}>
         <div className={styles.image}>
-          <Image src={HeroBackground} layout="fill" objectFit="contain" />
-          <Image src={image} priority layout="fill" objectFit="contain" />
+          <Image
+            src={HeroBackground}
+            layout="fill"
+            objectFit="contain"
+            alt="hero background"
+          />
+          <Image
+            src={image}
+            priority
+            layout="fill"
+            objectFit="contain"
+            alt="hero background two"
+          />
           <div className={styles.offer}>
             <h4>Get up to 30% off</h4>
             <p>We offer a 30% discount from orders above $20</p>
@@ -135,7 +147,7 @@ const Hero = ({ addToCart, image, url }) => {
             </div>
             <div className={styles.dots}>
               {features.map((feature, i) => (
-                <button onClick={() => setSlide(i)}>
+                <button onClick={() => setSlide(i)} key={i}>
                   <span
                     className={
                       i === slide ? `${styles.active}` : `${styles.inactive}`
