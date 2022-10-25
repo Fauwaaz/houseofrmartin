@@ -17,7 +17,7 @@ export async function getStaticProps() {
       products: data.products.nodes,
       banner: data.category.posts.nodes[0].banner,
     },
-    revalidate: 10,
+    revalidate: 1,
   };
 }
 

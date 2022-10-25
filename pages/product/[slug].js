@@ -5,7 +5,6 @@ import { FeaturedAnimation } from "../../animations";
 import { Layout } from "../../components";
 import Gallery from "../../components/Gallery";
 import ProductInfo from "../../components/ProductInfo";
-import { useStateContext } from "../../context/StateContext";
 import client from "../../libs/apollo";
 import styles from "../../styles/ProductDetails.module.css";
 import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../utils/queries";
@@ -35,7 +34,7 @@ export const getStaticProps = async ({ params: { slug } }) => {
     props: {
       item: data.product,
     },
-    revalidate: 10,
+    revalidate: 1,
   };
 };
 
