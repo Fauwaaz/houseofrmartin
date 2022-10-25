@@ -7,6 +7,20 @@ import client from "../libs/apollo";
 import styles from "../styles/Home.module.css";
 import { GET_ALL } from "../utils/queries";
 
+export async function getStaticProps() {
+  const { data } = await client.query({
+    query: GET_ALL,
+  });
+
+  return {
+    props: {
+      products: data.products.nodes,
+      banner: data.category.posts.nodes[0].banner,
+    },
+    revalidate: 10,
+  };
+}
+
 const Home = ({ products, banner }) => {
   const { onAdd, qty } = useStateContext();
 
@@ -47,16 +61,3 @@ const Home = ({ products, banner }) => {
 };
 
 export default Home;
-
-export async function getServerSideProps() {
-  const { data } = await client.query({
-    query: GET_ALL,
-  });
-
-  return {
-    props: {
-      products: data.products.nodes,
-      banner: data.category.posts.nodes[0].banner,
-    },
-  };
-}
