@@ -1,0 +1,58 @@
+/* Product Info */
+
+.name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.8em;
+}
+
+.description {
+  opacity: 0.9;
+  margin-bottom: 2em;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.quantity {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 1.5em;
+}
+
+.button {
+  padding: 0.7em 2em;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.white_button {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #000;
+}
+
+.dark_button {
+  color: #fff;
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+@media (min-width: 280px) {
+  .quantity {
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width: 768px) {
+}
+
+@media (min-width: 1200px) {
+  .quantity {
+    justify-content: start;
+  }
+}
