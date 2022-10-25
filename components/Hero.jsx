@@ -52,7 +52,7 @@ const Hero = ({ addToCart, image, url }) => {
       resetTimeout();
     };
   }, [slide]);
-
+  //
   return (
     <div className={styles.hero}>
       <div className={styles.left}>
