@@ -16,22 +16,22 @@ An ecommerce template I built with Nextjs and Wordpress as a headless CMS soluti
 
 ### Dependancies
 
-#### - Client
-- Nextjs
-- Reactjs
-- Apollo
-- Framer Motion
-- Canvas Confetti
-- React Icons
-- Graphql
-- Stripe
+-  **Client**
+	- Nextjs
+	- Reactjs
+	- Apollo
+	- Framer Motion
+	- Canvas Confetti
+	- React Icons
+	- Graphql
+	- Stripe
 
-#### - Wordpress
-- WooCommerce
-- Advanced Custom Fields
-- WP GraphQL
-- WPGraphQL for Advanced Custom Fields
-- WPGraphQL WooCommerce (WooGraphQL)
+-  **Wordpress**
+	- WooCommerce
+	- Advanced Custom Fields
+	- WP GraphQL
+	- WPGraphQL for Advanced Custom Fields
+	- WPGraphQL WooCommerce (WooGraphQL)
 
 
 ### Config
@@ -66,4 +66,8 @@ An ecommerce template I built with Nextjs and Wordpress as a headless CMS soluti
   }
 }
 ```
+
+### License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
