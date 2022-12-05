@@ -5,23 +5,11 @@
 
 An ecommerce template I built with Nextjs and Wordpress as a headless CMS solution. Everything is dynamically generated through the admin panel. The frontend is linked with Graphql and ACF. I used localstorage to keep data of the global state and the cart / payment process on the users browser. 
 
-
-------------
-
-
-
 ### Core Technologies
 <div>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" style="width: 40px; height: 40px; " alt="nextjs wordpress"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg" style="width: 40px; height: 40px;" alt="nextjs wordpress"/>
 </div>
-
-
-
-
-------------
-
-
 
 ### Dependancies
 
@@ -41,10 +29,6 @@ An ecommerce template I built with Nextjs and Wordpress as a headless CMS soluti
 - WP GraphQL
 - WPGraphQL for Advanced Custom Fields
 - WPGraphQL WooCommerce (WooGraphQL)
-
-
-------------
-
 
 
 ### Config
@@ -79,9 +63,4 @@ An ecommerce template I built with Nextjs and Wordpress as a headless CMS soluti
   }
 }
 ```
-
-
-------------
-
-
 
