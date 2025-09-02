@@ -133,7 +133,7 @@ const Home = ({ products, banner }) => {
               </h2>
               <p className="text-white text-lg lg:text-xl mb-6">
                 At House of RMartin, we believe that fashion is more than just
-                clothing; it's a form of self-expression and empowerment. Our
+                clothing; it&apos;s a form of self-expression and empowerment. Our
                 journey began with a vision to create a brand that celebrates
                 individuality and inspires confidence through unique,
                 high-quality designs.
