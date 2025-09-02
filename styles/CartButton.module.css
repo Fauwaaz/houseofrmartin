@@ -1,9 +1,10 @@
 /* Cart Button */
 
+
+
 .container {
   top: 3em;
   right: 6em;
-  background-color: #000;
   border-radius: 50px;
   cursor: pointer;
 }
@@ -32,6 +33,4 @@
 
 .inner svg {
   font-size: 1.5rem;
-  color: #fff;
-  padding: 0.6rem;
 }

@@ -69,7 +69,7 @@ const ProductDetails = ({ item }) => {
               >
                 <Image
                   alt={product.name}
-                  src={product.galleryImages.nodes[slideImage].sourceUrl}
+                  src={product.galleryImages.nodes[slideImage]?.sourceUrl || '/placeholder.jpg'}
                   priority
                   layout="fill"
                   objectFit="contain"

@@ -31,10 +31,10 @@ const Success = () => {
           </p>
           <p>
             For any issues or questions , please email us
-            <a href="mailto:domvournias@gmail.com" className={styles.mail}>
+            <Link href="mailto:domvournias@gmail.com" className={styles.mail}>
               {" "}
               domvournias@gmail.com
-            </a>
+            </Link>
           </p>
           <Link href="/">
             <button className={styles.button}>Continue Shopping</button>

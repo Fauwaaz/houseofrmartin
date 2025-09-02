@@ -54,8 +54,8 @@ const Hero = ({ addToCart, image, url }) => {
   }, [slide]);
   //
   return (
-    <div className={styles.hero}>
-      <div className={styles.left}>
+    <section className="min-h-screen w-full relative hero">
+      {/* <div className={styles.left}>
         <h3 className={styles.title}>
           Our Best <br />
           Collections
@@ -158,8 +158,46 @@ const Hero = ({ addToCart, image, url }) => {
             </div>
           </div>
         </div>
+      </div> */}
+      <div className="w-full hidden lg:flex">
+        <div
+          style={{
+            backgroundImage: "url('/hero/rmartin-hero-1.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            width: "30%",
+            height: "100vh", // or any height you want
+          }}
+        >
+        </div>
+       <div
+          style={{
+            backgroundImage: "url('/hero/rmartin-hero-2.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            width: "40%",
+            height: "100vh", // or any height you want
+          }}
+        >
+        </div>
+        <div
+          style={{
+            backgroundImage: "url('/hero/rmartin-hero-3.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "top",
+            backgroundRepeat: "no-repeat",
+            width: "30%",
+            height: "100vh", // or any height you want
+          }}
+        >
+        </div>
       </div>
-    </div>
+      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
+        <h1 className="text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>
+      </div>
+    </section>
   );
 };
 

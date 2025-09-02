@@ -11,17 +11,16 @@ const Banner = ({ title, description, uri, image }) => {
         <h2>{title}</h2>
         <p>{description}</p>
         <Link href={`/product/${uri}`}>
-          <a>
+          
             Learn more <RiArrowRightSLine />
-          </a>
         </Link>
       </div>
       <div className={styles.image}>
         <Image
           alt={title}
           src={image}
-          width="746px"
-          height="388px"
+          width={746}
+          height={388}
           objectFit="contain"
           style={{ marginBottom: "-15px" }}
         />

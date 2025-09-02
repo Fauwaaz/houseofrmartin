@@ -13,7 +13,6 @@ const ProductCard = ({ name, description, slug, price, image }) => {
     <li className={styles.card}>
       <div className={styles.top}>
         <Link href={`/product/${slug}`}>
-          <a>
             <div>
               <Image
                 src={image}
@@ -23,7 +22,6 @@ const ProductCard = ({ name, description, slug, price, image }) => {
                 alt={name}
               />
             </div>
-          </a>
         </Link>
       </div>
       <div className={styles.bottom}>

@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["nextecomwp.tk"],
+    domains: ["taghaa.sparkcloud.in"],
   },
 };
 

@@ -1,20 +1,24 @@
-/* Navbar */
-
 .header {
-  background-color: #fff;
+  padding: 10px 20px;
+  position: fixed;
   z-index: 9999;
+  width: 100%;
 }
 
 .nav {
+  background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1em 4em;
+  border-radius: 20px;
+  padding: 0.5em 3em;
 }
 
-.nav a {
-  font-size: 1.3rem;
-  font-weight: 800;
+.navItem {
+  margin-left: 2em;
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 768px) {
