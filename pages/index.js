@@ -51,7 +51,6 @@ const Home = ({ products, banner }) => {
     { title: "Tshirts", img: "/category/tshirts.png", link: "#" },
   ];
 
-  // Track which card is hovered
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
@@ -91,7 +90,6 @@ const Home = ({ products, banner }) => {
                     height={400}
                     className="w-full h-full object-cover"
                     unoptimized
-                    quality={100}
                   />
                 </motion.div>
 
@@ -110,7 +108,7 @@ const Home = ({ products, banner }) => {
                       >
                         <Link
                           href={category.link}
-                          className={`text-white border border-white rounded-full py-2 px-5 uppercase ${stylesCommon["btn-outline-white"]}`}
+                          className={`text-white border border-white rounded-full py-2 px-5 uppercase bg-white/20 backdrop-blur-sm ${stylesCommon["btn-outline-white"]}`}
                         >
                           Shop Now
                         </Link>
@@ -118,25 +116,20 @@ const Home = ({ products, banner }) => {
                     )}
                   </AnimatePresence>
                 </div>
-              </div>
+              </div>  
             ))}
           </div>
         </section>
 
-        {/* Story Banner */}
         <section className="story-banner min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full h-full">
           <div className="grid grid-cols-2 gap-10 justify-items-center">
             <div className="story-banner-image"></div>
             <div className="story-banner-content w-3/4 ">
-              <h2 className="text-3xl lg:text-6xl font-geograph-md text-white mb-6">
-                House of R-Martin Wear Your Story
+              <h2 className="text-3xl lg:text-6xl font-geograph-md text-white mb-6 text-outline">
+                House of <span className="text-red-600 stroke-black">R-Martin</span> Wear Your Story
               </h2>
               <p className="text-white text-lg lg:text-xl mb-6">
-                At House of RMartin, we believe that fashion is more than just
-                clothing; it&apos;s a form of self-expression and empowerment. Our
-                journey began with a vision to create a brand that celebrates
-                individuality and inspires confidence through unique,
-                high-quality designs.
+                Cloths just dont fit your body, they fit your ambition. Step out with confidence that&apos;s tailor made for you.
               </p>
               <Link
                 href="/about"
@@ -147,7 +140,7 @@ const Home = ({ products, banner }) => {
             </div>
           </div>
         </section>
-
+ 
         <BeforeFooter />
       </Layout>
     </>

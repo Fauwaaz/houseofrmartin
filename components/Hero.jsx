@@ -167,28 +167,17 @@ const Hero = ({ addToCart, image, url }) => {
             backgroundPosition: "top",
             backgroundRepeat: "no-repeat",
             width: "30%",
-            height: "auto", // or any height you want
+            height: "auto", 
           }}
         >
         </div>
-        {/* <div
-          style={{
-            backgroundImage: "url('/hero/rmartin-hero-2.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "top",
-            backgroundRepeat: "no-repeat",
-            width: "40%",
-            height: "100vh", // or any height you want
-          }}
-        >
-        </div> */}
         <div style={{ width: "40%" }}>
           <video
             autoPlay
             loop
             muted
             playsInline
-            style={{ width: "100%", height: "auto"}} // optional styling
+            style={{ width: "100%", height: "auto"}} 
           >
             <source src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/banner-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.

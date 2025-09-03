@@ -16,7 +16,6 @@ const Footer = () => {
                 height={50}
                 className="mb-4"
                 unoptimized
-                quality={100}
               /></Link>
           </div>
           <div className="col-span-1 uppercase">
@@ -58,7 +57,6 @@ const Footer = () => {
               width={175}
               height={100}
               className="mt-2"
-              quality={100}
               unoptimized
             />  
           </Link>
