@@ -125,10 +125,10 @@ const Home = ({ products, banner }) => {
 
         {/* Story Banner */}
         <section className="story-banner min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full h-full">
-          <div className="grid grid-cols-2 gap-10">
-            <div className="story-banner-image "></div>
-            <div className="story-banner-content ">
-              <h2 className="text-4xl lg:text-5xl font-geograph text-white mb-6">
+          <div className="grid grid-cols-2 gap-10 justify-items-center">
+            <div className="story-banner-image"></div>
+            <div className="story-banner-content w-3/4 ">
+              <h2 className="text-3xl lg:text-6xl font-geograph-md text-white mb-6">
                 House of R-Martin Wear Your Story
               </h2>
               <p className="text-white text-lg lg:text-xl mb-6">
