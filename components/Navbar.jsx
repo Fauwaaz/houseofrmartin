@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import styles from "../styles/Navbar.module.css";
 import CartButton from "./CartButton";
 import Image from "next/image";
-import { FiHeart, FiSearch, FiUser } from "react-icons/fi";
+import { useState } from "react";
+import { FiHeart, FiMenu, FiSearch, FiUser, FiX } from "react-icons/fi";
 
 
 const link = [
@@ -13,6 +16,8 @@ const link = [
 ]
 
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -23,22 +28,47 @@ export default function Navbar() {
             width={90}
             height={60}
             unoptimized
+            className="w-[60px] lg:w-[110px] h-auto"
           />
         </Link>
-        <ul className="font-geograph-md">
+        <ul className="hidden md:flex space-x-8 font-geograph-md">
           {link.map((item, index) => (
             <li key={index} className={styles.navItem}>
               <Link href={item.url}>{item.name}</Link>
             </li>
           ))}
         </ul>
-        <div className="flex items-center justify-center">
+        <div className="hidden md:flex items-center justify-center">
           <FiUser size={24}/>
           <FiHeart size={24} style={{ marginLeft: "1rem", marginRight: "1rem" }}/>
           <FiSearch size={24} style={{ marginRight: "1rem" }}/>
           <CartButton />
         </div>
+         <button
+          className="md:hidden text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <FiX /> : <FiMenu />}
+        </button>
       </nav>
+
+      {menuOpen && (
+        <div className="md:hidden bg-white shadow-md px-6 py-4">
+          <ul className="flex flex-col space-y-4 font-geograph-md">
+            {link.map((item, index) => (
+              <li key={index} onClick={() => setMenuOpen(false)}>
+                <Link href={item.url}>{item.name}</Link>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center justify-start mt-4 space-x-4">
+            <FiUser size={22} />
+            <FiHeart size={22} />
+            <FiSearch size={22} />
+            <CartButton />
+          </div>
+        </div>
+      )}
     </header>
   );
 }
