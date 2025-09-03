@@ -167,11 +167,11 @@ const Hero = ({ addToCart, image, url }) => {
             backgroundPosition: "top",
             backgroundRepeat: "no-repeat",
             width: "30%",
-            height: "100vh", // or any height you want
+            height: "auto", // or any height you want
           }}
         >
         </div>
-       <div
+        {/* <div
           style={{
             backgroundImage: "url('/hero/rmartin-hero-2.png')",
             backgroundSize: "cover",
@@ -181,6 +181,18 @@ const Hero = ({ addToCart, image, url }) => {
             height: "100vh", // or any height you want
           }}
         >
+        </div> */}
+        <div style={{ width: "40%" }}>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ width: "100%", height: "auto"}} // optional styling
+          >
+            <source src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/banner-video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
         <div
           style={{
@@ -189,12 +201,12 @@ const Hero = ({ addToCart, image, url }) => {
             backgroundPosition: "top",
             backgroundRepeat: "no-repeat",
             width: "30%",
-            height: "100vh", // or any height you want
+            height: "auto", 
           }}
         >
         </div>
       </div>
-      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
+      <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
         <h1 className="text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>
       </div>
     </section>
