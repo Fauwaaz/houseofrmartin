@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React from "react";
 import styles from "../styles/Gallery.module.css";
 
 const Gallery = ({
@@ -14,7 +13,7 @@ const Gallery = ({
   };
   return (
     <ol className={styles.gallery}>
-      {product.galleryImages.nodes.map((image, i) => (
+      {product.galleryImages?.nodes.map((image, i) => (
         <li
           key={i}
           slide={i}

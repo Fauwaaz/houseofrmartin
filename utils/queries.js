@@ -48,39 +48,68 @@ const GET_PAGE_DETAILS = (slug) => gql`
   }
 `;
 
-
 const GET_ALL = gql`
   query Products {
     products {
       nodes {
+        id
+        name
+        slug
         ... on SimpleProduct {
-          id
-          name
-          slug
-          sku
           price(format: RAW)
-          shortDescription
           featuredImage {
             node {
               sourceUrl
             }
           }
+          galleryImages {
+            nodes {
+              sourceUrl
+            }
+          }
+          attributes {
+            nodes {
+              id
+              name
+              label
+              options
+            }
+          }
         }
-      }
-    }
-
-    category(id: "postId", idType: NAME) {
-      id
-      name
-      posts {
-        nodes {
-          id
-          title
-          excerpt
-          uri
+        ... on VariableProduct {
+          price(format: RAW)
           featuredImage {
             node {
               sourceUrl
+            }
+          }
+          galleryImages {
+            nodes {
+              sourceUrl
+            }
+          }
+          attributes {
+            nodes {
+              id
+              name
+              label
+              options
+            }
+          }
+          variations {
+            nodes {
+              id
+              name
+              price(format: RAW)
+              sku
+              attributes {
+                nodes {
+                  id
+                  name
+                  label
+                  value
+                }
+              }
             }
           }
         }
@@ -89,14 +118,14 @@ const GET_ALL = gql`
   }
 `;
 
-// 2. Get Slugs Only
+
+
+
 const GET_SLUG = gql`
-  query ProductSlugs {
-    products {
+  query GetProductSlugs {
+    products(first: 100) {
       nodes {
-        ... on SimpleProduct {
-          slug
-        }
+        slug
       }
     }
   }
@@ -151,4 +180,3 @@ const GET_postId = gql`
 `;
 
 export { GET_ALL_PAGES, GET_PAGE_SLUGS, GET_PAGE_DETAILS, GET_ALL, GET_SLUG, GET_PRODUCT_DETAILS, GET_postId };
-  

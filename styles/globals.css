@@ -9,6 +9,14 @@
   font-style: normal;
 }
 
+
+
+@font-face {
+  font-family: "Aed";
+  src: url("/fonts/aed-Regular.otf") format("opentype");
+}
+
+
 @font-face {
   font-family: "Geograph Medium";
   src: url("/fonts/geographwebmedium.ttf") format("truetype");
@@ -118,4 +126,8 @@ a {
 
 .font-akkurat {
   font-family: "Akkurat", sans-serif;
+}
+
+.price-font {
+  font-family: "Aed", sans-serif;
 }

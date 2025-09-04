@@ -14,11 +14,13 @@ export const getStaticPaths = async () => {
     query: GET_SLUG,
   });
 
-  const paths = data.products.nodes.map((product) => ({
-    params: {
-      slug: product.slug,
-    },
-  }));
+  const paths =
+    data?.products?.nodes
+      ?.filter((product) => product?.slug) // ✅ filter out undefined
+      .map((product) => ({
+        params: { slug: String(product.slug) },
+      })) || [];
+
   return {
     paths,
     fallback: "blocking",
@@ -69,7 +71,7 @@ const ProductDetails = ({ item }) => {
               >
                 <Image
                   alt={product.name}
-                  src={product.galleryImages.nodes[slideImage]?.sourceUrl || '/placeholder.jpg'}
+                  src={product.galleryImages?.nodes[slideImage]?.sourceUrl || '/placeholder.jpg'}
                   priority
                   layout="fill"
                   objectFit="contain"
@@ -82,7 +84,7 @@ const ProductDetails = ({ item }) => {
               setSlideImage={setSlideImage}
               setSelectedIndex={setSelectedIndex}
             />
-          </section>
+          </section>  
           <section className={styles.right}>
             <ProductInfo product={product} isMounted={isMounted} />
           </section>
