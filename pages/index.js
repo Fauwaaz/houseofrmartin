@@ -160,7 +160,7 @@ const Home = ({ products, banner }) => {
               Our Bestsellter
             </h2>
             <p className="pt-1 text-sm lg:text-lg text-center">
-              Don't Miss Out
+              Don&apos;t Miss Out
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-10 mt-10">
