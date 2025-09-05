@@ -54,6 +54,17 @@ const ProductDetails = ({ item }) => {
   const [slideImage, setSlideImage] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width - 0.5) * 100; // -50 to +50
+    const y = ((e.clientY - top) / height - 0.5) * 100; // -50 to +50
+    setPosition({ x, y });
+  };
+
+
   useEffect(() => {
     if (product.price) {
       setProduct({
@@ -75,21 +86,36 @@ const ProductDetails = ({ item }) => {
               setSlideImage={setSlideImage}
               setSelectedIndex={setSelectedIndex}
             />
-            <div className={styles.featured}>
+            <div
+              className={styles.featured}
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => {
+                setIsZoomed(false);
+                setPosition({ x: 0, y: 0 });
+              }}
+              onMouseMove={handleMouseMove}
+            >
               <motion.div
                 key={slideImage}
                 className={styles.featuredInner}
-                variants={FeaturedAnimation}
-                initial="initial"
-                animate="animate"
+                initial={{ scale: 1, x: 0, y: 0 }}
+                animate={
+                  isZoomed
+                    ? { scale: 1.2, x: position.x, y: position.y }
+                    : { scale: 1, x: 0, y: 0 }
+                }
+                transition={{ type: "spring", stiffness: 150, damping: 20 }}
               >
-
                 <Image
                   alt={product.name}
-                  src={product.galleryImages?.nodes[slideImage]?.sourceUrl || product.featuredImage?.node?.sourceUrl || '/placeholder.jpg'}
+                  src={
+                    product.galleryImages?.nodes[slideImage]?.sourceUrl ||
+                    product.featuredImage?.node?.sourceUrl ||
+                    "/placeholder.jpg"
+                  }
                   priority
                   fill
-                  objectFit="cover"
+                  className="object-cover"
                   unoptimized
                 />
               </motion.div>
