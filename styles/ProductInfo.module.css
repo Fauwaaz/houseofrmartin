@@ -3,12 +3,11 @@
 .name {
   font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 0.8em;
 }
 
 .description {
+  margin-top: 10px;
   opacity: 0.9;
-  margin-bottom: 2em;
 }
 
 .price {
@@ -17,12 +16,14 @@
 }
 
 .quantity {
-  margin-top: 2.5rem;
+  margin-top: 10px;
   display: flex;
   gap: 1.5em;
 }
 
 .button {
+  width: 100%;
+  text-align: center;
   padding: 0.7em 2em;
   font-size: 0.95rem;
   border-radius: 8px;

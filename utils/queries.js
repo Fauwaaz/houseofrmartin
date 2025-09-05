@@ -131,16 +131,16 @@ const GET_SLUG = gql`
   }
 `;
 
-// 3. Get Product Details by Slug
+// utils/queries.js
 const GET_PRODUCT_DETAILS = (slug) => gql`
-  query Product {
+  query GetProductDetails {
     product(id: "${slug}", idType: SLUG) {
+      id
+      name
+      description
+
       ... on SimpleProduct {
-        id
-        name
-        description
         price(format: RAW)
-        uri
         featuredImage {
           node {
             sourceUrl
@@ -152,9 +152,49 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
           }
         }
       }
+
+      ... on VariableProduct {
+        price(format: RAW)
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        galleryImages {
+          nodes {
+            sourceUrl
+          }
+        }
+        variations {
+          nodes {
+            id
+            name
+            price(format: RAW)
+          }
+        }
+      }
+
+      ... on ExternalProduct {
+        price(format: RAW)
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+      }
+
+      ... on GroupProduct {
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+      }
     }
   }
 `;
+
+
 
 // 4. Get Category Posts (Standalone Query)
 const GET_postId = gql`

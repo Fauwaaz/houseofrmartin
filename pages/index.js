@@ -200,8 +200,6 @@ const Home = ({ products, banner }) => {
                       />
                     )}
                   </Link>
-
-
                   <button
                     onClick={() => onAdd(product, qty)}
                     className="px-3 py-3 bg-black text-white w-full text-center hover:bg-gray-900 cursor-pointer"
@@ -210,7 +208,10 @@ const Home = ({ products, banner }) => {
                   </button>
 
                   <div className="flex w-full items-center justify-between px-3">
-                    <h3 className="mt-4 text-lg font-semibold">{product.name}</h3>
+
+                    <h3 className="mt-4 text-lg font-semibold">
+                      {product.name.length > 40 ? product.name.substring(0, 40) + '...' : product.name}
+                    </h3>
                     <p
                       className="text-sm text-gray-500 mt-2"
                       dangerouslySetInnerHTML={{ __html: product.shortDescription }}
@@ -221,7 +222,7 @@ const Home = ({ products, banner }) => {
                     {product.__typename === "VariableProduct" && firstVariation && (
                       <div className="mt-3 text-center">
                         <p className="font-bold text-lg price-font">
-                          D {displayPrice}
+                          D <span className="font-geograph-md">{displayPrice}</span>
                         </p>
                         {/* <p className="text-sm text-gray-700">
                           Variant: {firstVariation.name}

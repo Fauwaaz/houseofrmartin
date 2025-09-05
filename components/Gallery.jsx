@@ -24,7 +24,7 @@ const Gallery = ({
           }
         >
           <button
-            onClick={() => selectImage(i)}
+            onMouseEnter={() => selectImage(i)}
             slide={i}
             className={styles.gallery_image}
           >
@@ -33,8 +33,8 @@ const Gallery = ({
               key={i}
               src={image.sourceUrl}
               priority
-              layout="fill"
-              objectFit="contain"
+              className="object-cover"
+              fill
             />
           </button>
         </li>
