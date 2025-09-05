@@ -119,8 +119,6 @@ const GET_ALL = gql`
 `;
 
 
-
-
 const GET_SLUG = gql`
   query GetProductSlugs {
     products(first: 100) {
@@ -131,7 +129,6 @@ const GET_SLUG = gql`
   }
 `;
 
-// utils/queries.js
 const GET_PRODUCT_DETAILS = (slug) => gql`
   query GetProductDetails {
     product(id: "${slug}", idType: SLUG) {
@@ -215,10 +212,6 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
   }
 `;
 
-
-
-
-// 4. Get Category Posts (Standalone Query)
 const GET_postId = gql`
     query CategoryPosts {
       category(id: "postIds", idType: NAME) {
