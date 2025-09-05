@@ -6,12 +6,11 @@
 }
 
 .description {
-  margin-top: 10px;
   opacity: 0.9;
 }
 
 .price {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
 }
 
@@ -46,6 +45,13 @@
 @media (min-width: 280px) {
   .quantity {
     justify-content: center;
+  }
+}
+
+@media screen and (min-width: 360px){
+ 
+  .button {
+    width: 80%;
   }
 }
 

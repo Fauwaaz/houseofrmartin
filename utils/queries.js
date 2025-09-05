@@ -151,6 +151,13 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
             sourceUrl
           }
         }
+        attributes {
+          nodes {
+            id
+            name
+            options
+          }
+        }
       }
 
       ... on VariableProduct {
@@ -165,11 +172,25 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
             sourceUrl
           }
         }
+        attributes {
+          nodes {
+            id
+            name
+            options
+          }
+        }
         variations {
           nodes {
             id
             name
             price(format: RAW)
+            attributes {
+              nodes {
+                id
+                name
+                value
+              }
+            }
           }
         }
       }
@@ -193,6 +214,7 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
     }
   }
 `;
+
 
 
 

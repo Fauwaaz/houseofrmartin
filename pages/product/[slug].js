@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { FeaturedAnimation } from "../../animations";
 import { Layout } from "../../components";
 import Gallery from "../../components/Gallery";
@@ -8,6 +8,7 @@ import ProductInfo from "../../components/ProductInfo";
 import client from "../../libs/apollo";
 import styles from "../../styles/ProductDetails.module.css";
 import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../utils/queries";
+import ProductInfoSkeleton from "../../components/ProductInfoSkeleton";
 
 export const getStaticPaths = async () => {
   const { data } = await client.query({
@@ -87,14 +88,17 @@ const ProductDetails = ({ item }) => {
                   alt={product.name}
                   src={product.galleryImages?.nodes[slideImage]?.sourceUrl || product.featuredImage?.node?.sourceUrl || '/placeholder.jpg'}
                   priority
-                  layout="fill"
+                  fill
                   objectFit="cover"
+                  unoptimized
                 />
               </motion.div>
             </div>
           </section>
           <section className={styles.right}>
-            <ProductInfo product={product} isMounted={isMounted} />
+            <Suspense fallback={<ProductInfoSkeleton />}>
+              <ProductInfo product={product} isMounted={isMounted} />
+            </Suspense>
           </section>
         </div>
       </div>

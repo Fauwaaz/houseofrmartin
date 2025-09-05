@@ -200,12 +200,12 @@ const Home = ({ products, banner }) => {
                       />
                     )}
                   </Link>
-                  <button
+                  {/* <button
                     onClick={() => onAdd(product, qty)}
                     className="px-3 py-3 bg-black text-white w-full text-center hover:bg-gray-900 cursor-pointer"
                   >
                     Add to Bag
-                  </button>
+                  </button> */}
 
                   <div className="flex w-full items-center justify-between px-3">
 
