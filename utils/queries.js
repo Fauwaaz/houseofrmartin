@@ -181,9 +181,11 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
             id
             name
             price(format: RAW)
+            image {
+              sourceUrl
+            }
             attributes {
               nodes {
-                id
                 name
                 value
               }

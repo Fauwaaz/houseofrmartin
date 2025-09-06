@@ -59,9 +59,9 @@ const ProductDetails = ({ item }) => {
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - left) / width - 0.5) * 100; // -50 to +50
+    const x = ((e.clientX - left) / width - 0.5) *  100; // -50 to +50
     const y = ((e.clientY - top) / height - 0.5) * 100; // -50 to +50
-    setPosition({ x, y });
+    setPosition({ x: -x, y: -y });
   };
 
 
@@ -104,7 +104,7 @@ const ProductDetails = ({ item }) => {
                     ? { scale: 1.2, x: position.x, y: position.y }
                     : { scale: 1, x: 0, y: 0 }
                 }
-                transition={{ type: "spring", stiffness: 150, damping: 20 }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
               >
                 <Image
                   alt={product.name}

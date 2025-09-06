@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import stylesCommon from "../styles/common.module.css";
 import BeforeFooter from "../components/BeforeFooter";
 import { useState } from "react";
+import { colorMap } from "../utils/data";
 
 export async function getStaticProps() {
   const { data } = await client.query({
@@ -45,13 +46,7 @@ export async function getStaticProps() {
 
 
 const Home = ({ products, banner }) => {
-  const colorMap = {
-    blue: "#82AFD9",
-    pink: "#F3B3A7",
-    yellow: "#ffd323",
-    black: "#000000",
-    white: "#FFFFFF",
-  };
+
 
   const { onAdd, qty } = useStateContext();
 
