@@ -39,6 +39,19 @@
   }
 }
 
+@media (max-width: 380px) {
+  .gallery {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .gallery li {
+    width: 46px;
+    height: 60px;
+  }
+}
+
+
 @media screen and (min-width: 768px) {
   .gallery li {
     width: 62px;
