@@ -64,7 +64,7 @@ const Home = ({ products, banner }) => {
       <Layout>
         <Hero />
 
-        <section className="py-10 w-full category">
+        <section className="py-10 w-full category justify-items-center">
           <div>
             <h2 className="text-center uppercase text-4xl font-akkurat">
               Our Categories

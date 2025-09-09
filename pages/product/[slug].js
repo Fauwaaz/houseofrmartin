@@ -77,7 +77,7 @@ const ProductDetails = ({ item }) => {
 
   return (
     <Layout>
-      <div className="mt-[70px]">
+      <div className="mt-[50px]">
         <div className={styles.wrapper}>
           <section className={styles.left}>
             <Gallery
