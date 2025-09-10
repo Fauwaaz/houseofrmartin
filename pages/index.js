@@ -159,7 +159,7 @@ const Home = ({ products, banner }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-5 lg:px-10 my-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-5 lg:px-10 my-10">
             {products.map((product) => {
               let displayPrice = null;
               let firstVariation = null;
