@@ -74,11 +74,11 @@ const Home = ({ products, banner }) => {
               Explore styles for every mood and moment
             </p>
           </div>
-          <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 lg:grid-cols-4 mt-5">
+          <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3">
             {categoriesSection.map((category, index) => (
               <div
                 key={index}
-                className="h-[600px] w-[450px] bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm m-4 relative overflow-hidden"
+                className="h-[600px] w-[455px] bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm relative overflow-hidden hover:rounded-[300px] transition-all duration-500 ease-in-out"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
