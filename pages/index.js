@@ -48,6 +48,7 @@ export async function getStaticProps() {
 const Home = ({ products, banner }) => {
 
 
+
   const { onAdd, qty } = useStateContext();
 
   const categoriesSection = [
@@ -139,7 +140,7 @@ const Home = ({ products, banner }) => {
               </p>
               <Link
                 href="/about"
-                className={`text-black bg-white rounded-full py-2 px-5 uppercase ${stylesCommon["btn-outline-black"]}`}
+                className={`text-black bg-white rounded-full py-3 px-[30px] uppercase ${stylesCommon["btn-outline-black"]}`}
               >
                 Shop All
               </Link>
@@ -149,7 +150,7 @@ const Home = ({ products, banner }) => {
 
 
 
-        <section className="py-10 w-full recents">
+        <section className="py-10 w-full recents text-center">
           <div>
             <h2 className="text-center uppercase text-4xl font-akkurat">
               Our Bestsellter
@@ -158,7 +159,7 @@ const Home = ({ products, banner }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-10 mt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-5 lg:px-10 my-10">
             {products.map((product) => {
               let displayPrice = null;
               let firstVariation = null;
@@ -174,8 +175,13 @@ const Home = ({ products, banner }) => {
               return (
                 <div
                   key={product.id}
-                  className="bg-white shadow-sm rounded-[20px] flex flex-col items-center overflow-hidden pb-4"
+                  className="bg-white shadow-sm rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
+                  <div className="bg-black/70 w-[150px] py-2 text-sm text-white text-center absolute rounded-full z-10 uppercase top-3 left-3">
+                    Best Seller
+                  </div>
+
+
                   <Link href={`/product/${product.slug}`} className="w-full relative group">
                     <Image
                       src={product.featuredImage?.node?.sourceUrl || "/placeholder.jpg"}
@@ -241,8 +247,13 @@ const Home = ({ products, banner }) => {
                 </div>
               );
             })}
-
           </div>
+          <Link
+            href="/shop?bestsellers=true"
+            className="text-center bg-black text-white px-10 py-3 rounded-full uppercase border border-white  hover:bg-white hover:text-black transition duration-200 ease-in  cursor-pointer hover:border hover:border-black "
+          >
+            Shop Best Seller
+          </Link>
         </section>
 
         <BeforeFooter />

@@ -9,4 +9,11 @@ export const colorMap = {
     lightblue: "#ADD8E6",
     maroon: "#800000",
     coral: "#f3b3a7",
+    olivegreen: "#808000",
+    navyblue: "#003b93",
+    iceblue: '#739bd0',
+    inkblue: '#0b5369',
+    brown: '#964b00',
+    darkgrey: '#595959',
+    green: '#357a00',
 }
