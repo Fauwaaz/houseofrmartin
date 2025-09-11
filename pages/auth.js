@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Mail, Lock, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight, CheckCircle, XCircle, Phone } from 'lucide-react';
 import { InputField } from '../components/InputField';
 
 const AuthPage = () => {
@@ -13,6 +13,7 @@ const AuthPage = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        phone: '',
         password: '',
         confirmPassword: ''
     });
@@ -21,6 +22,7 @@ const AuthPage = () => {
         setFormData({
             name: '',
             email: '',
+            phone: '',
             password: '',
             confirmPassword: ''
         });
@@ -41,6 +43,8 @@ const AuthPage = () => {
 
         if (!isLogin) {
             if (!formData.name) newErrors.name = 'Name is required';
+            if (!formData.phone) newErrors.phone = 'Phone number is required';
+            else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Please enter a valid 10-digit phone number';
             if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
             else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
         }
@@ -84,11 +88,11 @@ const AuthPage = () => {
 
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-full mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-full mb-4">
                         <User className="text-white" size={24} />
                     </div>
                     <h1 className="text-3xl font-bold text-black mb-2">
@@ -101,9 +105,9 @@ const AuthPage = () => {
 
                 {/* Success Message */}
                 {success && (
-                    <div className="mb-6 p-4 border border-black rounded-lg flex items-center bg-gray-50">
-                        <CheckCircle className="text-black mr-2" size={18} />
-                        <span className="text-black">{success}</span>
+                    <div className="mb-6 p-4 border border-white rounded-lg flex items-center bg-green-600">
+                        <CheckCircle className="text-white mr-2" size={18} />
+                        <span className="text-white">{success}</span>
                     </div>
                 )}
 
@@ -111,97 +115,110 @@ const AuthPage = () => {
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-300 p-8">
                     <form onSubmit={handleSubmit}>
                         <div className="space-y-6">
-                        {/* Name (signup only) */}
-                        {!isLogin && (
+                            {/* Name (signup only) */}
+                            {!isLogin && (
+                                <InputField
+                                    type="text"
+                                    name="name"
+                                    placeholder="Full Name"
+                                    icon={User}
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    error={errors.name}
+                                />
+                            )}
+
+                            {/* Email */}
                             <InputField
-                                type="text"
-                                name="name"
-                                placeholder="Full Name"
-                                icon={User}
-                                value={formData.name}
+                                type="email"
+                                name="email"
+                                placeholder="Email Address"
+                                icon={Mail}
+                                value={formData.email}
                                 onChange={handleInputChange}
-                                error={errors.name}
+                                error={errors.email}
                             />
-                        )}
 
-                        {/* Email */}
-                        <InputField
-                            type="email"
-                            name="email"
-                            placeholder="Email Address"
-                            icon={Mail}
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            error={errors.email}
-                        />
+                            {!isLogin && (
+                                <InputField
+                                    type="number"
+                                    name="phone"
+                                    placeholder="Phone Number +91"
+                                    icon={Phone}
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    error={errors.phone}
+                                />
+                            )}
 
-                        {/* Password */}
-                        <InputField
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            icon={Lock}
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            showPasswordToggle
-                            showPassword={showPassword}
-                            onTogglePassword={() => setShowPassword(!showPassword)}
-                            error={errors.password}
-                        />
 
-                        {/* Confirm Password (signup only) */}
-                        {!isLogin && (
+                            {/* Password */}
                             <InputField
                                 type="password"
-                                name="confirmPassword"
-                                placeholder="Confirm Password"
+                                name="password"
+                                placeholder="Password"
                                 icon={Lock}
-                                value={formData.confirmPassword}
+                                value={formData.password}
                                 onChange={handleInputChange}
                                 showPasswordToggle
-                                showPassword={showConfirmPassword}
-                                onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
-                                error={errors.confirmPassword}
+                                showPassword={showPassword}
+                                onTogglePassword={() => setShowPassword(!showPassword)}
+                                error={errors.password}
                             />
-                        )}
 
-                        {/* Submit Error */}
-                        {errors.submit && (
-                            <div className="flex items-center text-black text-sm">
-                                <XCircle size={14} className="mr-1" />
-                                {errors.submit}
-                            </div>
-                        )}
+                            {/* Confirm Password (signup only) */}
+                            {!isLogin && (
+                                <InputField
+                                    type="password"
+                                    name="confirmPassword"
+                                    placeholder="Confirm Password"
+                                    icon={Lock}
+                                    value={formData.confirmPassword}
+                                    onChange={handleInputChange}
+                                    showPasswordToggle
+                                    showPassword={showConfirmPassword}
+                                    onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    error={errors.confirmPassword}
+                                />
+                            )}
 
-                        {/* Forgot Password (login only) */}
-                        {isLogin && (
-                            <div className="text-left">
-                                <button type="button" className="text-sm text-black hover:underline">
-                                    Forgot Password?
-                                </button>
-                            </div>
-                        )}
-
-                        {/* Submit Button */}
-                        <button
-                            type="button"
-                            onClick={handleSubmit}
-                            disabled={loading}
-                            className="w-full bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
-                        >
-                            {loading ? (
-                                <div className="flex items-center">
-                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                    {isLogin ? 'Signing In...' : 'Creating Account...'}
-                                </div>
-                            ) : (
-                                <div className="flex items-center">
-                                    {isLogin ? 'Sign In' : 'Create Account'}
-                                    <ArrowRight size={18} className="ml-2" />
+                            {/* Submit Error */}
+                            {errors.submit && (
+                                <div className="flex items-center text-black text-sm">
+                                    <XCircle size={14} className="mr-1" />
+                                    {errors.submit}
                                 </div>
                             )}
-                        </button>
-                    </div>
+
+                            {/* Forgot Password (login only) */}
+                            {isLogin && (
+                                <div className="text-left">
+                                    <button type="button" className="text-sm text-black hover:underline">
+                                        Forgot Password?
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Submit Button */}
+                            <button
+                                type="button"
+                                onClick={handleSubmit}
+                                disabled={loading}
+                                className="w-full bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
+                            >
+                                {loading ? (
+                                    <div className="flex items-center">
+                                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                        {isLogin ? 'Signing In...' : 'Creating Account...'}
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center">
+                                        {isLogin ? 'Sign In' : 'Create Account'}
+                                        <ArrowRight size={18} className="ml-2" />
+                                    </div>
+                                )}
+                            </button>
+                        </div>
                     </form>
                     {/* Toggle */}
                     <div className="mt-8 text-center">

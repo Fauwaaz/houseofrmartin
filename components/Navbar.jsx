@@ -5,7 +5,7 @@ import styles from "../styles/Navbar.module.css";
 import CartButton from "./CartButton";
 import Image from "next/image";
 import { useState } from "react";
-import { FiHeart, FiMenu, FiSearch, FiUser, FiX } from "react-icons/fi";
+import { Heart, Menu, Search, User, X } from "lucide-react";
 
 
 const link = [
@@ -39,16 +39,16 @@ export default function Navbar() {
           ))}
         </ul>
         <div className="hidden md:flex items-center justify-center">
-          <Link href={'/auth'}><FiUser size={24}/></Link>
-          <FiHeart size={24} style={{ marginLeft: "1rem", marginRight: "1rem" }}/>
-          <FiSearch size={24} style={{ marginRight: "1rem" }}/>
+          <Link href={'/auth'}><User size={24}/></Link>
+          <Heart size={24} style={{ marginLeft: "1rem", marginRight: "1rem" }}/>
+          <Search size={24} style={{ marginRight: "1rem" }}/>
           <CartButton />
         </div>
          <button
           className="md:hidden text-2xl"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          {menuOpen ? <FiX /> : <FiMenu />}
+          {menuOpen ? <X /> : <Menu />}
         </button>
       </nav>
 
@@ -62,9 +62,9 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex items-center justify-start mt-4 space-x-4">
-            <Link href={'/auth'}><FiUser size={24}/></Link>
-            <FiHeart size={22} />
-            <FiSearch size={22} />
+            <Link href={'/auth'}><User size={24}/></Link>
+            <Heart size={22} />
+            <Search size={22} />
             <CartButton />
           </div>
         </div>

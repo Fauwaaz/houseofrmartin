@@ -47,7 +47,7 @@ export const InputField = ({
 
         {/* Error Message */}
         {error && (
-            <div className="flex items-center mt-1 text-black text-sm">
+            <div className="flex items-center mt-1 text-red-600 text-sm">
                 <XCircle size={14} className="mr-1" />
                 {error}
             </div>

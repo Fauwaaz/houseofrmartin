@@ -14,7 +14,6 @@ const Cart = () => {
     showCart,
     setShowCart,
     totalQuantities,
-    totalPrice,
     cartItems,
     toggleCartItemQuantity,
     onRemove,
@@ -38,6 +37,13 @@ const Cart = () => {
 
     stripe.redirectToCheckout({ sessionId: data.id });
   };
+
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + Number(item.price) * item.quantity,
+    0
+  );
+
+
 
   return (
     <AnimatePresence>
@@ -95,10 +101,10 @@ const Cart = () => {
                   <div>
                     <h4>Subtotal:</h4>
                     {/* <span>${totalPrice}</span> */}
-                    <span>${totalPrice.toFixed(2)}</span>
+                    <span>${Number(totalPrice || 0).toFixed(2)}</span>
                   </div>
                   <div className={styles.checkout}>
-                    <button onClick={handleCheckout}>Pay with Stripe</button>
+                    <button onClick={handleCheckout}>Checkout</button>
                   </div>
                 </div>
               </div>

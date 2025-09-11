@@ -11,6 +11,7 @@ const ProductInfo = ({ product, isMounted }) => {
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
   const sizes =
     product.attributes?.nodes
@@ -22,20 +23,20 @@ const ProductInfo = ({ product, isMounted }) => {
       // Get all variants
       const variants = product.variations?.nodes || [];
       setAllVariants(variants);
-      
+
       // Extract all color attributes from the product
       const colorAttribute = product.attributes?.nodes?.find(
         attr => attr.name.toLowerCase() === "pa_color"
       );
-      
+
       const colors = [];
-      
+
       if (colorAttribute && colorAttribute.options) {
         // For each color option, find the best variant to represent it
         colorAttribute.options.forEach(colorName => {
           // Try to find a variant with this color that has an image
           let bestVariant = null;
-          
+
           // First priority: variant with this color that has its own image
           for (const variant of variants) {
             const variantColor = getColorName(variant);
@@ -48,19 +49,19 @@ const ProductInfo = ({ product, isMounted }) => {
               }
             }
           }
-          
+
           // If no variant found, try to find an image in gallery
           if (!bestVariant) {
-            bestVariant = { 
-              attributes: { 
-                nodes: [{ 
-                  name: "pa_color", 
-                  value: colorName 
-                }] 
-              } 
+            bestVariant = {
+              attributes: {
+                nodes: [{
+                  name: "pa_color",
+                  value: colorName
+                }]
+              }
             };
           }
-          
+
           colors.push({
             name: colorName,
             variant: bestVariant
@@ -73,7 +74,7 @@ const ProductInfo = ({ product, isMounted }) => {
           const colorAttr = variant.attributes?.nodes?.find(
             attr => attr.name.toLowerCase() === "pa_color"
           );
-          
+
           if (colorAttr && !colorMap.has(colorAttr.value.toLowerCase())) {
             colorMap.set(colorAttr.value.toLowerCase(), {
               name: colorAttr.value,
@@ -81,10 +82,10 @@ const ProductInfo = ({ product, isMounted }) => {
             });
           }
         });
-        
+
         colors.push(...Array.from(colorMap.values()));
       }
-      
+
       setAvailableColors(colors);
     }
   }, [product]);
@@ -104,28 +105,28 @@ const ProductInfo = ({ product, isMounted }) => {
     if (variation?.image?.sourceUrl) {
       return variation.image.sourceUrl;
     }
-    
+
     // Then try gallery images from the variant
     if (variation?.galleryImages?.nodes?.length > 0) {
       return variation.galleryImages.nodes[0].sourceUrl;
     }
-    
+
     // Try to find an image in the main product gallery that matches the color
     if (colorName && product?.galleryImages?.nodes) {
       const colorValue = colorName.toLowerCase();
       const matchingImage = product.galleryImages.nodes.find(
         (img) => img.altText?.toLowerCase().includes(colorValue) ||
-                 img.title?.toLowerCase().includes(colorValue) ||
-                 img.sourceUrl?.toLowerCase().includes(colorValue)
+          img.title?.toLowerCase().includes(colorValue) ||
+          img.sourceUrl?.toLowerCase().includes(colorValue)
       );
       if (matchingImage) return matchingImage.sourceUrl;
     }
-    
+
     // Fallback to product featured image
     if (product?.featuredImage?.node?.sourceUrl) {
       return product.featuredImage.node.sourceUrl;
     }
-    
+
     return "/placeholder.jpg";
   };
 
@@ -143,15 +144,15 @@ const ProductInfo = ({ product, isMounted }) => {
 
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
-    
+
     // Try to maintain the same color when changing size
     if (selectedVariation) {
       const currentColor = getColorName(selectedVariation);
       const variantsForNewSize = getVariantsForSize(size);
-      const matchingVariant = variantsForNewSize.find(variant => 
+      const matchingVariant = variantsForNewSize.find(variant =>
         getColorName(variant).toLowerCase() === currentColor.toLowerCase()
       );
-      
+
       if (matchingVariant) {
         setSelectedVariation(matchingVariant);
       } else if (variantsForNewSize.length > 0) {
@@ -181,10 +182,10 @@ const ProductInfo = ({ product, isMounted }) => {
 
   const handleColorSelect = (colorName) => {
     const variantsForSize = getVariantsForSize(selectedSize);
-    const matchingVariant = variantsForSize.find(variant => 
+    const matchingVariant = variantsForSize.find(variant =>
       getColorName(variant).toLowerCase() === colorName.toLowerCase()
     );
-    
+
     if (matchingVariant) {
       setSelectedVariation(matchingVariant);
     }
@@ -192,7 +193,7 @@ const ProductInfo = ({ product, isMounted }) => {
 
   // Check if a color is available for the selected size
   const isColorAvailableForSize = (colorName) => {
-    return getVariantsForSize(selectedSize).some(variant => 
+    return getVariantsForSize(selectedSize).some(variant =>
       getColorName(variant).toLowerCase() === colorName.toLowerCase()
     );
   };
@@ -215,28 +216,62 @@ const ProductInfo = ({ product, isMounted }) => {
 
       <hr className="border-black/10 border-solid my-3" />
 
-      <p className="mt-2">Select size</p>
-      {sizes.length > 0 ? (
-        <div className="flex mt-2 gap-1 flex-wrap">
-          {sizes.map((size, index) => (
+      <div className="flex flex-col md:flex-row gap-2 md:gap-12">
+        <div>
+          <p className="mt-2">Select size</p>
+          {sizes.length > 0 ? (
+            <div className="flex mt-2 gap-1 flex-wrap">
+              {sizes.map((size, index) => (
+                <button
+                  key={index}
+                  className={`px-4 py-2 border rounded uppercase cursor-pointer ${selectedSize === size
+                    ? "bg-black text-white border-black"
+                    : "border-gray-400 bg-white"
+                    }`}
+                  onClick={() => handleSizeSelect(size)}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="flex mt-4 gap-2 animate-pulse">
+              <div className="h-9 w-14 rounded border bg-gray-100" />
+              <div className="h-9 w-14 rounded border bg-gray-100" />
+            </div>
+          )}
+        </div>
+          
+        <div>
+          <p className="mt-2">Select quantity</p>
+          <div className="flex mt-2 gap-2 items-center bg-white rounded-lg max-w-max border">
             <button
-              key={index}
-              className={`px-4 py-2 border rounded uppercase cursor-pointer ${selectedSize === size
-                ? "bg-black text-white border-black"
-                : "border-gray-400 bg-white"
-                }`}
-              onClick={() => handleSizeSelect(size)}
+              className="px-3 py-2 border rounded bg-white text-center"
+              onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
             >
-              {size}
+              -
             </button>
-          ))}
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => {
+                const val = parseInt(e.target.value, 10);
+                if (!isNaN(val) && val > 0) {
+                  setQuantity(val);
+                }
+              }}
+              className="pl-6 pr-2 py-1 border-r-2 border-l-2 text-center max-w-[60px]"
+            />
+            <button
+              className="px-3 py-1 border rounded bg-white text-center"
+              onClick={() => setQuantity(quantity + 1)}
+            >
+              +
+            </button>
+          </div>
         </div>
-      ) : (
-        <div className="flex mt-4 gap-2 animate-pulse">
-          <div className="h-9 w-14 rounded border bg-gray-100" />
-          <div className="h-9 w-14 rounded border bg-gray-100" />
-        </div>
-      )}
+      </div>
 
       <div className="mt-6">
         <button
@@ -257,9 +292,9 @@ const ProductInfo = ({ product, isMounted }) => {
           <div className="flex mt-2 gap-2 flex-wrap">
             {availableColors.map((color, index) => {
               const isAvailable = isColorAvailableForSize(color.name);
-              const isSelected = selectedVariation && 
-                                getColorName(selectedVariation).toLowerCase() === color.name.toLowerCase();
-              
+              const isSelected = selectedVariation &&
+                getColorName(selectedVariation).toLowerCase() === color.name.toLowerCase();
+
               // Use the variant image for this color
               const imageUrl = getVariationImage(color.variant, color.name);
 
@@ -269,12 +304,12 @@ const ProductInfo = ({ product, isMounted }) => {
                     onClick={() => isAvailable && handleColorSelect(color.name)}
                     className={`relative w-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${isSelected
                       ? "border-black shadow-md"
-                      : isAvailable 
+                      : isAvailable
                         ? "border-gray-300 hover:border-gray-400"
                         : "border-gray-300 opacity-40 cursor-not-allowed"
                       }`}
-                    title={isAvailable 
-                      ? `${color.name} - Size ${selectedSize}` 
+                    title={isAvailable
+                      ? `${color.name} - Size ${selectedSize}`
                       : `${color.name} not available in size ${selectedSize}`
                     }
                     disabled={!isAvailable}
@@ -298,7 +333,7 @@ const ProductInfo = ({ product, isMounted }) => {
                     {isSelected && (
                       <span className="absolute inset-0 border-2 border-black rounded-lg pointer-events-none"></span>
                     )}
-                    
+
                     {/* Overlay for unavailable colors */}
                     {!isAvailable && (
                       <span className="absolute inset-0 bg-gray-100 opacity-50 rounded-lg pointer-events-none"></span>
@@ -306,26 +341,24 @@ const ProductInfo = ({ product, isMounted }) => {
                   </button>
 
                   {/* Color text below thumbnail */}
-                  <p className={`text-xs text-center capitalize mt-1 font-medium ${
-                    isSelected ? 'font-bold' : isAvailable ? 'text-gray-600' : 'text-gray-400'
-                  }`}>
+                  <p className={`text-xs text-center capitalize mt-1 font-medium ${isSelected ? 'font-bold' : isAvailable ? 'text-gray-600' : 'text-gray-400'
+                    }`}>
                     {color.name}
                   </p>
                 </div>
               );
             })}
           </div>
-          
+
           {/* Selected variant info */}
           {selectedVariation && (
-            <p className="mt-2 text-sm capitalize bg-white p-2 rounded-lg w-1/3">
+            <p className="mt-2 text-sm capitalize bg-white p-2 rounded-lg w-2/3 lg:w-1/3">
               Selected: {getColorName(selectedVariation)} - Size {getSize(selectedVariation)}
             </p>
           )}
         </>
       )}
 
-      {/* DESCRIPTION */}
       <p className="mt-5 font-geograph-md uppercase">Description</p>
       {isMounted ? (
         <p

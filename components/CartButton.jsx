@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FiShoppingBag } from "react-icons/fi";
 import { useStateContext } from "../context/StateContext";
 import styles from "../styles/CartButton.module.css";
+import { ShoppingBag } from "lucide-react";
 
 const CartButton = () => {
   const { showCart, setShowCart, totalQuantities } = useStateContext();
@@ -14,7 +14,7 @@ const CartButton = () => {
   return (
     <button className={styles.container} onClick={() => setShowCart(!showCart)}>
       <div className={styles.inner}>
-        <FiShoppingBag />
+        <ShoppingBag />
         {totalQuantities > 0 && !isSSR && <span>{totalQuantities}</span>}
       </div>
     </button>
