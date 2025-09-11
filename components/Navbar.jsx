@@ -39,7 +39,7 @@ export default function Navbar() {
           ))}
         </ul>
         <div className="hidden md:flex items-center justify-center">
-          <FiUser size={24}/>
+          <Link href={'/auth'}><FiUser size={24}/></Link>
           <FiHeart size={24} style={{ marginLeft: "1rem", marginRight: "1rem" }}/>
           <FiSearch size={24} style={{ marginRight: "1rem" }}/>
           <CartButton />

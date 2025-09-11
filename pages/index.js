@@ -255,7 +255,6 @@ const Home = ({ products, banner }) => {
             Shop Best Seller
           </Link>
         </section>
-
         <BeforeFooter />
       </Layout>
     </>
