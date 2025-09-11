@@ -81,7 +81,7 @@ const AuthPage = () => {
         }
     };
 
-    
+
 
     return (
         <div className="min-h-screen bg-white flex items-center justify-center p-4">
@@ -109,32 +109,63 @@ const AuthPage = () => {
 
                 {/* Main Form */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-300 p-8">
-                    <div className="space-y-6">
+                    <form onSubmit={handleSubmit}>
+                        <div className="space-y-6">
+                        {/* Name (signup only) */}
                         {!isLogin && (
-                            <InputField type="text" name="name" placeholder="Full Name" icon={User} />
+                            <InputField
+                                type="text"
+                                name="name"
+                                placeholder="Full Name"
+                                icon={User}
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                error={errors.name}
+                            />
                         )}
-                        <InputField type="email" name="email" placeholder="Email Address" icon={Mail} />
+
+                        {/* Email */}
+                        <InputField
+                            type="email"
+                            name="email"
+                            placeholder="Email Address"
+                            icon={Mail}
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            error={errors.email}
+                        />
+
+                        {/* Password */}
                         <InputField
                             type="password"
                             name="password"
                             placeholder="Password"
                             icon={Lock}
-                            showPasswordToggle={true}
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            showPasswordToggle
                             showPassword={showPassword}
                             onTogglePassword={() => setShowPassword(!showPassword)}
+                            error={errors.password}
                         />
+
+                        {/* Confirm Password (signup only) */}
                         {!isLogin && (
                             <InputField
                                 type="password"
                                 name="confirmPassword"
                                 placeholder="Confirm Password"
                                 icon={Lock}
-                                showPasswordToggle={true}
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                                showPasswordToggle
                                 showPassword={showConfirmPassword}
                                 onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
+                                error={errors.confirmPassword}
                             />
                         )}
 
+                        {/* Submit Error */}
                         {errors.submit && (
                             <div className="flex items-center text-black text-sm">
                                 <XCircle size={14} className="mr-1" />
@@ -142,19 +173,21 @@ const AuthPage = () => {
                             </div>
                         )}
 
+                        {/* Forgot Password (login only) */}
                         {isLogin && (
-                            <div className="text-right">
+                            <div className="text-left">
                                 <button type="button" className="text-sm text-black hover:underline">
                                     Forgot Password?
                                 </button>
                             </div>
                         )}
 
+                        {/* Submit Button */}
                         <button
                             type="button"
                             onClick={handleSubmit}
                             disabled={loading}
-                            className="w-1/2 bg-black text-white py-3 px-4 rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
+                            className="w-full bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
                         >
                             {loading ? (
                                 <div className="flex items-center">
@@ -169,7 +202,7 @@ const AuthPage = () => {
                             )}
                         </button>
                     </div>
-
+                    </form>
                     {/* Toggle */}
                     <div className="mt-8 text-center">
                         <span className="text-gray-600">

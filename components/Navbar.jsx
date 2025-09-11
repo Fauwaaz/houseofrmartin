@@ -62,7 +62,7 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex items-center justify-start mt-4 space-x-4">
-            <FiUser size={22} />
+            <Link href={'/auth'}><FiUser size={24}/></Link>
             <FiHeart size={22} />
             <FiSearch size={22} />
             <CartButton />
