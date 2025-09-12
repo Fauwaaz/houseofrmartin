@@ -39,7 +39,8 @@ export const InputField = ({
             <button
                 type="button"
                 onClick={onTogglePassword}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black/50 hover:text-black focus:outline-none"
+                className={`absolute right-3 ${error ? 'top-1/3' : 'top-1/2'
+                } transform -translate-y-1/2 text-black/50 hover:text-black focus:outline-none`}
             >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>

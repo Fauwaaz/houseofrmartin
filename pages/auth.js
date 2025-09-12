@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { User, Mail, Lock, ArrowRight, CheckCircle, XCircle, Phone } from 'lucide-react';
 import { InputField } from '../components/InputField';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -29,6 +31,29 @@ const AuthPage = () => {
         setErrors({});
         setSuccess('');
     }, [isLogin]);
+
+    useEffect(() => {
+        let timer;
+        const resetTimer = () => {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                document.cookie = 'session=; Max-Age=0; path=/'; // clear session
+                window.location.href = '/auth'; // redirect to login
+            }, 60 * 60 * 1000); // 1 hour
+        };
+
+        window.addEventListener('mousemove', resetTimer);
+        window.addEventListener('keydown', resetTimer);
+
+        resetTimer(); // start on mount
+
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('mousemove', resetTimer);
+            window.removeEventListener('keydown', resetTimer);
+        };
+    }, []);
+
 
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const validatePassword = (password) => password.length >= 6;
@@ -67,18 +92,34 @@ const AuthPage = () => {
             setErrors(newErrors);
             return;
         }
+
         setLoading(true);
         setErrors({});
         try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            if (isLogin) {
-                setSuccess('Login successful! Redirecting...');
-                console.log('Login data:', { email: formData.email, password: formData.password });
+            const res = await fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...formData, isLogin }),
+            });
+
+            const data = await res.json();
+
+            if (!data.success) {
+                setErrors({ submit: data.message });
             } else {
-                setSuccess('Account created successfully! Please check your email.');
-                console.log('Signup data:', formData);
+                setSuccess(data.message);
+
+                if (isLogin) {
+                    // Redirect to home after login
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+                } else {
+                    // Switch to login after signup
+                    setTimeout(() => setIsLogin(true), 1500);
+                }
             }
-        } catch {
+        } catch (err) {
             setErrors({ submit: 'Something went wrong. Please try again.' });
         } finally {
             setLoading(false);
@@ -87,32 +128,30 @@ const AuthPage = () => {
 
 
 
+
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md">
-                {/* Header */}
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-full mb-4">
-                        <User className="text-white" size={24} />
-                    </div>
-                    <h1 className="text-3xl font-bold text-black mb-2">
-                        {isLogin ? 'Welcome Back' : 'Create Account'}
-                    </h1>
-                    <p className="text-gray-600">
-                        {isLogin ? 'Sign in to your account' : 'Join us today'}
-                    </p>
-                </div>
-
-                {/* Success Message */}
-                {success && (
-                    <div className="mb-6 p-4 border border-white rounded-lg flex items-center bg-green-600">
-                        <CheckCircle className="text-white mr-2" size={18} />
-                        <span className="text-white">{success}</span>
-                    </div>
-                )}
-
-                {/* Main Form */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-300 p-8">
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center rounded-full mb-4">
+                            <Image src="/logo.png" alt="Logo" width={100} height={40} className='object-contain' />
+                        </div>
+                        <h1 className="text-3xl font-bold text-black mb-2">
+                            {isLogin ? 'Welcome Back' : 'Create Account'}
+                        </h1>
+                        <p className="text-gray-600">
+                            {isLogin ? 'Sign in to your account' : 'Join us today'}
+                        </p>
+                    </div>
+
+                    {/* Success Message */}
+                    {success && (
+                        <div className="mb-6 p-4 border border-white rounded-lg flex items-center bg-green-600">
+                            <CheckCircle className="text-white mr-2" size={18} />
+                            <span className="text-white">{success}</span>
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit}>
                         <div className="space-y-6">
                             {/* Name (signup only) */}
@@ -204,7 +243,7 @@ const AuthPage = () => {
                                 type="button"
                                 onClick={handleSubmit}
                                 disabled={loading}
-                                className="w-full bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
+                                className="w-full bg-black text-white py-3 cursor-pointer rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
                             >
                                 {loading ? (
                                     <div className="flex items-center">
@@ -228,7 +267,7 @@ const AuthPage = () => {
                         <button
                             type="button"
                             onClick={() => setIsLogin(!isLogin)}
-                            className="ml-2 text-black font-medium hover:underline"
+                            className="ml-2 text-black font-medium hover:underline cursor-pointer"
                         >
                             {isLogin ? 'Sign Up' : 'Sign In'}
                         </button>
@@ -264,8 +303,8 @@ const AuthPage = () => {
 
                 <p className="text-center text-sm text-gray-500 mt-8">
                     By {isLogin ? 'signing in' : 'creating an account'}, you agree to our{' '}
-                    <a href="#" className="text-black hover:underline">Terms of Service</a> and{' '}
-                    <a href="#" className="text-black hover:underline">Privacy Policy</a>
+                    <Link href="/terms-condition" className="text-black hover:underline">Terms of Service</Link> and{' '}
+                    <Link href="/privacy-policy" className="text-black hover:underline">Privacy Policy</Link>
                 </p>
             </div>
         </div>
