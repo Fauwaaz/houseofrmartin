@@ -6,7 +6,7 @@ import "../styles/globals.css";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Loading from "../loading";
+import Loading from "../components/loading";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
