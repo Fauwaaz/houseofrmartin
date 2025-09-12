@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { User, Mail, Lock, ArrowRight, CheckCircle, XCircle, Phone, ArrowLeft } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight, CheckCircle, XCircle, Phone } from 'lucide-react';
 import { InputField } from '../components/InputField';
 import Image from 'next/image';
 import Link from 'next/link';
+import { HiOutlineChevronLeft } from 'react-icons/hi';
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -133,7 +134,7 @@ const AuthPage = () => {
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-300 p-8">
-                    <Link href="/" className="text-black hover:underline flex gap-2 items-center"><ArrowLeft size={20}/> Back</Link>
+                    <Link href="/" className="text-black hover:underline flex gap-1 items-center"><HiOutlineChevronLeft size={20}/> Back</Link>
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center rounded-full mb-4">
                             <Image src="/logo.png" alt="Logo" width={100} height={40} className='object-contain' />
