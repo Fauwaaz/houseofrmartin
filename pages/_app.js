@@ -13,8 +13,19 @@ function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const handleStart = () => setLoading(true);
-    const handleStop = () => setLoading(false);
+    const handleStart = () => {
+      setLoading(true);
+    };
+
+    const handleStop = () => {
+      // Wait for images and assets
+      if (document.readyState === "complete") {
+        setLoading(false);
+      } else {
+        // fallback: wait until window load event
+        window.addEventListener("load", () => setLoading(false), { once: true });
+      }
+    };
 
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleStop);
