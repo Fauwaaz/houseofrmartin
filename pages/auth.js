@@ -224,7 +224,7 @@ const AuthPage = () => {
 
                             {/* Submit Error */}
                             {errors.submit && (
-                                <div className="flex items-center text-black text-sm">
+                                <div className="flex items-center text-red-600  text-sm">
                                     <XCircle size={14} className="mr-1" />
                                     {errors.submit}
                                 </div>
