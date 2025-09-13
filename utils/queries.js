@@ -135,6 +135,15 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
       id
       name
       description
+      slug
+      seo {
+        title
+        metaDesc
+        metaKeywords
+        opengraphImage {
+          sourceUrl
+        }
+      }
 
       ... on SimpleProduct {
         price(format: RAW)
@@ -176,11 +185,10 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
             options
           }
         }
-        variations {
+        variations(first: 100) {
           nodes {
             id
             name
-            price(format: RAW)
             image {
               sourceUrl
             }

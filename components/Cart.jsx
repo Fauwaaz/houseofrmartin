@@ -8,6 +8,7 @@ import { useStateContext } from "../context/StateContext";
 import getStripe from "../libs/getStripe";
 import styles from "../styles/Cart.module.css";
 import CartItem from "./CartItem";
+import { X } from "lucide-react";
 
 const Cart = () => {
   const {
@@ -55,6 +56,7 @@ const Cart = () => {
             initial="initial"
             animate="animate"
             exit="exit"
+            onClick={() => setShowCart(false)}
           />
           <motion.div
             className={styles.cart}
@@ -63,14 +65,14 @@ const Cart = () => {
             animate="animate"
             exit="exit"
           >
-            <button
-              className={styles.heading}
-              onClick={() => setShowCart(!showCart)}
-            >
-              <HiOutlineChevronLeft />
-              <h3>Your Cart</h3>
-              <span>( {totalQuantities} items )</span>
-            </button>
+            <div className="flex items-center justify-between px-2">
+              <div className={styles.heading}>
+                <h3>Your Cart</h3>
+                <span>( {totalQuantities} items )</span>
+              </div>
+
+              <button className="cursor-pointer" onClick={() => setShowCart(false)}><X /></button>
+            </div>
 
             {cartItems.length < 1 && (
               <div className={styles.empty}>

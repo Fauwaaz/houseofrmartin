@@ -34,7 +34,7 @@ const BeforeFooter = () => {
         </form>
       </div>
       <div className="absolute w-full h-[700px] bg-black opacity-20"></div>
-      <div className="w-full h-[700px] bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/before-footer-email.png)] bg-no-repeat bg-cover">
+      <div className="w-full h-[300px] md:h-[500px] lg:h-[700px] bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/before-footer-email.png)] bg-no-repeat bg-cover md:bg-position-right lg:bg-position-center">
       </div>
 
     </section>

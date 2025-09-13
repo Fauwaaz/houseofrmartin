@@ -32,7 +32,6 @@
   display: flex;
   align-items: center;
   margin: 2em;
-  cursor: pointer;
 }
 
 .heading svg {

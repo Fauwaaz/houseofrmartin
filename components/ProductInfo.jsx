@@ -18,6 +18,11 @@ const ProductInfo = ({ product, isMounted }) => {
       ?.filter((attr) => attr.name === "pa_size")
       ?.flatMap((attr) => attr.options) || [];
 
+useEffect(() => {
+  console.log("Variants:", allVariants);
+}, [allVariants]);
+
+
   useEffect(() => {
     if (product) {
       // Get all variants
@@ -90,7 +95,6 @@ const ProductInfo = ({ product, isMounted }) => {
     }
   }, [product]);
 
-  // Get all variants for the selected size
   const getVariantsForSize = (size) => {
     return allVariants.filter(variant => {
       const sizeAttr = variant.attributes?.nodes?.find(
@@ -100,35 +104,28 @@ const ProductInfo = ({ product, isMounted }) => {
     });
   };
 
-  const getVariationImage = (variation, colorName) => {
-    // First, try to get the variant's own image
-    if (variation?.image?.sourceUrl) {
-      return variation.image.sourceUrl;
-    }
+const getVariationImage = (variation, colorName) => {
+  // Only use the variation's main image
+  if (variation?.image?.sourceUrl) {
+    return variation.image.sourceUrl;
+  }
 
-    // Then try gallery images from the variant
-    if (variation?.galleryImages?.nodes?.length > 0) {
-      return variation.galleryImages.nodes[0].sourceUrl;
-    }
+  // Try matching product gallery by color
+  if (colorName && product?.galleryImages?.nodes?.length > 0) {
+    const match = product.galleryImages.nodes.find(
+      (img) =>
+        img.altText?.toLowerCase().includes(colorName.toLowerCase()) ||
+        img.title?.toLowerCase().includes(colorName.toLowerCase()) ||
+        img.sourceUrl?.toLowerCase().includes(colorName.toLowerCase())
+    );
+    if (match) return match.sourceUrl;
+  }
 
-    // Try to find an image in the main product gallery that matches the color
-    if (colorName && product?.galleryImages?.nodes) {
-      const colorValue = colorName.toLowerCase();
-      const matchingImage = product.galleryImages.nodes.find(
-        (img) => img.altText?.toLowerCase().includes(colorValue) ||
-          img.title?.toLowerCase().includes(colorValue) ||
-          img.sourceUrl?.toLowerCase().includes(colorValue)
-      );
-      if (matchingImage) return matchingImage.sourceUrl;
-    }
+  // Fallback to product featured image
+  return product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg";
+};
 
-    // Fallback to product featured image
-    if (product?.featuredImage?.node?.sourceUrl) {
-      return product.featuredImage.node.sourceUrl;
-    }
 
-    return "/placeholder.jpg";
-  };
 
   const getColorName = (variation) => {
     return variation?.attributes?.nodes?.find(
@@ -191,7 +188,6 @@ const ProductInfo = ({ product, isMounted }) => {
     }
   };
 
-  // Check if a color is available for the selected size
   const isColorAvailableForSize = (colorName) => {
     return getVariantsForSize(selectedSize).some(variant =>
       getColorName(variant).toLowerCase() === colorName.toLowerCase()
@@ -241,12 +237,12 @@ const ProductInfo = ({ product, isMounted }) => {
             </div>
           )}
         </div>
-          
+
         <div>
           <p className="mt-2">Select quantity</p>
           <div className="flex mt-2 gap-2 items-center bg-white rounded-lg max-w-max border">
             <button
-              className="px-3 py-2 border rounded bg-white text-center"
+              className="px-3 py-2 border rounded bg-white text-center cursor-pointer"
               onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
             >
               -
@@ -261,10 +257,10 @@ const ProductInfo = ({ product, isMounted }) => {
                   setQuantity(val);
                 }
               }}
-              className="pl-6 pr-2 py-1 border-r-2 border-l-2 text-center max-w-[60px]"
+              className="py-1 border-r-2 border-l-2 text-center max-w-[60px]"
             />
             <button
-              className="px-3 py-1 border rounded bg-white text-center"
+              className="px-3 py-1 border rounded bg-white text-center cursor-pointer"
               onClick={() => setQuantity(quantity + 1)}
             >
               +

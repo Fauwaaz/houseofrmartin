@@ -11,7 +11,7 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 20px;
-  padding: 0.5em 3em;
+  padding: 0.5em 2em;
 }
 
 .navItem {
@@ -22,7 +22,11 @@
 }
 
 @media screen and (max-width: 768px) {
+  .header{
+    padding: 10px;
+  }
+
   .nav {
-    padding: 1em 1.5em;
+    padding: 0.5em 1.5em;
   }
 }
