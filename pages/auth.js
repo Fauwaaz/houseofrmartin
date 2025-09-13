@@ -4,6 +4,7 @@ import { InputField } from '../components/InputField';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
+import Head from 'next/head';
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -127,11 +128,15 @@ const AuthPage = () => {
         }
     };
 
-
-
-
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
+        <>
+            <Head>
+                <title>{isLogin ? 'Sign In' : 'Sign Up'} - House Of R-Martin</title>
+                <meta name="description" content={isLogin ? 'Sign in to your account - House Of R-Martin' : 'Create a new account - House Of R-Martin'} />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" href="/favicon.png" />
+            </Head>
+            <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-300 p-8">
                     <Link href="/" className="text-black hover:underline flex gap-1 items-center"><HiOutlineChevronLeft size={20}/> Back</Link>
@@ -309,7 +314,8 @@ const AuthPage = () => {
                     <Link href="/privacy-policy" className="text-black hover:underline">Privacy Policy</Link>
                 </p>
             </div>
-        </div>
+            </div>
+        </>
     );
 };
 

@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import React from "react";
 import { FiShoppingBag } from "react-icons/fi";
-import { HiOutlineChevronLeft } from "react-icons/hi";
 import { BackgroundAnimation, CartAnimation } from "../animations";
 import { useStateContext } from "../context/StateContext";
 import getStripe from "../libs/getStripe";
