@@ -101,8 +101,7 @@ const Cart = () => {
                 <div className={styles.totals}>
                   <div>
                     <h4>Subtotal:</h4>
-                    {/* <span>${totalPrice}</span> */}
-                    <span>${Number(totalPrice || 0).toFixed(2)}</span>
+                    <span><span className="price-font">D</span>   {Number(totalPrice || 0).toFixed(2)}</span>
                   </div>
                   <div className={styles.checkout}>
                     <button onClick={handleCheckout}>Checkout</button>

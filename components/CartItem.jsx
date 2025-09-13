@@ -41,7 +41,7 @@ const CartItem = ({
           <AiOutlineCloseCircle />
         </button>
         <div>
-          <span id={styles.price}>${price}</span>
+          <span id={styles.price}><p className="price-font">D</p> {price}</span>
         </div>
       </div>
     </li>

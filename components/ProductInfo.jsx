@@ -3,6 +3,7 @@ import { useStateContext } from "../context/StateContext";
 import styles from "../styles/ProductInfo.module.css";
 import { FiShoppingBag } from "react-icons/fi";
 import Image from "next/image";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -214,7 +215,7 @@ const getVariationImage = (variation, colorName) => {
 
       <div className="flex flex-col md:flex-row gap-2 md:gap-12">
         <div>
-          <p className="mt-2">Select size</p>
+          <p className="mt-2">Choose size</p>
           {sizes.length > 0 ? (
             <div className="flex mt-2 gap-1 flex-wrap">
               {sizes.map((size, index) => (
@@ -239,13 +240,13 @@ const getVariationImage = (variation, colorName) => {
         </div>
 
         <div>
-          <p className="mt-2">Select quantity</p>
+          <p className="mt-2">Choose quantity</p>
           <div className="flex mt-2 gap-2 items-center bg-white rounded-lg max-w-max border">
             <button
-              className="px-3 py-2 border rounded bg-white text-center cursor-pointer"
+              className="px-3 py-3 border rounded bg-white text-center cursor-pointer"
               onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
             >
-              -
+              <AiOutlineMinus />
             </button>
             <input
               type="number"
@@ -260,10 +261,10 @@ const getVariationImage = (variation, colorName) => {
               className="py-1 border-r-2 border-l-2 text-center max-w-[60px]"
             />
             <button
-              className="px-3 py-1 border rounded bg-white text-center cursor-pointer"
+              className="px-3 py-3 border rounded bg-white text-center cursor-pointer"
               onClick={() => setQuantity(quantity + 1)}
             >
-              +
+              <AiOutlinePlus />
             </button>
           </div>
         </div>

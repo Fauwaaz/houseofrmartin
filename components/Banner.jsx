@@ -10,7 +10,7 @@ const Banner = ({ title, description, uri, image }) => {
       <div className={styles.info}>
         <h2>{title}</h2>
         <p>{description}</p>
-        <Link href={`/product/${uri}`}>
+        <Link href={`/products/${uri}`}>
           
             Learn more <RiArrowRightSLine />
         </Link>

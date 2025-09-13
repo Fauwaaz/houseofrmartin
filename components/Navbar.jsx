@@ -10,8 +10,8 @@ import { Heart, Menu, Search, User, X } from "lucide-react";
 
 const link = [
   { name: "Home", url: "/" },
-  { name: "Shop", url: "/shop" },
-  { name: "Bestseller", url: "/bestseller" },
+  { name: "Shop", url: "/products" },
+  { name: "Bestseller", url: "/products" },
   { name: "About", url: "/about" },
 ]
 

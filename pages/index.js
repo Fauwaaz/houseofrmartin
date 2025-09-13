@@ -177,7 +177,7 @@ const Home = ({ products, banner }) => {
                   </div>
 
 
-                  <Link href={`/product/${product.slug}`} className="w-full relative group">
+                  <Link href={`/products/${product.slug}`} className="w-full relative group">
                     <Image
                       src={product.featuredImage?.node?.sourceUrl || "/placeholder.jpg"}
                       alt={product.name}
@@ -286,7 +286,7 @@ const Home = ({ products, banner }) => {
                   </div>
 
 
-                  <Link href={`/product/${product.slug}`} className="w-full relative group">
+                  <Link href={`/products/${product.slug}`} className="w-full relative group">
                     <Image
                       src={product.featuredImage?.node?.sourceUrl || "/placeholder.jpg"}
                       alt={product.name}

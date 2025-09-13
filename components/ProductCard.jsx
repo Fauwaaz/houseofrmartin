@@ -12,7 +12,7 @@ const ProductCard = ({ name, description, slug, price, image }) => {
   return (
     <li className={styles.card}>
       <div className={styles.top}>
-        <Link href={`/product/${slug}`}>
+        <Link href={`/products/${slug}`}>
             <div>
               <Image
                 src={image}
@@ -26,7 +26,7 @@ const ProductCard = ({ name, description, slug, price, image }) => {
       </div>
       <div className={styles.bottom}>
         <div id="info-row">
-          <Link href={`/product/${slug}`} className="linkDashed">
+          <Link href={`/products/${slug}`} className="linkDashed">
             <h2 className={styles.name}>{name}</h2>
           </Link>
           {isMounted ? (
@@ -37,7 +37,7 @@ const ProductCard = ({ name, description, slug, price, image }) => {
           ) : null}
         </div>
         <div className={styles.price}>
-          <Link href={`/product/${slug}`} id="price">
+          <Link href={`/products/${slug}`} id="price">
             <div>
               <span>from </span>
               <font>${price}</font>
