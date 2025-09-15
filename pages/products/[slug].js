@@ -152,7 +152,7 @@ const ProductDetails = ({ item }) => {
                     product.galleryImages?.nodes.length
                   )
                 }
-                className="absolute left-1 top-1/2 -translate-y-1/2 bg-black/80 p-2 rounded-full shadow hover:bg-gray-800"
+                className="absolute left-1 top-1/2 -translate-y-1/2 bg-black/80 p-2 rounded-full shadow hover:bg-gray-800 cursor-pointer"
               >
                 <ArrowLeft size={22} color="white" />
               </button>
@@ -163,7 +163,7 @@ const ProductDetails = ({ item }) => {
                     (slideImage + 1) % product.galleryImages?.nodes.length
                   )
                 }
-                className="absolute right-1 top-1/2 -translate-y-1/2 bg-black/80 p-2 rounded-full shadow hover:bg-gray-800"
+                className="absolute right-1 top-1/2 -translate-y-1/2 bg-black/80 p-2 rounded-full shadow hover:bg-gray-800 cursor-pointer"
               >
                 <ArrowRight size={22} color="white" />
               </button>

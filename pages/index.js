@@ -154,7 +154,7 @@ const Home = ({ products, banner }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-5 my-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 my-10">
             {products.map((product) => {
               let displayPrice = null;
               let firstVariation = null;
@@ -205,8 +205,8 @@ const Home = ({ products, banner }) => {
 
                   <div className="flex w-full items-center justify-between px-3">
 
-                    <h3 className="mt-4 text-lg font-semibold">
-                      {product.name.length > 40 ? product.name.substring(0, 40) + '...' : product.name}
+                    <h3 className="mt-4 text-left text-lg font-semibold">
+                      {product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name}
                     </h3>
                     <p
                       className="text-sm text-gray-500 mt-2"
@@ -216,9 +216,9 @@ const Home = ({ products, banner }) => {
                       <p className="mt-3 font-bold text-lg price-font">D {product.price}</p>
                     )}
                     {product.__typename === "VariableProduct" && firstVariation && (
-                      <div className="mt-3 text-center">
+                      <div className="mt-3 text-center flex">
                         <p className="font-bold text-lg price-font">
-                          D <span className="font-geograph-md">{displayPrice}</span>
+                          D <span className="font-geograph-md ml-1">{displayPrice}</span>
                         </p>
                         {/* <p className="text-sm text-gray-700">
                           Variant: {firstVariation.name}
@@ -263,7 +263,7 @@ const Home = ({ products, banner }) => {
               FEATURED
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-5 my-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 my-10">
             {products.map((product) => {
               let displayPrice = null;
               let firstVariation = null;
@@ -281,7 +281,7 @@ const Home = ({ products, banner }) => {
                   key={product.id}
                   className="bg-white shadow-sm rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
-                  <div className="bg-black/70 w-[150px] py-2 text-sm text-white text-center absolute rounded-full z-10 uppercase top-3 left-3">
+                  <div className="bg-black/70 w-[110px] lg:w-[150px]  py-2 text-[12px] lg:text-sm text-white text-center absolute rounded-full z-10 uppercase top-3 left-3">
                     Best Seller
                   </div>
 
@@ -314,8 +314,8 @@ const Home = ({ products, banner }) => {
 
                   <div className="flex w-full items-center justify-between px-3">
 
-                    <h3 className="mt-4 text-lg font-semibold">
-                      {product.name.length > 40 ? product.name.substring(0, 40) + '...' : product.name}
+                    <h3 className="mt-4 text-left text-lg font-semibold">
+                      {product.name.length > 35 ? product.name.substring(0, 35) + '...' : product.name}
                     </h3>
                     <p
                       className="text-sm text-gray-500 mt-2"
@@ -325,9 +325,9 @@ const Home = ({ products, banner }) => {
                       <p className="mt-3 font-bold text-lg price-font">D {product.price}</p>
                     )}
                     {product.__typename === "VariableProduct" && firstVariation && (
-                      <div className="mt-3 text-center">
+                      <div className="mt-3 text-center flex">
                         <p className="font-bold text-lg price-font">
-                          D <span className="font-geograph-md">{displayPrice}</span>
+                          D <span className="font-geograph-md ml-1">{displayPrice}</span>
                         </p>
                         {/* <p className="text-sm text-gray-700">
                           Variant: {firstVariation.name}
@@ -352,7 +352,7 @@ const Home = ({ products, banner }) => {
               );
             })}
           </div>
-        </section>  
+        </section>
 
         <BeforeFooter />
       </Layout>

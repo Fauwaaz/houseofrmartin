@@ -7,7 +7,7 @@ class ChatwootWidget extends React.Component {
             hideMessageBubble: false,
             position: 'right', 
             locale: 'en', 
-            type: 'expanded_bubble', // [standard, expanded_bubble]
+            type: 'standard', // [standard, expanded_bubble]
         };
 
         (function (d, t) {

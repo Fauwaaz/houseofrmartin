@@ -131,3 +131,7 @@ a {
 .price-font {
   font-family: "Aed", sans-serif;
 }
+
+.max-w-1920 {
+  max-width: 1920px;
+}

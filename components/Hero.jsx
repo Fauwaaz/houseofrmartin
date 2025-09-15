@@ -1,58 +1,6 @@
-import { motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import { FiShoppingBag } from "react-icons/fi";
-import { RiArrowRightSLine } from "react-icons/ri";
-import { ValueAnimation } from "../animations";
-import HeroBackground from "../images/HeroBackground.png";
-import styles from "../styles/Hero.module.css";
 
-const Hero = ({ addToCart, image, url }) => {
-  const [slide, setSlide] = useState(0);
-  const timeoutRef = useRef(null);
+const Hero = () => {
 
-  const features = [
-    {
-      value: 56,
-      name: "Megapixels",
-      message: "Take photographs that are crystal clear",
-    },
-    {
-      value: 8,
-      name: "Colors",
-      message: "Available in more than 8 colors",
-    },
-    {
-      value: 48,
-      name: "Hours",
-      message: "No need to charge it for up to 48 hours",
-    },
-  ];
-
-  const delay = 3500;
-
-  function resetTimeout() {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  }
-
-  useEffect(() => {
-    resetTimeout();
-    timeoutRef.current = setTimeout(
-      () =>
-        setSlide((prevSlide) =>
-          prevSlide === features.length - 1 ? 0 : prevSlide + 1
-        ),
-      delay
-    );
-
-    return () => {
-      resetTimeout();
-    };
-  }, [slide]);
-  //
   return (
     <section className="min-h-screen w-full relative hero">
       {/* <div className={styles.left}>
@@ -196,7 +144,7 @@ const Hero = ({ addToCart, image, url }) => {
         </div>
       </div>
       <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
-        <h1 className="text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>
+        <h1 className="text-3xl md:text-5xl lg:text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>
       </div>
     </section>
   );
