@@ -25,7 +25,7 @@ const About = () => {
                     <div>
                         <h2 className="text-3xl lg:text-5xl font-bold mb-4 uppercase">Our Story</h2>
                         <p className="text-lg mb-4">Founded in 2020, House of RMartin has come a long way from its beginnings. When we first started out, our passion for fashion drove us to start our own business.</p>
-                        <p className="text-lg mb-4">We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don't hesitate to contact us.</p>
+                        <p className="text-lg mb-4">We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don&apos;t hesitate to contact us.</p>
                         <p className="text-lg">Sincerely, <br /> The House of RMartin Team</p>
                     </div>
                 </div>
