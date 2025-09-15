@@ -3,6 +3,7 @@ import styles from "../styles/Layout.module.css";
 import Cart from "./Cart";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import ChatwootWidget from "./ChatwootWidget";
 
 const Layout = ({ children }) => {
   return (
@@ -18,7 +19,10 @@ const Layout = ({ children }) => {
       <Cart />
       <>
         <Navbar />
-          <main className={styles.main}>{children}</main>
+          <main className={styles.main}>
+            {children}
+            <ChatwootWidget />
+          </main>
         <Footer />
       </>
     </section>

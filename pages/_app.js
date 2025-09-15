@@ -41,7 +41,8 @@ function App({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
       <StateContext>
-        {loading ? <Loading /> : <Component {...pageProps} />}
+        
+          {loading ? <Loading /> : <Component {...pageProps} />}
       </StateContext>
     </ApolloProvider>
   );
