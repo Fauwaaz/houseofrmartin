@@ -71,11 +71,11 @@ const Home = ({ products, banner }) => {
               Explore styles for every mood and moment
             </p>
           </div>
-          <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3">
+          <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3 h-[750px] lg:h-[600px] w-full max-w-1920 px-3 lg:px-6">
             {categoriesSection.map((category, index) => (
               <div
                 key={index}
-                className="h-[600px] w-[455px] bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm relative overflow-hidden hover:rounded-[300px] transition-all duration-500 ease-in-out"
+                className="h-full w-full bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm relative overflow-hidden hover:rounded-[300px] transition-all duration-500 ease-in-out"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
@@ -125,7 +125,7 @@ const Home = ({ products, banner }) => {
           </div>
         </section>
 
-        <section className="story-banner lg:min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full h-full">
+        <section className="story-banner lg:min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full  h-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 justify-items-center">
             <div className="story-banner-image"></div>
             <div className="story-banner-content w-3/4 ">
@@ -145,7 +145,7 @@ const Home = ({ products, banner }) => {
           </div>
         </section>
 
-        <section className="py-10 w-full recents text-center">
+        <section className="py-10 w-full recents text-center flex flex-col items-center">
           <div>
             <h2 className="text-center uppercase text-4xl font-akkurat">
               Our Bestsellter
@@ -154,7 +154,7 @@ const Home = ({ products, banner }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 my-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
             {products.map((product) => {
               let displayPrice = null;
               let firstVariation = null;
@@ -263,7 +263,7 @@ const Home = ({ products, banner }) => {
               FEATURED
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 my-10">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
             {products.map((product) => {
               let displayPrice = null;
               let firstVariation = null;

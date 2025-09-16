@@ -13,18 +13,36 @@ function App({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const handleStart = () => {
-      setLoading(true);
-    };
+    const handleStart = () => setLoading(true);
 
     const handleStop = () => {
-      // Wait for images and assets
-      if (document.readyState === "complete") {
-        setLoading(false);
-      } else {
-        // fallback: wait until window load event
-        window.addEventListener("load", () => setLoading(false), { once: true });
-      }
+      // Wait for images + videos to finish loading
+      const waitForAssets = () => {
+        const images = Array.from(document.images);
+        const videos = Array.from(document.querySelectorAll("video"));
+
+        const imagePromises = images.map(
+          (img) =>
+            new Promise((resolve) => {
+              if (img.complete) return resolve();
+              img.onload = resolve;
+              img.onerror = resolve;
+            })
+        );
+
+        const videoPromises = videos.map(
+          (video) =>
+            new Promise((resolve) => {
+              if (video.readyState >= 3) return resolve(); // HAVE_FUTURE_DATA
+              video.oncanplaythrough = resolve;
+              video.onerror = resolve;
+            })
+        );
+
+        return Promise.all([...imagePromises, ...videoPromises]);
+      };
+
+      waitForAssets().then(() => setLoading(false));
     };
 
     router.events.on("routeChangeStart", handleStart);
@@ -41,8 +59,7 @@ function App({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
       <StateContext>
-        
-          {loading ? <Loading /> : <Component {...pageProps} />}
+        {loading ? <Loading /> : <Component {...pageProps} />}
       </StateContext>
     </ApolloProvider>
   );
