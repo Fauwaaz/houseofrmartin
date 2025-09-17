@@ -19,6 +19,25 @@ const GET_ALL_PAGES = gql`
   }
 `;
 
+const GET_CURRENT_USER = gql`
+  query Viewer {
+    viewer {
+      id
+      name
+      email
+    }
+  }
+`;
+
+// Logout mutation (invalidate session)
+const LOGOUT = gql`
+  mutation Logout {
+    logout {
+      status
+    }
+  }
+`;
+
 // 2. Get Page Slugs Only
 const GET_PAGE_SLUGS = gql`
   query PageSlugs {
@@ -244,4 +263,4 @@ const GET_postId = gql`
     }
 `;
 
-export { GET_ALL_PAGES, GET_PAGE_SLUGS, GET_PAGE_DETAILS, GET_ALL, GET_SLUG, GET_PRODUCT_DETAILS, GET_postId };
+export { GET_ALL_PAGES, GET_PAGE_SLUGS, GET_PAGE_DETAILS, GET_ALL, GET_SLUG, GET_PRODUCT_DETAILS, GET_postId, GET_CURRENT_USER, LOGOUT };

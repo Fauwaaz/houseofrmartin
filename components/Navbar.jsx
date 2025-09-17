@@ -1,29 +1,38 @@
-"use client";
-
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import styles from "../styles/Navbar.module.css";
 import CartButton from "./CartButton";
-import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
-import { Heart, Menu, Search, X, LogOut, Settings, Info, UserCircle } from "lucide-react";
-
-const link = [
-  { name: "Home", url: "/" },
-  { name: "Shop", url: "/products" },
-  { name: "Bestseller", url: "/products" },
-  { name: "About", url: "/about" },
-];
+import {
+  Heart,
+  Menu,
+  Search,
+  X,
+  LogOut,
+  Settings,
+  Info,
+  UserCircle,
+} from "lucide-react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
+  const [user, setUser] = useState(null);
+  const dropdownRef = useRef(null);
 
-  // Example: Replace with your actual auth check
-  const isLoggedIn = true;
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/me");
+        const data = await res.json();
+        setUser(data.user);
+      } catch (err) {
+        console.error("❌ fetchUser error:", err);
+      }
+    }
+    fetchUser();
+  }, []);
 
-  const dropdownRef = useRef();
-
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -34,9 +43,21 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  async function handleLogout() {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+      setUser(null); // reset immediately
+      window.location.href = "/"; // redirect to login
+    } catch (err) {
+      console.error("❌ Logout error:", err);
+    }
+  }
+
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
+        {/* Logo */}
         <Link href="/">
           <Image
             src="/logo.png"
@@ -47,56 +68,49 @@ export default function Navbar() {
             className="w-[60px] lg:w-[110px] h-auto"
           />
         </Link>
-        <ul className="hidden md:flex space-x-8 font-geograph-md">
-          {link.map((item, index) => (
-            <li key={index} className={styles.navItem}>
-              <Link href={item.url}>{item.name}</Link>
-            </li>
-          ))}
+
+        {/* Desktop Links */}
+        <ul className="hidden md:flex space-x-8 font-geograph-md uppercase text-sm">
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/products">Shop</Link></li>
+          <li><Link href="/products">Bestseller</Link></li>
+          <li><Link href="/about">About</Link></li>
         </ul>
 
-        <div className="hidden md:flex items-center justify-center relative">
-          {isLoggedIn ? (
+        {/* Right Section */}
+        <div className="flex items-center justify-center relative">
+          {user ? (
             <div ref={dropdownRef} className="relative">
               <button
-                onClick={() => setUserDropdown(!userDropdown)}
-                className="flex items-center focus:outline-none "
+                onClick={() => setUserDropdown((prev) => !prev)}
+                className="flex items-center focus:outline-none"
               >
                 <UserCircle size={24} className="cursor-pointer" />
               </button>
+
               {userDropdown && (
                 <div className="absolute right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
                   <div className="border-b px-4 py-2">
-                    <h3 className="">
-                      Firstname Lastname
-                    </h3>
-                    <p className="text-[12px] text-gray-600">user@gmail.com</p>
+                    <h3 className="capitalize">{user.name}</h3>
+                    <p className="text-[12px] text-gray-600">{user.email}</p>
                   </div>
                   <div className="text-sm space-y-2">
-                    <Link
-                    href="/account"
-                    className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md mt-2"
-                  >
-                    <UserCircle size={18} className="mr-2" /> Edit profile
-                  </Link>
-                  <Link
-                    href="/settings"
-                    className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md"
-                  >
-                    <Settings size={18} className="mr-2" /> Account Settings
-                  </Link>
-                  <Link 
-                    href={"/support"}
-                    className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md"
-                  >
-                    <Info size={18} className="mr-2" /> Support
-                  </Link>
-                  <hr />
-                  <Link href={"/auth"}
-                    className="w-full flex items-center px-4 py-2 hover:bg-gray-100 text-left rounded-md"
-                  >
-                    <LogOut size={18} className="mr-2" /> Logout
-                  </Link>
+                    <Link href="/account" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md mt-2">
+                      <UserCircle size={18} className="mr-2" /> Edit profile
+                    </Link>
+                    <Link href="/settings" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
+                      <Settings size={18} className="mr-2" /> Account Settings
+                    </Link>
+                    <Link href="/support" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
+                      <Info size={18} className="mr-2" /> Support
+                    </Link>
+                    <hr />
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center px-4 py-2 hover:bg-gray-100 text-left rounded-md cursor-pointer"
+                    >
+                      <LogOut size={18} className="mr-2" /> Logout
+                    </button>
                   </div>
                 </div>
               )}
@@ -112,39 +126,14 @@ export default function Navbar() {
           <CartButton />
         </div>
 
+        {/* Mobile Menu */}
         <button
           className="md:hidden text-2xl"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen((prev) => !prev)}
         >
           {menuOpen ? <X /> : <Menu />}
         </button>
       </nav>
-
-      {menuOpen && (
-        <div className="md:hidden bg-white shadow-md px-6 py-4">
-          <ul className="flex flex-col space-y-4 font-geograph-md">
-            {link.map((item, index) => (
-              <li key={index} onClick={() => setMenuOpen(false)}>
-                <Link href={item.url}>{item.name}</Link>
-              </li>
-            ))}
-          </ul>
-          <div className="flex items-center justify-start mt-4 space-x-4">
-            {isLoggedIn ? (
-              <button onClick={() => setUserDropdown(!userDropdown)}>
-                <UserCircle size={24} />
-              </button>
-            ) : (
-              <Link href="/auth">
-                <UserCircle size={24} />
-              </Link>
-            )}
-            <Heart size={22} />
-            <Search size={22} />
-            <CartButton />
-          </div>
-        </div>
-      )}
     </header>
   );
 }
