@@ -5,7 +5,7 @@ import styles from "../styles/Navbar.module.css";
 import CartButton from "./CartButton";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { Heart, Menu, Search, User, X, LogOut, Settings, Info } from "lucide-react";
+import { Heart, Menu, Search, X, LogOut, Settings, Info, UserCircle } from "lucide-react";
 
 const link = [
   { name: "Home", url: "/" },
@@ -60,9 +60,9 @@ export default function Navbar() {
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setUserDropdown(!userDropdown)}
-                className="flex items-center focus:outline-none"
+                className="flex items-center focus:outline-none "
               >
-                <User size={24} className="cursor-pointer" />
+                <UserCircle size={24} className="cursor-pointer" />
               </button>
               {userDropdown && (
                 <div className="absolute right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
@@ -77,7 +77,7 @@ export default function Navbar() {
                     href="/account"
                     className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md mt-2"
                   >
-                    <User size={18} className="mr-2" /> Edit profile
+                    <UserCircle size={18} className="mr-2" /> Edit profile
                   </Link>
                   <Link
                     href="/settings"
@@ -103,7 +103,7 @@ export default function Navbar() {
             </div>
           ) : (
             <Link href="/auth" className="cursor-pointer">
-              <User size={24} />
+              <UserCircle size={24} />
             </Link>
           )}
 
@@ -132,11 +132,11 @@ export default function Navbar() {
           <div className="flex items-center justify-start mt-4 space-x-4">
             {isLoggedIn ? (
               <button onClick={() => setUserDropdown(!userDropdown)}>
-                <User size={24} />
+                <UserCircle size={24} />
               </button>
             ) : (
               <Link href="/auth">
-                <User size={24} />
+                <UserCircle size={24} />
               </Link>
             )}
             <Heart size={22} />
