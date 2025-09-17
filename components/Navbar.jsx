@@ -5,7 +5,7 @@ import styles from "../styles/Navbar.module.css";
 import CartButton from "./CartButton";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { Heart, Menu, Search, User, X, LogOut, Settings } from "lucide-react";
+import { Heart, Menu, Search, User, X, LogOut, Settings, Info } from "lucide-react";
 
 const link = [
   { name: "Home", url: "/" },
@@ -65,28 +65,35 @@ export default function Navbar() {
                 <User size={24} className="cursor-pointer" />
               </button>
               {userDropdown && (
-                <div className="absolute right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 z-50">
+                <div className="absolute right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
                   <div className="border-b px-4 py-2">
                     <h3 className="">
                       Firstname Lastname
                     </h3>
-                    <p className="text-sm text-gray-600">user@gmail.com</p>
+                    <p className="text-[12px] text-gray-600">user@gmail.com</p>
                   </div>
-                  <div className="text-sm">
+                  <div className="text-sm space-y-2">
                     <Link
                     href="/account"
-                    className="flex items-center px-4 py-2 hover:bg-gray-100"
+                    className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md mt-2"
                   >
-                    <User size={18} className="mr-2" /> My Account
+                    <User size={18} className="mr-2" /> Edit profile
                   </Link>
                   <Link
                     href="/settings"
-                    className="flex items-center px-4 py-2 hover:bg-gray-100"
+                    className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md"
                   >
-                    <Settings size={18} className="mr-2" /> Settings
+                    <Settings size={18} className="mr-2" /> Account Settings
                   </Link>
+                  <Link 
+                    href={"/support"}
+                    className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md"
+                  >
+                    <Info size={18} className="mr-2" /> Support
+                  </Link>
+                  <hr />
                   <Link href={"/auth"}
-                    className="w-full flex items-center px-4 py-2 hover:bg-gray-100 text-left"
+                    className="w-full flex items-center px-4 py-2 hover:bg-gray-100 text-left rounded-md"
                   >
                     <LogOut size={18} className="mr-2" /> Logout
                   </Link>
