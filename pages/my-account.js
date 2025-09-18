@@ -14,6 +14,7 @@ import {
 import Loading from "../components/Loading";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import Loading from "../components/Loading";
 
 const MyAccount = () => {
     const [user, setUser] = useState(null);
