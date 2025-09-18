@@ -6,7 +6,8 @@ import "../styles/globals.css";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Loading from "../components/loading";
+import Loading from "../components/Loading";
+import { Toaster } from "react-hot-toast";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -60,6 +61,7 @@ function App({ Component, pageProps }) {
     <ApolloProvider client={client}>
       <StateContext>
         {loading ? <Loading /> : <Component {...pageProps} />}
+        <Toaster position="bottom-center" reverseOrder={false} />
       </StateContext>
     </ApolloProvider>
   );

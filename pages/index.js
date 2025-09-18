@@ -75,7 +75,7 @@ const Home = ({ products, banner }) => {
             {categoriesSection.map((category, index) => (
               <div
                 key={index}
-                className="h-full w-full bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm relative overflow-hidden hover:rounded-[300px] transition-all duration-500 ease-in-out"
+                className="h-full w-full bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm relative overflow-hidden hover:rounded-[55px] transition-all duration-500 ease-in-out"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >

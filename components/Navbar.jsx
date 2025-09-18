@@ -89,28 +89,25 @@ export default function Navbar() {
               </button>
 
               {userDropdown && (
-                <div className="absolute right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
+                <div className="absolute -right-20 lg:right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
                   <div className="border-b px-4 py-2">
                     <h3 className="capitalize">{user.name}</h3>
                     <p className="text-[12px] text-gray-600">{user.email}</p>
                   </div>
                   <div className="text-sm space-y-2">
-                    <Link href="/account" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md mt-2">
+                    <Link href="/my-account" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md mt-2">
                       <UserCircle size={18} className="mr-2" /> Edit profile
-                    </Link>
-                    <Link href="/settings" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
-                      <Settings size={18} className="mr-2" /> Account Settings
                     </Link>
                     <Link href="/support" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
                       <Info size={18} className="mr-2" /> Support
                     </Link>
                     <hr />
-                    <button
+                    <Link href='Javascript:void(0)'
                       onClick={handleLogout}
                       className="w-full flex items-center px-4 py-2 hover:bg-gray-100 text-left rounded-md cursor-pointer"
                     >
                       <LogOut size={18} className="mr-2" /> Logout
-                    </button>
+                    </Link>
                   </div>
                 </div>
               )}
@@ -121,7 +118,7 @@ export default function Navbar() {
             </Link>
           )}
 
-          <Heart size={24} className="mx-4" />
+          <Link href={'/wishlist'}><Heart size={24} className="mx-4" /></Link>
           <Search size={24} className="mr-4" />
           <CartButton />
         </div>

@@ -119,6 +119,7 @@ const AuthPage = () => {
                 } else {
                     // Switch to login after signup
                     setTimeout(() => setIsLogin(true), 1500);
+                    window.location.href = '/';
                 }
             }
         } catch (err) {
@@ -156,7 +157,7 @@ const AuthPage = () => {
                     {success && (
                         <div className="mb-6 p-4 border border-white rounded-lg flex items-center bg-green-600">
                             <CheckCircle className="text-white mr-2" size={18} />
-                            <span className="text-white">{success}</span>
+                            <span className="text-white">{success} Redirecting...</span>
                         </div>
                     )}
                     <form onSubmit={handleSubmit}>
@@ -247,8 +248,9 @@ const AuthPage = () => {
 
                             {/* Submit Button */}
                             <button
-                                type="button"
+                                type="submit"
                                 onClick={handleSubmit}
+
                                 disabled={loading}
                                 className="w-full bg-black text-white py-3 cursor-pointer rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
                             >
