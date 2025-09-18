@@ -11,7 +11,6 @@ import {
     Save,
     UserCircle,
 } from "lucide-react";
-import Loading from "../components/Loading";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Loading from "../components/Loading";
