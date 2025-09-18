@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import Loading from "../components/Loading.js";
+import Loading from "../components/Loading.jsx";
 
 const MyAccount = () => {
     const [user, setUser] = useState(null);

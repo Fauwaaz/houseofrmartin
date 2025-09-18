@@ -7,7 +7,7 @@ import "../styles/globals.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
-import Loading from "../components/Loading.js";
+import Loading from "../components/Loading.jsx";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
