@@ -42,12 +42,6 @@
   border: 1px solid #000;
 }
 
-.dark_button:hover {
-  background-color: #fff;
-  color: #000;
-  border: 1px solid #000;
-  transition: all 150ms ease-in;
-}
 
 @media (min-width: 280px) {
   .quantity {

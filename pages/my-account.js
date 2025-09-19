@@ -333,7 +333,7 @@ const MyAccount = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 lg:gap-8">
                         {/* Sidebar Navigation */}
                         <div className="lg:col-span-1">
-                            <div className="bg-white rounded-2xl shadow-sm p-6">
+                            <div className="bg-white rounded-2xl shadow-sm p-6 border">
                                 <nav className="space-y-2">
                                     {tabs.map((tab) => {
                                         const Icon = tab.icon;
@@ -364,7 +364,7 @@ const MyAccount = () => {
 
                         {/* Main Content */}
                         <div className="lg:col-span-3">
-                            <div className="bg-white rounded-2xl shadow-sm p-6">
+                            <div className="bg-white rounded-2xl shadow-sm p-6 border">
                                 {activeTab === "profile" && (
                                     <div>
                                         <h2 className="text-xl font-semibold mb-6">Profile Information</h2>

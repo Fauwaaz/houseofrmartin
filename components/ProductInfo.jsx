@@ -272,7 +272,7 @@ const getVariationImage = (variation, colorName) => {
 
       <div className="mt-6">
         <button
-          className={`${styles.button} ${styles.dark_button} uppercase flex items-center gap-2 justify-center ${!selectedSize || !selectedVariation
+          className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${!selectedSize || !selectedVariation
             ? "opacity-50 cursor-not-allowed"
             : ""
             }`}
