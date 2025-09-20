@@ -90,7 +90,9 @@ const Cart = () => {
                         name={item.name}
                         quantity={item.quantity}
                         price={item.price}
-                        image={item.featuredImage?.node.sourceUrl || '/placeholder.jpg'}
+                        size={item.size}
+                        color={item.color}
+                        image={item.featuredImage?.node?.sourceUrl || '/placeholder.jpg'}
                         decrease={() => toggleCartItemQuantity(item.id, "dec")}
                         increase={() => toggleCartItemQuantity(item.id, "inc")}
                         remove={() => onRemove(item)}

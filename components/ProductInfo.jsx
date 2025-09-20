@@ -4,6 +4,7 @@ import styles from "../styles/ProductInfo.module.css";
 import { FiShoppingBag } from "react-icons/fi";
 import Image from "next/image";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import toast from "react-hot-toast";
 
 const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -19,9 +20,9 @@ const ProductInfo = ({ product, isMounted }) => {
       ?.filter((attr) => attr.name === "pa_size")
       ?.flatMap((attr) => attr.options) || [];
 
-useEffect(() => {
-  console.log("Variants:", allVariants);
-}, [allVariants]);
+  useEffect(() => {
+    console.log("Variants:", allVariants);
+  }, [allVariants]);
 
 
   useEffect(() => {
@@ -105,26 +106,26 @@ useEffect(() => {
     });
   };
 
-const getVariationImage = (variation, colorName) => {
-  // Only use the variation's main image
-  if (variation?.image?.sourceUrl) {
-    return variation.image.sourceUrl;
-  }
+  const getVariationImage = (variation, colorName) => {
+    // Only use the variation's main image
+    if (variation?.image?.sourceUrl) {
+      return variation.image.sourceUrl;
+    }
 
-  // Try matching product gallery by color
-  if (colorName && product?.galleryImages?.nodes?.length > 0) {
-    const match = product.galleryImages.nodes.find(
-      (img) =>
-        img.altText?.toLowerCase().includes(colorName.toLowerCase()) ||
-        img.title?.toLowerCase().includes(colorName.toLowerCase()) ||
-        img.sourceUrl?.toLowerCase().includes(colorName.toLowerCase())
-    );
-    if (match) return match.sourceUrl;
-  }
+    // Try matching product gallery by color
+    if (colorName && product?.galleryImages?.nodes?.length > 0) {
+      const match = product.galleryImages.nodes.find(
+        (img) =>
+          img.altText?.toLowerCase().includes(colorName.toLowerCase()) ||
+          img.title?.toLowerCase().includes(colorName.toLowerCase()) ||
+          img.sourceUrl?.toLowerCase().includes(colorName.toLowerCase())
+      );
+      if (match) return match.sourceUrl;
+    }
 
-  // Fallback to product featured image
-  return product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg";
-};
+    // Fallback to product featured image
+    return product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg";
+  };
 
 
 
@@ -277,7 +278,22 @@ const getVariationImage = (variation, colorName) => {
             : ""
             }`}
           disabled={!selectedSize || !selectedVariation}
-          onClick={() => onAdd(selectedVariation, qty)}
+          onClick={() => {
+            if (!selectedVariation) return;
+
+            const cartItem = {
+              id: selectedVariation.databaseId || selectedVariation.id, 
+              name: product.name,
+              price: selectedVariation?.price || product.price,
+              image: selectedVariation?.image?.sourceUrl || product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg",
+              size: getSize(selectedVariation),
+              color: getColorName(selectedVariation),
+              quantity, 
+            };
+
+            onAdd(cartItem, quantity);
+            toast.success('Item Added Successfully!')
+          }}
         >
           Add to Bag <FiShoppingBag size={18} />
         </button>

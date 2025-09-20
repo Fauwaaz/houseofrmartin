@@ -18,7 +18,7 @@ export default async function handler(req, res) {
           const img = item.featuredImage.node.sourceUrl;
           return {
             price_data: {
-              currency: "usd",
+              currency: "aed",
               product_data: {
                 name: item.name,
                 images: [img],

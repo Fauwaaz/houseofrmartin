@@ -18,28 +18,31 @@ export const StateContext = ({ children }) => {
 
   const onAdd = (product, quantity) => {
     const productInCartExists = cartItems.find(
-      (item) => item.id === product.id
+      (item) =>
+        item.id === product.id &&
+        item.size === product.size &&
+        item.color === product.color
     );
 
-    setTotalPrice(
-      (prevTotalPrice) => prevTotalPrice + product.price * quantity
-    );
-
+    setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
     setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
 
     if (productInCartExists) {
-      const updatedCartItems = cartItems.map((cartItem) => {
-        if (cartItem.id === product.id)
-          return {
-            ...cartItem,
-            quantity: cartItem.quantity + quantity,
-          };
-      });
+      const updatedCartItems = cartItems.map((cartItem) =>
+        cartItem.id === product.id &&
+          cartItem.size === product.size &&
+          cartItem.color === product.color
+          ? { ...cartItem, quantity: cartItem.quantity + quantity }
+          : cartItem
+      );
       setCartItems(updatedCartItems);
     } else {
-      product.quantity = quantity;
-
-      setCartItems([...cartItems, { ...product }]);
+      const newProduct = {
+        ...product,
+        quantity,
+        image: product.image || "/placeholder.jpg",
+      };
+      setCartItems([...cartItems, newProduct]);
     }
   };
 

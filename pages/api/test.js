@@ -10,10 +10,9 @@ export default async function handler(req, res) {
       port: process.env.DB_PORT || 3306,
     });
 
-    const [rows] = await conn.query('SELECT NOW() as now');
     await conn.end();
 
-    res.status(200).json({ success: true, now: rows[0].now });
+    res.status(200).json({ success: true, message: 'Data Base connection Successfull!' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: err.message });
