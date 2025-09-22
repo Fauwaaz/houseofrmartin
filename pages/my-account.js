@@ -247,7 +247,8 @@ const MyAccount = () => {
     // Logout
     const handleLogout = async () => {
         await fetch("/api/auth/logout", { method: "POST" });
-        window.location.href = "/auth";
+        window.location.href = "/";
+        toast.success('Logging out')
     };
 
     // Get order status color

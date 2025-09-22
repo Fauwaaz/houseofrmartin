@@ -13,6 +13,7 @@ import {
   Info,
   UserCircle,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,6 +48,7 @@ export default function Navbar() {
     try {
       await fetch("/api/logout", { method: "POST" });
       setUser(null); // reset immediately
+      toast.success('Logging out')
       window.location.href = "/"; // redirect to login
     } catch (err) {
       console.error("❌ Logout error:", err);
@@ -104,7 +106,7 @@ export default function Navbar() {
                     <hr />
                     <Link href='Javascript:void(0)'
                       onClick={handleLogout}
-                      className="w-full flex items-center px-4 py-2 hover:bg-gray-100 text-left rounded-md cursor-pointer"
+                      className="w-full flex items-center px-4 py-2 text-red-600 hover:bg-red-50 text-left rounded-md cursor-pointer"
                     >
                       <LogOut size={18} className="mr-2" /> Logout
                     </Link>

@@ -5,6 +5,7 @@ import { FiShoppingBag } from "react-icons/fi";
 import Image from "next/image";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import toast from "react-hot-toast";
+import Accordion from "./common/Accordion";
 
 const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -169,6 +170,10 @@ const ProductInfo = ({ product, isMounted }) => {
     }
   };
 
+  const handleSizeGuide = () => {
+
+  };
+
   useEffect(() => {
     // Set initial selected variation based on default selected size
     if (allVariants.length > 0 && !selectedVariation) {
@@ -216,7 +221,7 @@ const ProductInfo = ({ product, isMounted }) => {
 
       <div className="flex flex-col md:flex-row gap-2 md:gap-12">
         <div>
-          <p className="mt-2">Choose size</p>
+          <p className="mt-2 text-sm">Select size</p>
           {sizes.length > 0 ? (
             <div className="flex mt-2 gap-1 flex-wrap">
               {sizes.map((size, index) => (
@@ -241,7 +246,7 @@ const ProductInfo = ({ product, isMounted }) => {
         </div>
 
         <div>
-          <p className="mt-2">Choose quantity</p>
+          <p className="mt-2 text-sm">Select quantity</p>
           <div className="flex mt-2 gap-2 items-center bg-white rounded-lg max-w-max border">
             <button
               className="px-3 py-3 border rounded bg-white text-center cursor-pointer"
@@ -269,6 +274,12 @@ const ProductInfo = ({ product, isMounted }) => {
             </button>
           </div>
         </div>
+
+        <div>
+          <button href='' onClick={handleSizeGuide} className='text-sm underline mt-2 cursor-pointer'>
+            Size guide
+          </button>
+        </div>
       </div>
 
       <div className="mt-6">
@@ -282,13 +293,13 @@ const ProductInfo = ({ product, isMounted }) => {
             if (!selectedVariation) return;
 
             const cartItem = {
-              id: selectedVariation.databaseId || selectedVariation.id, 
+              id: selectedVariation.databaseId || selectedVariation.id,
               name: product.name,
               price: selectedVariation?.price || product.price,
               image: selectedVariation?.image?.sourceUrl || product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg",
               size: getSize(selectedVariation),
               color: getColorName(selectedVariation),
-              quantity, 
+              quantity,
             };
 
             onAdd(cartItem, quantity);
@@ -299,9 +310,11 @@ const ProductInfo = ({ product, isMounted }) => {
         </button>
       </div>
 
+      <hr className="border-black/10 border-solid my-3" />
+
       {availableColors.length > 0 && (
         <>
-          <p className="mt-3">Available colors: ({availableColors.length})</p>
+          <p className="mt-3">Also available colors: ({availableColors.length})</p>
           <div className="flex mt-2 gap-2 flex-wrap">
             {availableColors.map((color, index) => {
               const isAvailable = isColorAvailableForSize(color.name);
@@ -365,26 +378,43 @@ const ProductInfo = ({ product, isMounted }) => {
 
           {/* Selected variant info */}
           {selectedVariation && (
-            <p className="mt-2 text-sm capitalize bg-white p-2 rounded-lg w-2/3 lg:w-1/3">
+            <p className="mt-2 text-sm capitalize bg-white p-2 rounded-lg w-2/3 lg:w-[200px]">
               Selected: {getColorName(selectedVariation)} - Size {getSize(selectedVariation)}
             </p>
           )}
         </>
       )}
 
-      <p className="mt-5 font-geograph-md uppercase">Description</p>
-      {isMounted ? (
-        <p
-          className={styles.description}
-          dangerouslySetInnerHTML={{ __html: product.description }}
-        />
-      ) : (
-        <div className="mt-4 space-y-2 animate-pulse">
-          <div className="bg-gray-200 h-4 rounded w-full" />
-          <div className="bg-gray-200 h-4 rounded w-11/12" />
-          <div className="bg-gray-200 h-4 rounded w-10/12" />
-        </div>
-      )}
+      <hr className="border-black/10 border-solid my-3" />
+
+      <Accordion
+        items={[
+          {
+            title: "Highlight",
+            content: (
+              <ul className="list-disc pl-5">
+                <li>Premium quality fabric</li>
+                <li>Perfect for casual wear</li>
+                <li>Available in multiple colors</li>
+              </ul>
+            ),
+          },
+          {
+            title: "Description",
+            content: isMounted ? (
+              <div
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
+            ) : (
+              <div className="mt-4 space-y-2 animate-pulse">
+                <div className="bg-gray-200 h-4 rounded w-full" />
+                <div className="bg-gray-200 h-4 rounded w-11/12" />
+                <div className="bg-gray-200 h-4 rounded w-10/12" />
+              </div>
+            ),
+          },
+        ]}
+      />
     </div>
   );
 };

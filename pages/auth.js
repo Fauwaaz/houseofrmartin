@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
 import Head from 'next/head';
+import toast from 'react-hot-toast';
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -109,7 +110,9 @@ const AuthPage = () => {
             if (!data.success) {
                 setErrors({ submit: data.message });
             } else {
-                setSuccess(data.message);
+                setSuccess(
+                    toast.success(data.message + ' Redirecting...')
+                );
 
                 if (isLogin) {
                     // Redirect to home after login
@@ -153,13 +156,7 @@ const AuthPage = () => {
                         </p>
                     </div>
 
-                    {/* Success Message */}
-                    {success && (
-                        <div className="mb-6 p-4 border border-white rounded-lg flex items-center bg-green-600">
-                            <CheckCircle className="text-white mr-2" size={18} />
-                            <span className="text-white">{success} Redirecting...</span>
-                        </div>
-                    )}
+                    
                     <form onSubmit={handleSubmit}>
                         <div className="space-y-6">
                             {/* Name (signup only) */}
