@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { ChevronDown, ChevronLeft } from "lucide-react";
 
 const AccordionItem = ({ title, content, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -9,10 +9,10 @@ const AccordionItem = ({ title, content, defaultOpen = false }) => {
     <div className="border-b border-gray-200">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-between items-center w-full py-3 text-left text-lg font-medium uppercase cursor-pointer"
+        className="flex justify-between items-center w-full py-3 text-left text-md font-medium uppercase cursor-pointer"
       >
         <span>{title}</span>
-        {isOpen ? <AiOutlineMinus /> : <AiOutlinePlus />}
+        {isOpen ? <ChevronLeft /> : <ChevronDown />}
       </button>
 
       <AnimatePresence initial={false}>
@@ -22,10 +22,17 @@ const AccordionItem = ({ title, content, defaultOpen = false }) => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden pb-4 text-gray-600"
+            transition={{ 
+              duration: 0.5, 
+              ease: "easeInOut", 
+              opacity: { duration: 0.3 },
+              height: { type: "spring", stiffness: 200, damping: 30 } 
+            }}
+            className="overflow-hidden"
           >
-            {typeof content === "string" ? <p>{content}</p> : content}
+            <div className="pb-4 text-gray-700 text-sm">
+              {typeof content === "string" ? <p>{content}</p> : content}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

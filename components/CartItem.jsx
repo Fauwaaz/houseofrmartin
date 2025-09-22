@@ -22,7 +22,7 @@ const CartItem = ({
 
   const handleRemove = () => {
     remove(); 
-    toast.error('Uh Oh! Item removed');
+    toast.error('Uh Oh! Item removed from bag');
   };
 
   return (

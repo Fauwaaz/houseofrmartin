@@ -48,9 +48,6 @@ export const getStaticProps = async ({ params: { slug } }) => {
   };
 };
 
-
-
-
 const ProductDetails = ({ item }) => {
   const [isMounted, setMount] = useState(false);
   const [product, setProduct] = useState(item);

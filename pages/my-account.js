@@ -374,10 +374,12 @@ const MyAccount = () => {
                                             <div className="flex flex-col items-center gap-4">
                                                 <div className="relative">
                                                     <Image
-                                                        src={profileForm.profile_image || "/placeholder.jpg"}
+                                                        src={profileForm.profile_image || "https://secure.gravatar.com/avatar/23874fa782fb0b6e80485b702ff0fb976894c95b3825716aa8b6a90c86cf6547?s=96&d=mm&r=g"}
                                                         alt="Profile"
-                                                        width={120}
-                                                        height={120}
+                                                        width={100}
+                                                        height={100}
+                                                        quality={100}
+                                                        unoptimized
                                                         className="rounded-full border-4 border-gray-200"
                                                     />
                                                     <button

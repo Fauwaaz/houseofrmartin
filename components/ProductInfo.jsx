@@ -6,6 +6,8 @@ import Image from "next/image";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import toast from "react-hot-toast";
 import Accordion from "./common/Accordion";
+import { HeartIcon } from "lucide-react";
+import ShareButton from "./common/ShareButton";
 
 const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -15,11 +17,6 @@ const ProductInfo = ({ product, isMounted }) => {
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
   const [quantity, setQuantity] = useState(1);
-
-  const sizes =
-    product.attributes?.nodes
-      ?.filter((attr) => attr.name === "pa_size")
-      ?.flatMap((attr) => attr.options) || [];
 
   useEffect(() => {
     console.log("Variants:", allVariants);
@@ -98,14 +95,32 @@ const ProductInfo = ({ product, isMounted }) => {
     }
   }, [product]);
 
+  // Define the standard size order
+  const sizeOrder = ["S", "M", "L", "XL"];
+
+  // Extract sizes from product attributes
+  let sizes =
+    product.attributes?.nodes
+      ?.filter((attr) => attr.name.toLowerCase() === "pa_size")
+      ?.flatMap((attr) => attr.options) || [];
+
+  // Remove duplicates and normalize case
+  sizes = Array.from(new Set(sizes.map(s => s.toUpperCase())));
+
+  // Sort according to standard size order
+  sizes.sort((a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b));
+
+
+  // Function to get variants for a specific size
   const getVariantsForSize = (size) => {
-    return allVariants.filter(variant => {
+    return allVariants.filter((variant) => {
       const sizeAttr = variant.attributes?.nodes?.find(
-        attr => attr.name.toLowerCase() === "pa_size"
+        (attr) => attr.name.toLowerCase() === "pa_size"
       );
-      return sizeAttr && sizeAttr.value.toLowerCase() === size.toLowerCase();
+      return sizeAttr && sizeAttr.value.toUpperCase() === size.toUpperCase();
     });
   };
+
 
   const getVariationImage = (variation, colorName) => {
     // Only use the variation's main image
@@ -203,11 +218,22 @@ const ProductInfo = ({ product, isMounted }) => {
 
   return (
     <div>
-      <h1 className="text-3xl mb-2 font-geograph">
-        {product?.name || (
-          <span className="inline-block animate-pulse bg-gray-200 h-8 w-2/3 rounded" />
-        )}
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl mb-2 font-geograph">
+          {product?.name || (
+            <span className="inline-block animate-pulse bg-gray-200 h-8 w-2/3 rounded" />
+          )}
+        </h1>
+        <div className="flex gap-2">
+          <ShareButton />
+          <button
+            className="rounded-full p-2 bg-white cursor-pointer hover:border-1"
+            title="Add wishlist"
+          >
+            <HeartIcon />
+          </button>
+        </div>
+      </div>
 
       {"price" in product ? (
         <span className={styles.price}>
@@ -303,7 +329,7 @@ const ProductInfo = ({ product, isMounted }) => {
             };
 
             onAdd(cartItem, quantity);
-            toast.success('Item Added Successfully!')
+            toast.success('Item added to bag Successfully!')
           }}
         >
           Add to Bag <FiShoppingBag size={18} />
@@ -389,6 +415,18 @@ const ProductInfo = ({ product, isMounted }) => {
 
       <Accordion
         items={[
+          {
+            title: "Shipping",
+            content: (
+              <p>Shipping details</p>
+            )
+          },
+          {
+            title: "Offers",
+            content: (
+              <p>Offers here</p>
+            )
+          },
           {
             title: "Highlight",
             content: (
