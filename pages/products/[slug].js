@@ -140,12 +140,16 @@ const ProductDetails = ({ item }) => {
               </div>
             </div>
           </div>
-          
+
           <div className={styles.right}>
             <Suspense fallback={<ProductInfoSkeleton />}>
               <ProductInfo product={product} isMounted={isMounted} />
             </Suspense>
           </div>
+        </div>
+
+        <div className="pb-6">
+          <h2 className="text-3xl text-center">You may also like</h2>
         </div>
       </div>
     </Layout>

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import toast from "react-hot-toast";
 import Accordion from "./common/Accordion";
-import { Copy, HeartIcon, Star, StarIcon } from "lucide-react";
+import { ChevronRight, Copy, HeartIcon, Star, StarIcon } from "lucide-react";
 import ShareButton from "./common/ShareButton";
 import { RiMailStarFill, RiStarFill } from "react-icons/ri";
 
@@ -220,6 +220,10 @@ const ProductInfo = ({ product, isMounted }) => {
 
   return (
     <div>
+      <ul className="inline-flex gap-1 text-sm mb-2">
+        <li className="flex gap-1 items-center">Men <ChevronRight size={16} /> </li>
+        <li className="flex gap-1 items-center">{product?.name} </li>
+      </ul>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl lg:text-3xl mb-2 font-geograph">
           {product?.name || (
@@ -416,11 +420,11 @@ const ProductInfo = ({ product, isMounted }) => {
       <hr className="border-black/10 border-solid my-3" />
 
       <div className="flex gap-2">
-        <div className="w-[200px] h-[50px] bg-gray-200 border border-black/20 rounded-lg"></div>
-        <div className="w-[200px] h-[50px] bg-gray-200 border border-black/20 rounded-lg"></div>
-        <div className="w-[200px] h-[50px] bg-gray-200 border border-black/20 rounded-lg"></div>
+        <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
+        <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
+        <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
       </div>
- 
+
       <hr className="border-black/10 border-solid my-3" />
 
       <Accordion
@@ -429,7 +433,7 @@ const ProductInfo = ({ product, isMounted }) => {
             title: "Offers for you",
             content: (
               <>
-                <div className="h-[40px] w-[150px] rounded-lg flex justify-between items-center bg-transparent border border-dashed border-black/20  p-3">
+                <div className="h-[40px] w-[150px] rounded-lg flex justify-between items-center bg-green-400/30 border border-dashed border-green-500  p-3">
                   <p className="text-black font-medium">{code}</p>
                   <button className="cursor-pointer" onClick={handleCopy}>
                     <Copy size={16} />
