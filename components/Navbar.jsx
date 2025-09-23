@@ -85,11 +85,10 @@ export default function Navbar() {
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setUserDropdown((prev) => !prev)}
-                className="flex items-center focus:outline-none"
+                className="flex items-center focus:outline-none cursor-pointer"
               >
-                <UserCircle size={24} className="cursor-pointer" />
+               <UserCircle size={24} /> 
               </button>
-
               {userDropdown && (
                 <div className="absolute -right-20 lg:right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
                   <div className="border-b px-4 py-2">
@@ -120,8 +119,8 @@ export default function Navbar() {
             </Link>
           )}
 
-          <Link href={'/wishlist'}><Heart size={24} className="mx-4" /></Link>
-          <Search size={24} className="mr-4" />
+          <Link href={'/wishlist'}><Heart size={24} className="mx-3" /></Link>
+          <Search size={24} className="mr-3" />
           <CartButton />
         </div>
 

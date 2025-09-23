@@ -141,3 +141,9 @@ a {
 .max-w-1920 {
   max-width: 1920px;
 }
+
+@media (max-width: 768px) { 
+  main {
+    align-items:inherit;
+  }
+}
