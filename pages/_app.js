@@ -61,7 +61,7 @@ function App({ Component, pageProps }) {
     <ApolloProvider client={client}>
       <StateContext>
         {loading ? <Loading /> : <Component {...pageProps} />}
-        <Toaster position="bottom-center" reverseOrder={false} />
+        <Toaster position="left" reverseOrder={false} />
       </StateContext>
     </ApolloProvider>
   );

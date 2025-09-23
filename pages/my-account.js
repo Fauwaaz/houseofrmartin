@@ -335,7 +335,7 @@ const MyAccount = () => {
                         {/* Sidebar Navigation */}
                         <div className="lg:col-span-1">
                             <div className="bg-white rounded-2xl shadow-sm p-6 border">
-                                <nav className="space-y-2">
+                                <nav className="space-y-1">
                                     {tabs.map((tab) => {
                                         const Icon = tab.icon;
                                         return (

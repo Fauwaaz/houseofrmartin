@@ -54,10 +54,6 @@ const ProductDetails = ({ item }) => {
   const [slideImage, setSlideImage] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-
   useEffect(() => {
     if (product.price) {
       setProduct({
@@ -69,13 +65,6 @@ const ProductDetails = ({ item }) => {
   }, []);
 
   const seo = product?.seo || {};
-
-  const handleMouseMove = (e) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - left) / width - 0.5) * 100; // -50 to +50
-    const y = ((e.clientY - top) / height - 0.5) * 100; // -50 to +50
-    setPosition({ x: -x, y: -y });
-  };
 
 
   useEffect(() => {
@@ -102,7 +91,7 @@ const ProductDetails = ({ item }) => {
       </Head>
       <div className="mt-[60px]">
         <div className={styles.wrapper}>
-          <section className={styles.left}>
+          <div className={styles.left}>
             <Gallery
               product={product}
               selectedIndex={selectedIndex}
@@ -112,12 +101,6 @@ const ProductDetails = ({ item }) => {
             <div className="relative w-full">
               <div
                 className={styles.featured}
-                onMouseEnter={() => setIsZoomed(true)}
-                onMouseLeave={() => {
-                  setIsZoomed(false);
-                  setPosition({ x: 0, y: 0 });
-                }}
-                onMouseMove={handleMouseMove}
               >
                 <motion.div
                   key={slideImage}
@@ -136,7 +119,7 @@ const ProductDetails = ({ item }) => {
                     }
                     priority
                     fill
-                    className="object-cover"
+                    className="object-cover rounded-[20px]"
                     unoptimized
                   />
                 </motion.div>
@@ -167,13 +150,13 @@ const ProductDetails = ({ item }) => {
                 </button>
               </div>
             </div>
-
-          </section>
-          <section className={styles.right}>
+          </div>
+          
+          <div className={styles.right}>
             <Suspense fallback={<ProductInfoSkeleton />}>
               <ProductInfo product={product} isMounted={isMounted} />
             </Suspense>
-          </section>
+          </div>
         </div>
       </div>
     </Layout>

@@ -49,7 +49,10 @@
 }
 
 @media screen and (min-width: 360px){
- 
+  .price {
+    font-size: 24px;
+  }
+
   .button {
     width: 80%;
   }

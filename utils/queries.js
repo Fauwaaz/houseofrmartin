@@ -237,6 +237,7 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
           }
         }
       }
+      shortDescription
     }
   }
 `;

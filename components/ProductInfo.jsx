@@ -6,8 +6,9 @@ import Image from "next/image";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import toast from "react-hot-toast";
 import Accordion from "./common/Accordion";
-import { HeartIcon } from "lucide-react";
+import { Copy, HeartIcon, Star, StarIcon } from "lucide-react";
 import ShareButton from "./common/ShareButton";
+import { RiMailStarFill, RiStarFill } from "react-icons/ri";
 
 const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -17,6 +18,7 @@ const ProductInfo = ({ product, isMounted }) => {
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [code] = useState("CASH80");
 
   useEffect(() => {
     console.log("Variants:", allVariants);
@@ -95,23 +97,13 @@ const ProductInfo = ({ product, isMounted }) => {
     }
   }, [product]);
 
-  // Define the standard size order
   const sizeOrder = ["S", "M", "L", "XL"];
-
-  // Extract sizes from product attributes
   let sizes =
     product.attributes?.nodes
       ?.filter((attr) => attr.name.toLowerCase() === "pa_size")
       ?.flatMap((attr) => attr.options) || [];
-
-  // Remove duplicates and normalize case
   sizes = Array.from(new Set(sizes.map(s => s.toUpperCase())));
-
-  // Sort according to standard size order
   sizes.sort((a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b));
-
-
-  // Function to get variants for a specific size
   const getVariantsForSize = (size) => {
     return allVariants.filter((variant) => {
       const sizeAttr = variant.attributes?.nodes?.find(
@@ -216,10 +208,20 @@ const ProductInfo = ({ product, isMounted }) => {
     );
   };
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      toast.success("Coupon code copied!");
+    } catch (err) {
+      toast.error("Failed to copy");
+      console.error("Copy code failed:", err);
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl mb-2 font-geograph">
+        <h1 className="text-2xl lg:text-3xl mb-2 font-geograph">
           {product?.name || (
             <span className="inline-block animate-pulse bg-gray-200 h-8 w-2/3 rounded" />
           )}
@@ -413,34 +415,33 @@ const ProductInfo = ({ product, isMounted }) => {
 
       <hr className="border-black/10 border-solid my-3" />
 
+      <div className="flex gap-2">
+        <div className="w-[200px] h-[50px] bg-gray-200 border border-black/20 rounded-lg"></div>
+        <div className="w-[200px] h-[50px] bg-gray-200 border border-black/20 rounded-lg"></div>
+        <div className="w-[200px] h-[50px] bg-gray-200 border border-black/20 rounded-lg"></div>
+      </div>
+ 
+      <hr className="border-black/10 border-solid my-3" />
+
       <Accordion
         items={[
           {
-            title: "Shipping",
+            title: "Offers for you",
             content: (
-              <p>Shipping details</p>
-            )
-          },
-          {
-            title: "Offers",
-            content: (
-              <p>Offers here</p>
+              <>
+                <div className="h-[40px] w-[150px] rounded-lg flex justify-between items-center bg-transparent border border-dashed border-black/20  p-3">
+                  <p className="text-black font-medium">{code}</p>
+                  <button className="cursor-pointer" onClick={handleCopy}>
+                    <Copy size={16} />
+                  </button>
+                </div>
+              </>
             )
           },
           {
             title: "Highlight",
-            content: (
-              <ul className="list-disc pl-5">
-                <li>Premium quality fabric</li>
-                <li>Perfect for casual wear</li>
-                <li>Available in multiple colors</li>
-              </ul>
-            ),
-          },
-          {
-            title: "Description",
             content: isMounted ? (
-              <div
+              <div className="prose list-disc list-inside [&>ul]:list-disc [&>ul]:ml-5"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             ) : (
@@ -450,6 +451,38 @@ const ProductInfo = ({ product, isMounted }) => {
                 <div className="bg-gray-200 h-4 rounded w-10/12" />
               </div>
             ),
+          },
+          {
+            title: "Description",
+            content: isMounted ? (
+              <div
+                dangerouslySetInnerHTML={{ __html: product.shortDescription }}
+              />
+            ) : (
+              <div className="mt-4 space-y-2 animate-pulse">
+                <div className="bg-gray-200 h-4 rounded w-full" />
+                <div className="bg-gray-200 h-4 rounded w-11/12" />
+                <div className="bg-gray-200 h-4 rounded w-10/12" />
+              </div>
+            ),
+          },
+          {
+            title: "Shipping",
+            content: (
+              <p>Shipping details</p>
+            )
+          },
+          {
+            title: "Return",
+            content: (
+              <p>Return here</p>
+            ),
+          },
+          {
+            title: "Reviews",
+            content: (
+              <p> Reviews here   </p>
+            )
           },
         ]}
       />
