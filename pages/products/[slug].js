@@ -66,17 +66,6 @@ const ProductDetails = ({ item }) => {
 
   const seo = product?.seo || {};
 
-
-  useEffect(() => {
-    if (product.price) {
-      setProduct({
-        ...product,
-        price: parseFloat(product.price),
-      });
-    }
-    setMount(true);
-  }, []);
-
   return (
     <Layout>
       <Head>

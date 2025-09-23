@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useState } from "react";
 import styles from "../styles/Gallery.module.css";
 
 const Gallery = ({ product, setSlideImage, selectedIndex, setSelectedIndex }) => {
@@ -16,8 +15,6 @@ const Gallery = ({ product, setSlideImage, selectedIndex, setSelectedIndex }) =>
   return (
     <ol className={styles.gallery}>
       {images.map((image, i) => {
-        const [loaded, setLoaded] = useState(false);
-
         return (
           <li
             key={i}
@@ -33,18 +30,13 @@ const Gallery = ({ product, setSlideImage, selectedIndex, setSelectedIndex }) =>
               slide={i}
               className={styles.gallery_image}
             >
-              {!loaded && (
-                <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-md" />
-              )}
-
               <Image
                 alt={product?.name || "Product Image"}
                 src={image.sourceUrl}
                 priority={i === 0}
-                className={`object-contain transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`object-contain transition-opacity duration-500`}
                 fill
                 unoptimized
-                onLoadingComplete={() => setLoaded(true)}
               />
             </button>
           </li>
