@@ -1,6 +1,6 @@
+import { motion } from "framer-motion";
 
 const Hero = () => {
-
   return (
     <section className="min-h-screen w-full relative hero">
       {/* <div className={styles.left}>
@@ -115,7 +115,7 @@ const Hero = () => {
             backgroundPosition: "top",
             backgroundRepeat: "no-repeat",
             width: "30%",
-            height: "auto", 
+            height: "auto",
           }}
         >
         </div>
@@ -125,7 +125,7 @@ const Hero = () => {
             loop
             muted
             playsInline
-            style={{ width: "100%", height: "auto"}} 
+            style={{ width: "100%", height: "auto" }}
           >
             <source src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/banner-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
@@ -138,10 +138,24 @@ const Hero = () => {
             backgroundPosition: "top",
             backgroundRepeat: "no-repeat",
             width: "30%",
-            height: "auto", 
+            height: "auto",
           }}
         >
         </div>
+        <motion.div
+          className="border-[5px] border-white/80 rounded-full absolute top-1/2 left-1/4 cursor-pointer"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <div className="m-1 rounded-full w-5 h-5 bg-white/50"></div>
+        </motion.div>
+         <motion.div
+          className="border-[5px] border-white/80 rounded-full absolute top-2/4 right-1/4 cursor-pointer"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <div className="m-1 rounded-full w-5 h-5 bg-white/50"></div>
+        </motion.div>
       </div>
       <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
         <h1 className="text-3xl md:text-5xl lg:text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>

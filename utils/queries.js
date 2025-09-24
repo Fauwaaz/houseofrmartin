@@ -102,6 +102,20 @@ const GET_ALL = gql`
               sourceUrl
             }
           }
+            productTags {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+        productCategories {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
           galleryImages {
             nodes {
               sourceUrl
@@ -163,12 +177,38 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
           sourceUrl
         }
       }
+        productTags {
+          nodes {
+            id
+            name
+          }
+        }
+        productCategories {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
 
       ... on SimpleProduct {
         price(format: RAW)
         featuredImage {
           node {
             sourceUrl
+          }
+        }
+        productTags {
+          nodes {
+            id
+            name
+          }
+        }
+        productCategories {
+          nodes {
+            id
+            name
+            slug
           }
         }
         galleryImages {
@@ -190,6 +230,19 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
         featuredImage {
           node {
             sourceUrl
+          }
+        }
+        productTags {
+          nodes {
+            id
+            name
+          }
+        }
+        productCategories {
+          nodes {
+            id
+            name
+            slug
           }
         }
         galleryImages {
