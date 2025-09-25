@@ -121,7 +121,7 @@ export default function Navbar() {
                       <Info size={18} className="mr-2" /> Support
                     </Link>
                     <Link href="/wishlist" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
-                      <Heart size={18} className="mr-2"/> Wishlist
+                      <Heart size={18} className="mr-2" /> Wishlist
                     </Link>
                     <hr />
                     <button
@@ -136,13 +136,21 @@ export default function Navbar() {
             </div>
           ) : (
             <Link href="/auth">
-              <UserCircle size={24} />
+              <UserCircle size={24} />  
             </Link>
           )}
-          <Search size={24} />
+          <Search size={24}/>
           <CartButton />
         </div>
       </nav>
+      <div className="md:hidden relative w-full mb-2 px-3">
+        <input
+          type="text"
+          placeholder="Search"
+          className="text-sm py-2 border w-full px-4 pr-10 rounded-lg"
+        />
+        <Search className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+      </div>
 
       {/* Mobile Slide Menu */}
       <AnimatePresence>
@@ -207,7 +215,7 @@ export default function Navbar() {
 
               {/* Logout inside menu */}
               {user && (
-                <button 
+                <button
                   onClick={handleLogout}
                   className="mt-auto flex items-center gap-2 text-red-600 text-sm px-4 py-2 hover:bg-red-50 rounded-md"
                 >
