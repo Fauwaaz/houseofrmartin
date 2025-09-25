@@ -14,12 +14,14 @@ import {
   UserCircle,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [user, setUser] = useState(null);
   const dropdownRef = useRef(null);
+  const router = useRouter()
 
   useEffect(() => {
     async function fetchUser() {
@@ -45,13 +47,29 @@ export default function Navbar() {
   }, []);
 
   async function handleLogout() {
+    const isConfirmed = window.confirm("Are you sure you want to log out?");
+
+    if (!isConfirmed) {
+      return;
+    }
+
     try {
-      await fetch("/api/logout", { method: "POST" });
-      setUser(null); // reset immediately
-      toast.success('Logging out')
-      window.location.href = "/"; // redirect to login
-    } catch (err) {
-      console.error("❌ Logout error:", err);
+      const response = await fetch("/api/logout", {
+        method: "POST"
+      });
+
+      if (response.ok) {
+        setUser(null); 
+        toast.success("Successfully logged out!");
+        router.push('/');
+      } else {
+        console.error("❌ Logout failed with status:", response.status);
+        toast.error("Logout failed. Please try again.");
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("❌ A network error occurred during logout:", error);
+      toast.error("An error occurred. Please check your connection.");
     }
   }
 
@@ -87,7 +105,7 @@ export default function Navbar() {
                 onClick={() => setUserDropdown((prev) => !prev)}
                 className="flex items-center focus:outline-none cursor-pointer"
               >
-               <UserCircle size={24} /> 
+                <UserCircle size={24} />
               </button>
               {userDropdown && (
                 <div className="absolute -right-20 lg:right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">

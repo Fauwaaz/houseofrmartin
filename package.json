@@ -15,6 +15,8 @@
     "@fortawesome/react-fontawesome": "^3.0.2",
     "@next/env": "^12.3.1",
     "@stripe/stripe-js": "^1.42.0",
+    "@woocommerce/woocommerce-rest-api": "^1.0.2",
+    "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "canvas-confetti": "^1.5.1",
     "cookie": "^1.0.2",

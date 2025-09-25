@@ -94,6 +94,13 @@ const GET_ALL = gql`
               options
             }
           }
+          productCategories {
+            nodes {
+              id
+              name
+              slug
+            }
+          }
         }
         ... on VariableProduct {
           price(format: RAW)

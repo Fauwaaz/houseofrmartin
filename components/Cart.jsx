@@ -8,6 +8,7 @@ import getStripe from "../libs/getStripe";
 import styles from "../styles/Cart.module.css";
 import CartItem from "./CartItem";
 import { X } from "lucide-react";
+import PayButton from "./PayButton";
 
 const Cart = () => {
   const {
@@ -21,29 +22,10 @@ const Cart = () => {
     setCartItems,
   } = useStateContext();
 
-  const handleCheckout = async () => {
-    const stripe = await getStripe();
-
-    const response = await fetch("/api/stripe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(cartItems),
-    });
-    if (response.statusCode === 500) return;
-
-    const data = await response.json();
-
-    stripe.redirectToCheckout({ sessionId: data.id });
-  };
-
   const totalPrice = cartItems.reduce(
     (total, item) => total + Number(item.price) * item.quantity,
     0
   );
-
-
 
   return (
     <AnimatePresence>
@@ -92,7 +74,7 @@ const Cart = () => {
                         price={item.price}
                         size={item.size}
                         color={item.color}
-                        image={item.featuredImage?.node?.sourceUrl || '/placeholder.jpg'}
+                        image={item.image}
                         decrease={() => toggleCartItemQuantity(item.id, "dec")}
                         increase={() => toggleCartItemQuantity(item.id, "inc")}
                         remove={() => onRemove(item)}
@@ -106,7 +88,7 @@ const Cart = () => {
                     <span><span className="price-font">D</span>   {Number(totalPrice || 0).toFixed(2)}</span>
                   </div>
                   <div className={styles.checkout}>
-                    <button onClick={handleCheckout}>Checkout</button>
+                    <PayButton cartItems={cartItems} totalPrice={totalPrice} />
                   </div>
                 </div>
               </div>

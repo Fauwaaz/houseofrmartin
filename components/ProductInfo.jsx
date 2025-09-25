@@ -328,7 +328,7 @@ const ProductInfo = ({ product, isMounted }) => {
               id: selectedVariation.databaseId || selectedVariation.id,
               name: product.name,
               price: selectedVariation?.price || product.price,
-              image: selectedVariation?.image?.sourceUrl || product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg",
+              image: selectedVariation?.image?.sourceUrl || product?.featuredImage[0]?.node?.sourceUrl || "/placeholder.jpg",
               size: getSize(selectedVariation),
               color: getColorName(selectedVariation),
               quantity,
