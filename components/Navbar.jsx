@@ -1,7 +1,8 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import styles from "../styles/Navbar.module.css";
 import CartButton from "./CartButton";
 import {
   Heart,
@@ -9,19 +10,19 @@ import {
   Search,
   X,
   LogOut,
-  Settings,
   Info,
   UserCircle,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [user, setUser] = useState(null);
   const dropdownRef = useRef(null);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchUser() {
@@ -48,108 +49,175 @@ export default function Navbar() {
 
   async function handleLogout() {
     const isConfirmed = window.confirm("Are you sure you want to log out?");
-
-    if (!isConfirmed) {
-      return;
-    }
+    if (!isConfirmed) return;
 
     try {
-      const response = await fetch("/api/logout", {
-        method: "POST"
-      });
+      const response = await fetch("/api/logout", { method: "POST" });
 
       if (response.ok) {
         setUser(null);
         toast.success("Successfully logged out!");
-        router.push('/');
+        router.push("/");
       } else {
-        console.error("❌ Logout failed with status:", response.status);
+        console.error("❌ Logout failed:", response.status);
         toast.error("Logout failed. Please try again.");
       }
     } catch (error) {
-      // Handle network errors or other exceptions
-      console.error("❌ A network error occurred during logout:", error);
+      console.error("❌ Logout network error:", error);
       toast.error("An error occurred. Please check your connection.");
     }
   }
 
-
   return (
-    <header className={styles.header}>
-      <nav className={styles.nav}>
-        {/* Desktop Links */}
-        {/* <ul className="hidden md:flex space-x-8 font-geograph-md uppercase text-sm">
-          <li><Link href="/">Home</Link></li>
-          <li><Link href="/products">Shop</Link></li>
-          <li><Link href="/products">Bestseller</Link></li>
-          <li><Link href="/about">About</Link></li>
-        </ul> */}
-
+    <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50">
+      <nav className="flex justify-between items-center px-4 py-3">
+        {/* Hamburger */}
         <button
-          className="text-2xl w-[120px]"
+          className="text-2xl w-[80px]"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
           {menuOpen ? <X /> : <Menu />}
         </button>
 
+        {/* Logo */}
         <Link href="/">
           <Image
             src="/logo.png"
             alt="Logo"
-            width={100}
+            width={120}
             height={60}
             unoptimized
-            className="w-[60px] lg:w-[220px] h-auto"
+            className="w-[180px] lg:w-[200px] h-auto"
           />
         </Link>
 
-        {/* Right Section */}
-        <div className="flex items-center justify-center relative">
+        {/* Right section */}
+        <div className="flex items-center gap-2">
           {user ? (
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setUserDropdown((prev) => !prev)}
-                className="flex items-center focus:outline-none cursor-pointer"
+                className="flex items-center cursor-pointer"
               >
                 <UserCircle size={24} />
               </button>
               {userDropdown && (
-                <div className="absolute -right-20 lg:right-0 mt-9 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
+                <div className="absolute right-0 mt-2 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
                   <div className="border-b px-4 py-2">
                     <h3 className="capitalize">{user.name}</h3>
-                    <p className="text-[12px] text-gray-600">{user.email}</p>
+                    <p className="text-xs text-gray-600">{user.email}</p>
                   </div>
-                  <div className="text-sm space-y-2">
-                    <Link href="/my-account" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md mt-2">
+                  <div className="text-sm mt-2 space-y-2">
+                    <Link
+                      href="/my-account"
+                      className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md"
+                    >
                       <UserCircle size={18} className="mr-2" /> Edit profile
                     </Link>
-                    <Link href="/support" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
+                    <Link
+                      href="/support"
+                      className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md"
+                    >
                       <Info size={18} className="mr-2" /> Support
                     </Link>
+                    <Link href="/wishlist" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
+                      <Heart size={18} className="mr-2"/> Wishlist
+                    </Link>
                     <hr />
-                    <Link href='Javascript:void(0)'
+                    <button
                       onClick={handleLogout}
-                      className="w-full flex items-center px-4 py-2 text-red-600 hover:bg-red-50 text-left rounded-md cursor-pointer"
+                      className="w-full flex items-center px-4 py-2 text-red-600 hover:bg-red-50 rounded-md"
                     >
                       <LogOut size={18} className="mr-2" /> Logout
-                    </Link>
+                    </button>
                   </div>
                 </div>
               )}
             </div>
           ) : (
-            <Link href="/auth" className="cursor-pointer">
+            <Link href="/auth">
               <UserCircle size={24} />
             </Link>
           )}
-
-          <Link href={'/wishlist'}><Heart size={24} className="mx-2" /></Link>
-          <Search size={24} className="mr-2" />
+          <Search size={24} />
           <CartButton />
         </div>
-
-        {/* Mobile Menu */}
       </nav>
+
+      {/* Mobile Slide Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Background overlay */}
+            <motion.div
+              className="fixed inset-0 bg-black/50 z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMenuOpen(false)}
+            />
+
+            {/* Slide menu */}
+            <motion.div
+              className="fixed top-0 left-0 h-full w-3/4 max-w-xs bg-white shadow-lg z-50 p-6 flex flex-col"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              {/* User info */}
+              {user ? (
+                <div className="border-b pb-4 mb-4">
+                  <h3 className="font-semibold capitalize">{user.name}</h3>
+                  <p className="text-xs text-gray-600">{user.email}</p>
+                </div>
+              ) : (
+                <div className="border-b pb-4 mb-4">
+                  <Link href="/auth" onClick={() => setMenuOpen(false)}>
+                    <button className="text-sm bg-black text-white px-4 py-2 rounded-md">
+                      Login / Register
+                    </button>
+                  </Link>
+                </div>
+              )}
+
+              {/* Navigation links */}
+              <ul className="flex flex-col gap-4 text-sm uppercase">
+                <li>
+                  <Link href="/" onClick={() => setMenuOpen(false)}>
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/products" onClick={() => setMenuOpen(false)}>
+                    Shop
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/products?filter=bestseller" onClick={() => setMenuOpen(false)}>
+                    Bestseller
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" onClick={() => setMenuOpen(false)}>
+                    About
+                  </Link>
+                </li>
+              </ul>
+
+              {/* Logout inside menu */}
+              {user && (
+                <button 
+                  onClick={handleLogout}
+                  className="mt-auto flex items-center gap-2 text-red-600 text-sm px-4 py-2 hover:bg-red-50 rounded-md"
+                >
+                  <LogOut size={18} /> Logout
+                </button>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -22,16 +22,21 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
     callback?.(updated);
   };
 
-  const handleReset = () => {
-    setSelectedColors([]);
-    setSelectedSizes([]);
+  const handleCategoryReset = () => {
     setSelectedCategory([]);
-    onColorSelect([]);
-    onSizeSelect([]);
     onCategorySelect([]);
   };
 
-  // ✅ Unique attributes (memoized for performance)
+  const handleColorsReset = () => {
+    setSelectedColors([]);
+    onColorSelect([]);
+  }
+
+  const handleSizeReset = () => {
+    setSelectedSizes([]);
+    onSizeSelect([]);
+  }
+
   const uniqueCategory = useMemo(
     () => [...new Set(products?.flatMap((p) => p.productCategories?.nodes?.map((c) => c.name) || []))],
     [products]
@@ -51,7 +56,6 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
     [products]
   );
 
-  // ✅ Fetch products by filter (API call)
   const fetchFilteredProducts = async (filter) => {
     try {
       setLoading(true);
@@ -100,7 +104,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
 
         {/* Filter modal */}
         {showFilter && (
-          <div className="absolute left-0 top-0 w-full flex justify-center px-6 z-50">
+          <div className="absolute left-0 top-0 w-full flex justify-center px-3 lg:px-6 z-50">
             <div className="w-full bg-gray-100 shadow-lg rounded-3xl px-4 py-3">
               {/* Close */}
               <div
@@ -121,6 +125,12 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                 <div>
                   <hr />
                   <h4 className="text-md uppercase my-2">Size</h4>
+                  <p
+                    className="text-sm underline text-gray-500 pb-3 cursor-pointer"
+                    onClick={handleSizeReset}
+                  >
+                    reset
+                  </p>
                   <div className="flex gap-2 flex-wrap">
                     {uniqueSizes.map((size) => {
                       const isSelected = selectedSizes.includes(size);
@@ -145,7 +155,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                   <h4 className="text-md uppercase my-2">Product type</h4>
                   <p
                     className="text-sm underline text-gray-500 pb-3 cursor-pointer"
-                    onClick={handleReset}
+                    onClick={handleCategoryReset}
                   >
                     reset
                   </p>
@@ -176,7 +186,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                   <h4 className="text-md uppercase my-2">Color</h4>
                   <p
                     className="text-sm underline text-gray-500 pb-3 cursor-pointer"
-                    onClick={handleReset}
+                    onClick={handleColorsReset}
                   >
                     reset
                   </p>

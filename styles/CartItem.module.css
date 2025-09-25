@@ -108,3 +108,10 @@
   opacity: 0.5;
   cursor: pointer;
 }
+
+
+@media screen and (max-width:768px) {
+  .image {
+    width: 22%;
+  }
+}
