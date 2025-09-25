@@ -59,7 +59,7 @@ export default function Navbar() {
       });
 
       if (response.ok) {
-        setUser(null); 
+        setUser(null);
         toast.success("Successfully logged out!");
         router.push('/');
       } else {
@@ -77,7 +77,21 @@ export default function Navbar() {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
-        {/* Logo */}
+        {/* Desktop Links */}
+        {/* <ul className="hidden md:flex space-x-8 font-geograph-md uppercase text-sm">
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/products">Shop</Link></li>
+          <li><Link href="/products">Bestseller</Link></li>
+          <li><Link href="/about">About</Link></li>
+        </ul> */}
+
+        <button
+          className="text-2xl w-[120px]"
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          {menuOpen ? <X /> : <Menu />}
+        </button>
+
         <Link href="/">
           <Image
             src="/logo.png"
@@ -85,17 +99,9 @@ export default function Navbar() {
             width={100}
             height={60}
             unoptimized
-            className="w-[60px] lg:w-[180px] h-auto"
+            className="w-[60px] lg:w-[220px] h-auto"
           />
         </Link>
-
-        {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-8 font-geograph-md uppercase text-sm">
-          <li><Link href="/">Home</Link></li>
-          <li><Link href="/products">Shop</Link></li>
-          <li><Link href="/products">Bestseller</Link></li>
-          <li><Link href="/about">About</Link></li>
-        </ul>
 
         {/* Right Section */}
         <div className="flex items-center justify-center relative">
@@ -137,18 +143,12 @@ export default function Navbar() {
             </Link>
           )}
 
-          <Link href={'/wishlist'}><Heart size={24} className="mx-3" /></Link>
-          <Search size={24} className="mr-3" />
+          <Link href={'/wishlist'}><Heart size={24} className="mx-2" /></Link>
+          <Search size={24} className="mr-2" />
           <CartButton />
         </div>
 
         {/* Mobile Menu */}
-        <button
-          className="md:hidden text-2xl"
-          onClick={() => setMenuOpen((prev) => !prev)}
-        >
-          {menuOpen ? <X /> : <Menu />}
-        </button>
       </nav>
     </header>
   );
