@@ -82,10 +82,10 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="Logo"
-            width={90}
+            width={100}
             height={60}
             unoptimized
-            className="w-[60px] lg:w-[110px] h-auto"
+            className="w-[60px] lg:w-[180px] h-auto"
           />
         </Link>
 
