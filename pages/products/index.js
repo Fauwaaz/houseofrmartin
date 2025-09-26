@@ -7,6 +7,7 @@ import { GET_ALL } from "../../utils/queries";
 import { colorMap } from "../../utils/data";
 import Filter from "../../components/common/Filter";
 import { useState } from "react";
+import { Heart } from "lucide-react";
 
 export async function getStaticProps() {
   const { data } = await client.query({ query: GET_ALL });
@@ -112,10 +113,16 @@ const Products = ({ products }) => {
                   className="bg-white shadow-sm rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
-                    <div className="bg-black/70 px-4 py-2 text-[12px] lg:text-sm text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
+                    <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
                       {product.productTags.nodes[0].name}
                     </div>
                   )}
+
+                  <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
+                    <button>
+                      <Heart />
+                    </button>
+                  </div>
 
                   <Link
                     href={`/products/${product.slug}`}
@@ -186,7 +193,7 @@ const Products = ({ products }) => {
                           ))}
 
                           {remaining > 0 && (
-                            <span className="inline-flex items-center font-geograph-md justify-center w-5 h-5 rounded-full border border-gray-400 text-xs bg-gray-100 text-gray-700">
+                            <span className="inline-flex -ml-1 items-center justify-center w-5 h-5 text-sm text-black">
                               +{remaining}
                             </span>
                           )}

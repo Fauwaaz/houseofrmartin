@@ -12,6 +12,7 @@ import stylesCommon from "../styles/common.module.css";
 import BeforeFooter from "../components/BeforeFooter";
 import { useState } from "react";
 import { colorMap } from "../utils/data";
+import { Heart } from "lucide-react";
 
 export async function getStaticProps() {
   const { data } = await client.query({
@@ -173,6 +174,12 @@ const Home = ({ products }) => {
                       </div>
                     )}
 
+                    <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
+                      <button>
+                        <Heart />
+                      </button>
+                    </div>
+
                     <Link
                       href={`/products/${product.slug}`}
                       className="w-full relative group"
@@ -240,7 +247,7 @@ const Home = ({ products }) => {
                             ))}
 
                             {remaining > 0 && (
-                              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-gray-400 text-xs bg-gray-100 text-gray-700">
+                              <span className="inline-flex -ml-1 items-center justify-center w-5 h-5 text-sm text-black">
                                 +{remaining}
                               </span>
                             )}
@@ -306,6 +313,12 @@ const Home = ({ products }) => {
                       </div>
                     )}
 
+                    <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
+                      <button>
+                        <Heart />
+                      </button>
+                    </div>
+
                     <Link
                       href={`/products/${product.slug}`}
                       className="w-full relative group"
@@ -373,10 +386,10 @@ const Home = ({ products }) => {
                             ))}
 
                             {remaining > 0 && (
-                              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-gray-400 text-xs bg-gray-100 text-gray-700">
-                                +{remaining}
-                              </span>
-                            )}
+                            <span className="inline-flex -ml-1 items-center justify-center w-5 h-5 text-sm text-black">
+                              +{remaining}
+                            </span>
+                          )}
                           </>
                         );
                       })()}
