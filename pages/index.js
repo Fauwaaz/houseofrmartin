@@ -218,19 +218,37 @@ const Home = ({ products }) => {
                       )}
                     </div>
 
-                    <div className="flex mt-3 px-3 w-full gap-2">
-                      {product.attributes?.nodes
-                        ?.filter((attr) => attr.name === "pa_color")
-                        ?.flatMap((attr) => attr.options)
-                        ?.map((color, index) => (
-                          <span
-                            key={index}
-                            className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
-                            style={{ backgroundColor: colorMap[color] || "#ccc" }}
-                            title={color}
-                          />
-                        ))}
+                    <div className="flex mt-3 px-3 w-full gap-2 items-center">
+                      {(() => {
+                        const colors =
+                          product.attributes?.nodes
+                            ?.filter((attr) => attr.name === "pa_color")
+                            ?.flatMap((attr) => attr.options) || [];
+
+                        const limitedColors = colors.slice(0, 3);
+                        const remaining = colors.length - 3;
+
+                        return (
+                          <>
+                            {limitedColors.map((color, index) => (
+                              <span
+                                key={index}
+                                className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
+                                style={{ backgroundColor: colorMap[color] || "#ccc" }}
+                                title={color}
+                              />
+                            ))}
+
+                            {remaining > 0 && (
+                              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-gray-400 text-xs bg-gray-100 text-gray-700">
+                                +{remaining}
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
+
                   </div>
                 );
               })}
@@ -333,19 +351,37 @@ const Home = ({ products }) => {
                       )}
                     </div>
 
-                    <div className="flex mt-3 px-3 w-full gap-2">
-                      {product.attributes?.nodes
-                        ?.filter((attr) => attr.name === "pa_color")
-                        ?.flatMap((attr) => attr.options)
-                        ?.map((color, index) => (
-                          <span
-                            key={index}
-                            className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
-                            style={{ backgroundColor: colorMap[color] || "#ccc" }}
-                            title={color}
-                          />
-                        ))}
+                    <div className="flex mt-3 px-3 w-full gap-2 items-center">
+                      {(() => {
+                        const colors =
+                          product.attributes?.nodes
+                            ?.filter((attr) => attr.name === "pa_color")
+                            ?.flatMap((attr) => attr.options) || [];
+
+                        const limitedColors = colors.slice(0, 3);
+                        const remaining = colors.length - 3;
+
+                        return (
+                          <>
+                            {limitedColors.map((color, index) => (
+                              <span
+                                key={index}
+                                className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
+                                style={{ backgroundColor: colorMap[color] || "#ccc" }}
+                                title={color}
+                              />
+                            ))}
+
+                            {remaining > 0 && (
+                              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full border border-gray-400 text-xs bg-gray-100 text-gray-700">
+                                +{remaining}
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
+
                   </div>
                 );
               })}

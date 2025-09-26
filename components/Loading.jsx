@@ -1,9 +1,12 @@
 import Head from "next/head";
 import Layout from "./Layout";
+import Navbar from "./Navbar";
+import FooterBar from "./common/FooterBar";
 
 const Loading = () => {
   return (
-    <Layout>
+    <>
+      <Navbar />
       <Head>
         <title>Loading...</title>
         <meta name="description" content="Loading..." />
@@ -16,7 +19,8 @@ const Loading = () => {
           <p className="text-sm lg:text-lg">Loading...</p>
         </div>
       </div>
-    </Layout>
+      <FooterBar />
+    </>
   );
 };
 

@@ -234,6 +234,8 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
 
       ... on VariableProduct {
         price(format: RAW)
+        salePrice(format: RAW)
+        regularPrice(format: RAW)
         featuredImage {
           node {
             sourceUrl

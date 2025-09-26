@@ -73,7 +73,7 @@ export default function Navbar() {
       <nav className="flex justify-between items-center px-6 py-3">
         {/* Hamburger */}
         <button
-          className="text-2xl w-[80px]"
+          className="text-2xl w-[40px] lg:w-[80px]"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
           {menuOpen ? <X /> : <Menu />}
@@ -94,7 +94,7 @@ export default function Navbar() {
         {/* Right section */}
         <div className="flex items-center gap-2">
           {user ? (
-            <div ref={dropdownRef} className="relative">
+            <div ref={dropdownRef} className="relative hidden lg:block">
               <button
                 onClick={() => setUserDropdown((prev) => !prev)}
                 className="flex items-center"
@@ -135,7 +135,7 @@ export default function Navbar() {
               )}
             </div>
           ) : (
-            <Link href="/auth">
+            <Link href="/auth" className="hidden lg:block">
               <UserCircle size={24} />  
             </Link>
           )}
@@ -223,7 +223,7 @@ export default function Navbar() {
               {user && (
                 <button
                   onClick={handleLogout}
-                  className="mt-auto flex items-center gap-2 text-red-600 text-sm px-4 py-2 hover:bg-red-50 rounded-md"
+                  className="mt-3 lg:mt-auto flex items-center gap-2 text-red-600 text-sm px-4 py-2 bg-red-50 hover:bg-red-30 rounded-md"
                 >
                   <LogOut size={18} /> Logout
                 </button>

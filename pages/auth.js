@@ -146,7 +146,7 @@ const AuthPage = () => {
                     <Link href="/" className="text-black hover:underline flex gap-1 items-center"><HiOutlineChevronLeft size={20}/> Back</Link>
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center rounded-full mb-4">
-                            <Image src="/logo.png" alt="Logo" width={100} height={40} className='object-contain' />
+                            <Image src="/logo.png" alt="Logo" width={200} height={40} className='object-contain' />
                         </div>
                         <h1 className="text-3xl font-bold text-black mb-2">
                             {isLogin ? 'Welcome Back' : 'Create Account'}

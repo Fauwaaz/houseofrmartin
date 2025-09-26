@@ -6,9 +6,8 @@ import Image from "next/image";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import toast from "react-hot-toast";
 import Accordion from "./common/Accordion";
-import { ChevronRight, Copy, HeartIcon, Star, StarIcon } from "lucide-react";
+import { ChevronRight, Copy, HeartIcon } from "lucide-react";
 import ShareButton from "./common/ShareButton";
-import { RiMailStarFill, RiStarFill } from "react-icons/ri";
 
 const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -97,7 +96,7 @@ const ProductInfo = ({ product, isMounted }) => {
     }
   }, [product]);
 
-  const sizeOrder = ["S", "M", "L", "XL"];
+  const sizeOrder = ["S", "M", "L", "XL", "XXL"];
   let sizes =
     product.attributes?.nodes
       ?.filter((attr) => attr.name.toLowerCase() === "pa_size")
@@ -241,17 +240,55 @@ const ProductInfo = ({ product, isMounted }) => {
         </div>
       </div>
 
-      {"price" in product ? (
-        <span className={styles.price}>
-          <p className="price-font">D</p> {product.price}
-        </span>
-      ) : (
+      {"price" in product ? (() => {
+        const cleanPrice = parseFloat(
+          String(product.regularPrice));
+        const cleanSale = product.salePrice
+          ? parseFloat(String(product.salePrice))
+          : null;
+
+        const discount =
+          cleanSale && cleanPrice
+            ? Math.round(((cleanPrice - cleanSale) / cleanPrice) * 100)
+            : null;
+
+        return (
+          <div className="flex items-center gap-2">
+            {cleanSale ? (
+              <>
+                {/* Selling Price */}
+                <span className="text-xl lg:text-2xl font-semibold text-black">
+                  <span className="price-font">D</span> {cleanSale}
+                </span>
+
+                {/* Regular Price */}
+                <span className="text-lg line-through text-gray-500">
+                  <span className="price-font">D</span> {cleanPrice}
+                </span>
+
+                {/* Discount % */}
+                {discount !== null && (
+                  <span className="text-lg font-medium text-green-600">
+                    -{discount}% off
+                  </span>
+                )}
+              </>
+            ) : (
+              // Only Price
+              <span className="text-xl lg:text-2xl font-semibold">
+                <span className="price-font">D</span> {cleanPrice}
+              </span>
+            )}
+          </div>
+        );
+      })() : (
         <div className="animate-pulse bg-gray-200 h-6 w-24 rounded" />
       )}
 
+
       <hr className="border-black/10 border-solid my-3" />
 
-      <div className="flex flex-col md:flex-row gap-2 md:gap-12">
+      <div className="flex flex-col md:flex-row gap-2 md:gap-5">
         <div>
           <p className="mt-2 text-sm">Select size</p>
           {sizes.length > 0 ? (
@@ -260,7 +297,7 @@ const ProductInfo = ({ product, isMounted }) => {
                 <button
                   key={index}
                   className={`px-4 py-2 border rounded uppercase cursor-pointer ${selectedSize === size
-                    ? "bg-black text-white border-black"
+                    ? "bg-black text-white"
                     : "border-gray-400 bg-white"
                     }`}
                   onClick={() => handleSizeSelect(size)}
@@ -410,54 +447,27 @@ const ProductInfo = ({ product, isMounted }) => {
 
           {/* Selected variant info */}
           {selectedVariation && (
-            <p className="mt-2 text-sm capitalize bg-white p-2 rounded-lg w-2/3 lg:w-[200px]">
+            <p className="mt-2 text-sm uppercase bg-white p-2 rounded-lg w-2/3 lg:w-[200px]">
               Selected: {getColorName(selectedVariation)} - Size {getSize(selectedVariation)}
             </p>
           )}
         </>
       )}
 
-      <hr className="border-black/10 border-solid my-3" />
+      {/* <hr className="border-black/10 border-solid my-3" /> */}
 
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
         <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
         <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
-      </div>
+      </div> */}
 
-      <hr className="border-black/10 border-solid my-3" />
+      <hr className="border-black/10 border-solid mt-3" />
 
       <Accordion
         items={[
           {
-            title: "Offers for you",
-            content: (
-              <>
-                <div className="h-[40px] w-[150px] rounded-lg flex justify-between items-center bg-green-400/30 border border-dashed border-green-500  p-3">
-                  <p className="text-black font-medium">{code}</p>
-                  <button className="cursor-pointer" onClick={handleCopy}>
-                    <Copy size={16} />
-                  </button>
-                </div>
-              </>
-            )
-          },
-          {
-            title: "Highlight",
-            content: isMounted ? (
-              <div className="prose list-disc list-inside [&>ul]:list-disc [&>ul]:ml-5"
-                dangerouslySetInnerHTML={{ __html: product.description }}
-              />
-            ) : (
-              <div className="mt-4 space-y-2 animate-pulse">
-                <div className="bg-gray-200 h-4 rounded w-full" />
-                <div className="bg-gray-200 h-4 rounded w-11/12" />
-                <div className="bg-gray-200 h-4 rounded w-10/12" />
-              </div>
-            ),
-          },
-          {
-            title: "Description",
+            title: "Details",
             content: isMounted ? (
               <div
                 dangerouslySetInnerHTML={{ __html: product.shortDescription }}
@@ -471,16 +481,23 @@ const ProductInfo = ({ product, isMounted }) => {
             ),
           },
           {
+            title: "Offers ",
+            content: (
+              <>
+                <div className="h-[40px] w-[150px] rounded-lg flex justify-between items-center bg-green-400/30 border border-dashed border-green-500  p-3">
+                  <p className="text-black font-medium">{code}</p>
+                  <button className="cursor-pointer" onClick={handleCopy}>
+                    <Copy size={16} />
+                  </button>
+                </div>
+              </>
+            )
+          },
+          {
             title: "Shipping",
             content: (
               <p>Shipping details</p>
             )
-          },
-          {
-            title: "Return",
-            content: (
-              <p>Return here</p>
-            ),
           },
           {
             title: "Reviews",

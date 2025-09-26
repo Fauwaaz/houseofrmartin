@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronLeft } from "lucide-react";
+import { ChevronDown, ChevronLeft, MinusIcon, PlusIcon } from "lucide-react";
 
 const AccordionItem = ({ title, content, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-gray-300">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-between items-center w-full py-3 text-left text-md font-medium uppercase cursor-pointer"
+        className="flex justify-between items-center w-full py-4 text-left text-md font-medium uppercase cursor-pointer"
       >
         <span>{title}</span>
-        {isOpen ? <ChevronLeft /> : <ChevronDown />}
+        {isOpen ? <MinusIcon /> : <PlusIcon />}
       </button>
 
       <AnimatePresence initial={false}>

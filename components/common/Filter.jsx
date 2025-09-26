@@ -104,7 +104,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
 
         {/* Filter modal */}
         {showFilter && (
-          <div className="absolute left-0 top-0 w-full flex justify-center px-3 lg:px-6 z-50">
+          <div className="absolute left-0 top-0 w-full flex justify-center px-3 lg:px-6 z-20">
             <div className="w-full bg-gray-100 shadow-lg rounded-3xl px-4 py-3">
               {/* Close */}
               <div
@@ -120,7 +120,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
               </div>
 
               {/* Filters grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-4 py-4 gap-9">
+              <div className="grid grid-cols-1 lg:grid-cols-3 py-4 gap-9">
                 {/* Sizes */}
                 <div>
                   <hr />
@@ -137,9 +137,8 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                       return (
                         <div
                           key={size}
-                          className={`px-4 py-2 border rounded text-sm uppercase cursor-pointer ${
-                            isSelected ? "bg-black text-white border-black" : "bg-white border-gray-300"
-                          }`}
+                          className={`px-4 py-2 border rounded text-sm uppercase cursor-pointer ${isSelected ? "bg-black text-white border-black" : "bg-white border-gray-300"
+                            }`}
                           onClick={() => toggleSelection(selectedSizes, setSelectedSizes, size, onSizeSelect)}
                         >
                           {size}
@@ -159,7 +158,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                   >
                     reset
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid lg:grid-cols-4 gap-2">
                     {uniqueCategory.map((cat) => (
                       <label key={cat} className="flex items-center gap-2 capitalize cursor-pointer">
                         <input
@@ -172,12 +171,11 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                       </label>
                     ))}
                   </div>
-                </div>
-
-                {/* Price placeholder */}
-                <div>
-                  <hr />
-                  <h4 className="text-md uppercase my-2">Price</h4>
+                  {/* Price placeholder */}
+                  <div className="mt-4">
+                    <hr />
+                    <h4 className="text-md uppercase my-2">Price</h4>
+                  </div>
                 </div>
 
                 {/* Colors */}
@@ -200,9 +198,8 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                           onClick={() => toggleSelection(selectedColors, setSelectedColors, color, onColorSelect)}
                         >
                           <div
-                            className={`w-5 h-5 rounded-full border ${
-                              isSelected ? "border-2 border-black" : "border-gray-300"
-                            }`}
+                            className={`w-5 h-5 rounded-full border ${isSelected ? "border-2 border-black" : "border-gray-300"
+                              }`}
                             style={{ backgroundColor: colorMap[color] || "#ccc" }}
                           />
                           <span className="text-sm">{color}</span>
