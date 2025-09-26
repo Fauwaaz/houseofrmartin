@@ -1,8 +1,9 @@
 import Head from "next/head";
+import Layout from "./Layout";
 
 const Loading = () => {
   return (
-    <>
+    <Layout>
       <Head>
         <title>Loading...</title>
         <meta name="description" content="Loading..." />
@@ -11,11 +12,11 @@ const Loading = () => {
       </Head>
       <div className="flex items-center justify-center min-h-screen w-full">
         <div className="flex flex-col items-center space-y-4">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-black mr-2"></div>
-          <p className="text-lg">Loading...</p>
+          <div className="animate-spin rounded-full h-7 w-7 lg:h-10 lg:w-10 border-b-2 border-black mr-2"></div>
+          <p className="text-sm lg:text-lg">Loading...</p>
         </div>
       </div>
-    </>
+    </Layout>
   );
 };
 

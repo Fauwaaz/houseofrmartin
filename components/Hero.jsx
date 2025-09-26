@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const Hero = () => {
   return (
-    <section className="min-h-screen w-full relative hero">
+    <section className="mt-[80px] lg:mt-0 min-h-screen w-full relative hero">
       {/* <div className={styles.left}>
         <h3 className={styles.title}>
           Our Best <br />
@@ -149,7 +150,7 @@ const Hero = () => {
         >
           <div className="m-1 rounded-full w-5 h-5 bg-white/50"></div>
         </motion.div>
-         <motion.div
+        <motion.div
           className="border-[5px] border-white/80 rounded-full absolute top-2/4 right-1/4 cursor-pointer"
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}
@@ -157,9 +158,20 @@ const Hero = () => {
           <div className="m-1 rounded-full w-5 h-5 bg-white/50"></div>
         </motion.div>
       </div>
-      <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
-        <h1 className="text-3xl md:text-5xl lg:text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>
+      <div className="block lg:hidden">
+        <Image 
+          src={'/hero/rmartin-hero-1.png'}
+          width={100}
+          height={100}
+          className='object-cover w-full'
+          unoptimized
+          quality={100}
+        />
+        <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
+          <h1 className="text-5xl md:text-5xl lg:text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>
+        </div>
       </div>
+
     </section>
   );
 };

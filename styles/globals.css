@@ -110,6 +110,7 @@ p {
 
 button {
   all: unset;
+  cursor: pointer;
 }
 
 a {

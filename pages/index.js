@@ -109,7 +109,7 @@ const Home = ({ products }) => {
           </div>
         </section>
 
-        <section className="story-banner lg:min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full  h-full">
+        <section className="story-banner h-[500px] lg:min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 justify-items-center">
             <div className="story-banner-image"></div>
             <div className="story-banner-content w-3/4 ">
@@ -138,7 +138,7 @@ const Home = ({ products }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
             {products
               // filter products that have a tag "Bestseller"
               // .filter((product) =>
@@ -255,7 +255,7 @@ const Home = ({ products }) => {
               FEATURED
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
             {products
               //  .filter((product) =>
               //   product.productTags?.nodes?.some((tag) => tag.slug === "new-arrivals")

@@ -70,7 +70,7 @@ export default function Navbar() {
 
   return (
     <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50">
-      <nav className="flex justify-between items-center px-4 py-3">
+      <nav className="flex justify-between items-center px-6 py-3">
         {/* Hamburger */}
         <button
           className="text-2xl w-[80px]"
@@ -97,7 +97,7 @@ export default function Navbar() {
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setUserDropdown((prev) => !prev)}
-                className="flex items-center cursor-pointer"
+                className="flex items-center"
               >
                 <UserCircle size={24} />
               </button>
@@ -139,7 +139,7 @@ export default function Navbar() {
               <UserCircle size={24} />  
             </Link>
           )}
-          <Search size={24}/>
+          <Search size={24} className="hidden lg:block"/>
           <CartButton />
         </div>
       </nav>
@@ -188,6 +188,12 @@ export default function Navbar() {
                   </Link>
                 </div>
               )}
+
+              <div className="absolute right-3">
+                <button onClick={() => setMenuOpen(false)}>
+                  <X />
+                </button>
+              </div>
 
               {/* Navigation links */}
               <ul className="flex flex-col gap-4 text-sm uppercase">

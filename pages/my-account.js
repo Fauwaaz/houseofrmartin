@@ -294,7 +294,7 @@ const MyAccount = () => {
 
     return (
         <Layout>
-            <div className="min-h-screen bg-gray-50 py-6 w-full">
+            <div className="mt-[60px] lg:mt-0 min-h-screen bg-gray-50 py-6 w-full">
                 <div className="max-w-6xl mx-auto px-4 mt-[60px] lg:mt-[90px]">
                     {/* Header */}
                     {/* <div className="bg-white rounded-2xl shadow-sm py-4 px-6 mb-8">

@@ -78,7 +78,7 @@ const ProductDetails = ({ item }) => {
         <meta property="og:description" content={seo.metaDesc || product.description?.slice(0, 155)} />
         <meta property="og:image" content={seo.opengraphImage?.sourceUrl || product.featuredImage?.node?.sourceUrl} />
       </Head>
-      <div className="mt-[60px]">
+      <div className="mt-[105px] lg:mt-[60px]">
         <div className={styles.wrapper}>
           <div className={styles.left}>
             <Gallery

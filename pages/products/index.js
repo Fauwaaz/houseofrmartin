@@ -68,7 +68,7 @@ const Products = ({ products }) => {
 
   return (
     <Layout>
-      <div className="mt-[80px] lg:mt-[120px] w-full">
+      <div className="mt-[130px] lg:mt-[120px] w-full">
         <div className="flex flex-col gap-2 items-center justify-center pb-6">
           <h1 className="text-xl lg:text-3xl">Shop All</h1>
           <p className="text-center px-4">
