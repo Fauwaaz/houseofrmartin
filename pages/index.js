@@ -29,6 +29,11 @@ export async function getStaticProps() {
   };
 }
 
+const getDiscountPercent = (regular, sale) => {
+  if (!regular || !sale || parseFloat(regular) <= parseFloat(sale)) return null;
+  return Math.round(((regular - sale) / regular * 100))
+}
+
 
 const Home = ({ products }) => {
   const { onAdd, qty } = useStateContext();
@@ -139,16 +144,8 @@ const Home = ({ products }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
-            {products
-              // filter products that have a tag "Bestseller"
-              // .filter((product) =>
-              //   product.productTags?.nodes?.some((tag) => tag.slug === "bestseller")
-              // )
-              // limit to 4
-              .slice(0, 4)
-              // map through the filtered list
-              .map((product) => {
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 lg:gap-3 px-3 lg:px-6 max-w-1920 my-10">
+            {products.slice(0, 4).map((product) => {
                 let displayPrice = null;
                 let firstVariation = null;
 
@@ -166,7 +163,7 @@ const Home = ({ products }) => {
                 return (
                   <div
                     key={product.id}
-                    className="bg-white shadow-sm rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
+                    className="bg-white shadow-sm rounded-md lg:rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
                   >
                     {product.productTags?.nodes?.length > 0 && (
                       <div className="bg-black/70 px-4 py-2 text-[12px] lg:text-sm text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
@@ -203,29 +200,18 @@ const Home = ({ products }) => {
                       )}
                     </Link>
 
-                    <div className="flex w-full items-center justify-between px-3">
-                      <h3 className="mt-4 text-left text-lg font-semibold">
-                        {product.name.length > 35
-                          ? product.name.substring(0, 35) + "..."
-                          : product.name}
-                      </h3>
-                      <p
-                        className="text-sm text-gray-500 mt-2"
-                        dangerouslySetInnerHTML={{ __html: product.shortDescription }}
-                      />
-                      {product.__typename === "SimpleProduct" && (
-                        <p className="mt-3 font-bold text-lg price-font">D {product.price}</p>
-                      )}
-                      {product.__typename === "VariableProduct" && firstVariation && (
-                        <div className="mt-3 text-center flex">
-                          <p className="font-bold text-lg price-font">
-                            D <span className="font-geograph-md ml-1">{displayPrice}</span>
-                          </p>
-                        </div>
-                      )}
+                    <div className="flex w-full flex-col lg:flex-row lg:items-center lg:justify-between px-3">
+                      <div className="flex flex-col gap-1">
+                        <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
+                          {product.name.length > 35
+                            ? product.name.substring(0, 35) + "..."
+                            : product.name}
+                        </h3>
+                        <p className="text-sm text-gray-500">{product.productCategories?.nodes?.[0]?.name || ""}</p>
+                      </div>
                     </div>
 
-                    <div className="flex mt-3 px-3 w-full gap-2 items-center">
+                    <div className="mt-2 px-3 w-full">
                       {(() => {
                         const colors =
                           product.attributes?.nodes
@@ -236,29 +222,70 @@ const Home = ({ products }) => {
                         const remaining = colors.length - 3;
 
                         return (
-                          <>
-                            {limitedColors.map((color, index) => (
-                              <span
-                                key={index}
-                                className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
-                                style={{ backgroundColor: colorMap[color] || "#ccc" }}
-                                title={color}
-                              />
-                            ))}
+                          <div className="flex items-center gap-2 justify-between">
+                            <div className="flex justify-center gap-2">
+                              {limitedColors.map((color, index) => (
+                                <span
+                                  key={index}
+                                  className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
+                                  style={{ backgroundColor: colorMap[color] || "#ccc" }}
+                                  title={color}
+                                />
+                              ))}
 
-                            {remaining > 0 && (
-                              <span className="inline-flex -ml-1 items-center justify-center w-5 h-5 text-sm text-black">
-                                +{remaining}
-                              </span>
+                              {remaining > 0 && (
+                                <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-sm text-black">
+                                  +{remaining}
+                                </span>
+                              )}
+                            </div>
+
+                            {product.__typename === "SimpleProduct" && (
+                              <div className="text-center">
+                                {product.salePrice ? (
+                                  <>
+                                    <p className="text-md lg:text-lg font-bold price-font text-red-600">
+                                      D {product.salePrice}
+                                    </p>
+                                    <p className="text-sm line-through price-font text-gray-500">
+                                      D {product.regularPrice}
+                                    </p>
+                                    <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
+                                      {getDiscountPercent(product.regularPrice, product.salePrice)}% OFF
+                                    </span>
+                                  </>
+                                ) : (
+                                  <p className="text-md lg:text-lg price-font">D {product.regularPrice}</p>
+                                )}
+                              </div>
                             )}
-                          </>
+                            {product.__typename === "VariableProduct" && firstVariation && (
+                              <div className="text-center flex items-center gap-1">
+                                {firstVariation.salePrice ? (
+                                  <>
+                                    <p className="text-md lg:text-lg price-font text-black">
+                                      D {firstVariation.salePrice}
+                                    </p>
+                                    <p className="text-sm line-through price-font text-gray-500">
+                                      D {firstVariation.regularPrice}
+                                    </p>
+                                    <span className="text-sm text-red-500">
+                                      ({getDiscountPercent(firstVariation.regularPrice, firstVariation.salePrice)}% OFF)
+                                    </span>
+                                  </>
+                                ) : (
+                                  <p className="text-md lg:text-lg price-font">D {firstVariation.regularPrice}</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         );
                       })()}
                     </div>
 
                   </div>
                 );
-              })}
+            })}
           </div>
           <Link
             href="/shop?bestsellers=true"
@@ -281,13 +308,7 @@ const Home = ({ products }) => {
             </p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
-            {products
-              //  .filter((product) =>
-              //   product.productTags?.nodes?.some((tag) => tag.slug === "new-arrivals")
-              // )
-              .slice(0, 4)
-              // map through the filtered list
-              .map((product) => {
+            {products.slice(0, 4).map((product) => {
                 let displayPrice = null;
                 let firstVariation = null;
 
@@ -305,7 +326,7 @@ const Home = ({ products }) => {
                 return (
                   <div
                     key={product.id}
-                    className="bg-white shadow-sm rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
+                    className="bg-white shadow-sm rounded-md lg:rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
                   >
                     {product.productTags?.nodes?.length > 0 && (
                       <div className="bg-black/70 px-4 py-2 text-[12px] lg:text-sm text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
@@ -342,29 +363,18 @@ const Home = ({ products }) => {
                       )}
                     </Link>
 
-                    <div className="flex w-full items-center justify-between px-3">
-                      <h3 className="mt-4 text-left text-lg font-semibold">
-                        {product.name.length > 35
-                          ? product.name.substring(0, 35) + "..."
-                          : product.name}
-                      </h3>
-                      <p
-                        className="text-sm text-gray-500 mt-2"
-                        dangerouslySetInnerHTML={{ __html: product.shortDescription }}
-                      />
-                      {product.__typename === "SimpleProduct" && (
-                        <p className="mt-3 font-bold text-lg price-font">D {product.price}</p>
-                      )}
-                      {product.__typename === "VariableProduct" && firstVariation && (
-                        <div className="mt-3 text-center flex">
-                          <p className="font-bold text-lg price-font">
-                            D <span className="font-geograph-md ml-1">{displayPrice}</span>
-                          </p>
-                        </div>
-                      )}
+                    <div className="flex w-full flex-col lg:flex-row lg:items-center lg:justify-between px-3">
+                      <div className="flex flex-col gap-1">
+                        <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
+                          {product.name.length > 35
+                            ? product.name.substring(0, 35) + "..."
+                            : product.name}
+                        </h3>
+                        <p className="text-sm text-gray-500">{product.productCategories?.nodes?.[0]?.name || ""}</p>
+                      </div>
                     </div>
 
-                    <div className="flex mt-3 px-3 w-full gap-2 items-center">
+                    <div className="mt-2 px-3 w-full">
                       {(() => {
                         const colors =
                           product.attributes?.nodes
@@ -375,30 +385,70 @@ const Home = ({ products }) => {
                         const remaining = colors.length - 3;
 
                         return (
-                          <>
-                            {limitedColors.map((color, index) => (
-                              <span
-                                key={index}
-                                className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
-                                style={{ backgroundColor: colorMap[color] || "#ccc" }}
-                                title={color}
-                              />
-                            ))}
+                          <div className="flex items-center gap-2 justify-between">
+                            <div className="flex justify-center gap-2">
+                              {limitedColors.map((color, index) => (
+                                <span
+                                  key={index}
+                                  className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
+                                  style={{ backgroundColor: colorMap[color] || "#ccc" }}
+                                  title={color}
+                                />
+                              ))}
 
-                            {remaining > 0 && (
-                            <span className="inline-flex -ml-1 items-center justify-center w-5 h-5 text-sm text-black">
-                              +{remaining}
-                            </span>
-                          )}
-                          </>
+                              {remaining > 0 && (
+                                <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-sm text-black">
+                                  +{remaining}
+                                </span>
+                              )}
+                            </div>
+
+                            {product.__typename === "SimpleProduct" && (
+                              <div className="text-center">
+                                {product.salePrice ? (
+                                  <>
+                                    <p className="text-md lg:text-lg font-bold price-font text-red-600">
+                                      D {product.salePrice}
+                                    </p>
+                                    <p className="text-sm line-through price-font text-gray-500">
+                                      D {product.regularPrice}
+                                    </p>
+                                    <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">
+                                      {getDiscountPercent(product.regularPrice, product.salePrice)}% OFF
+                                    </span>
+                                  </>
+                                ) : (
+                                  <p className="text-md lg:text-lg price-font">D {product.regularPrice}</p>
+                                )}
+                              </div>
+                            )}
+                            {product.__typename === "VariableProduct" && firstVariation && (
+                              <div className="text-center flex items-center gap-1">
+                                {firstVariation.salePrice ? (
+                                  <>
+                                    <p className="text-md lg:text-lg price-font text-black">
+                                      D {firstVariation.salePrice}
+                                    </p>
+                                    <p className="text-sm line-through price-font text-gray-500">
+                                      D {firstVariation.regularPrice}
+                                    </p>
+                                    <span className="text-sm text-red-500">
+                                      ({getDiscountPercent(firstVariation.regularPrice, firstVariation.salePrice)}% OFF)
+                                    </span>
+                                  </>
+                                ) : (
+                                  <p className="text-md lg:text-lg price-font">D {firstVariation.regularPrice}</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         );
                       })()}
                     </div>
 
                   </div>
                 );
-              })}
-
+            })}
           </div>
         </section>
 

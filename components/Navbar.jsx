@@ -12,6 +12,7 @@ import {
   LogOut,
   Info,
   UserCircle,
+  ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -46,6 +47,17 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const links = [
+    { href: "/products", label: "Shop", img: "/placeholder.jpg" },
+    { href: "/products", label: "New", img: "/placeholder.jpg" },
+    { href: "/products", label: "Bestseller", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Two-Piece-Outfit-img-blue-1.png" },
+    { href: "/products", label: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Mens-Slim-Fit-Cotton-Shirt-–-Breathable-Tailored-img-2.png" },
+    { href: "/products", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
+    { href: "/products", label: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Essential-Mens-Jeans-–-Classic-Denim-Slim-Fit-img-4.png" },
+    { href: "/products", label: "Pants", img: "/placeholder.jpg" },
+    { href: "/products", label: "Belts", img: "/placeholder.jpg" },
+  ]
 
   async function handleLogout() {
     const isConfirmed = window.confirm("Are you sure you want to log out?");
@@ -136,10 +148,10 @@ export default function Navbar() {
             </div>
           ) : (
             <Link href="/auth" className="hidden lg:block">
-              <UserCircle size={24} />  
+              <UserCircle size={24} />
             </Link>
           )}
-          <Search size={24} className="hidden lg:block"/>
+          <Search size={24} className="hidden lg:block" />
           <CartButton />
         </div>
       </nav>
@@ -167,7 +179,7 @@ export default function Navbar() {
 
             {/* Slide menu */}
             <motion.div
-              className="fixed top-0 left-0 h-full w-3/4 max-w-xs bg-white shadow-lg z-50 p-6 flex flex-col"
+              className="fixed top-0 left-0 h-full w-3/4 max-w-xs bg-white shadow-lg z-50 py-6 px-3 flex flex-col overflow-y-auto"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
@@ -189,34 +201,30 @@ export default function Navbar() {
                 </div>
               )}
 
-              <div className="absolute right-3">
+              <div className="absolute right-4">
                 <button onClick={() => setMenuOpen(false)}>
                   <X />
                 </button>
               </div>
 
-              {/* Navigation links */}
-              <ul className="flex flex-col gap-4 text-sm uppercase">
-                <li>
-                  <Link href="/" onClick={() => setMenuOpen(false)}>
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/products" onClick={() => setMenuOpen(false)}>
-                    Shop
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/products?filter=bestseller" onClick={() => setMenuOpen(false)}>
-                    Bestseller
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" onClick={() => setMenuOpen(false)}>
-                    About
-                  </Link>
-                </li>
+
+              <ul className="flex flex-col">
+                {links.map((link, key) => (
+                  <li key={key}>
+                    <Link href={link.href} className="flex justify-between uppercase p-1 border-b items-center hover:bg-gray-100" onClick={() => setMenuOpen(false)}>
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={link.img}
+                          width={80}
+                          height={100}
+                          alt={link.label}
+                        />
+                        <p>{link.label}</p>
+                      </div>
+                      <ChevronRight />
+                    </Link>
+                  </li>
+                ))}
               </ul>
 
               {/* Logout inside menu */}

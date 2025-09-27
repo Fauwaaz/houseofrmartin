@@ -18,6 +18,7 @@ const ProductInfo = ({ product, isMounted }) => {
   const [availableColors, setAvailableColors] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [code] = useState("CASH80");
+  const [sizeGuide, setSizeGuide] = useState(false);
 
   useEffect(() => {
     console.log("Variants:", allVariants);
@@ -133,8 +134,6 @@ const ProductInfo = ({ product, isMounted }) => {
     // Fallback to product featured image
     return product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg";
   };
-
-
 
   const getColorName = (variation) => {
     return variation?.attributes?.nodes?.find(
@@ -268,8 +267,8 @@ const ProductInfo = ({ product, isMounted }) => {
 
                 {/* Discount % */}
                 {discount !== null && (
-                  <span className="text-lg font-medium text-green-600">
-                    -{discount}% off
+                  <span className="text-lg font-medium uppercase text-red-500">
+                    ({discount}% off)
                   </span>
                 )}
               </>
@@ -350,7 +349,7 @@ const ProductInfo = ({ product, isMounted }) => {
           </button>
         </div>
       </div>
-
+      
       <div className="mt-6">
         <button
           className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${!selectedSize || !selectedVariation

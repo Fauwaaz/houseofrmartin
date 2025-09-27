@@ -78,10 +78,24 @@ main {
   align-items: center;
 }
 
-ul,
-ol {
-  list-style: none;
-}
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #d1d1d1 #ffffff00;
+  }
+
+  *::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #ffffff00;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 0px none #ffffff;
+  }
 
 .category-card {
   height: 100% !important;

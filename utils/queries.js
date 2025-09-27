@@ -76,6 +76,8 @@ const GET_ALL = gql`
         slug
         ... on SimpleProduct {
           price(format: RAW)
+          salePrice(format: RAW)
+        regularPrice(format: RAW)
           featuredImage {
             node {
               sourceUrl
@@ -104,12 +106,14 @@ const GET_ALL = gql`
         }
         ... on VariableProduct {
           price(format: RAW)
+          salePrice(format: RAW)
+          regularPrice(format: RAW)
           featuredImage {
             node {
               sourceUrl
             }
           }
-            productTags {
+          productTags {
           nodes {
             id
             name
@@ -128,7 +132,7 @@ const GET_ALL = gql`
               sourceUrl
             }
           }
-          attributes {
+          attributes {  
             nodes {
               id
               name
@@ -141,6 +145,8 @@ const GET_ALL = gql`
               id
               name
               price(format: RAW)
+              regularPrice(format: RAW)
+              salePrice(format: RAW)
               sku
               attributes {
                 nodes {
@@ -200,6 +206,8 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
 
       ... on SimpleProduct {
         price(format: RAW)
+        salePrice(format: RAW)
+        regularPrice(format: RAW)
         featuredImage {
           node {
             sourceUrl
