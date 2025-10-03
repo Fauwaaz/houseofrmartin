@@ -13,6 +13,8 @@ import BeforeFooter from "../components/BeforeFooter";
 import { useState } from "react";
 import { colorMap } from "../utils/data";
 import { Heart } from "lucide-react";
+import { useRef } from "react";
+import { useInView } from "framer-motion";
 
 export async function getStaticProps() {
   const { data } = await client.query({
@@ -37,6 +39,8 @@ const getDiscountPercent = (regular, sale) => {
 
 const Home = ({ products }) => {
   const { onAdd, qty } = useStateContext();
+  const parentRef = useRef(null);
+  const isInView = useInView(parentRef, { amount: 0.5, once: true }); 
 
   const categoriesSection = [
     { title: "Co-ord set", img: "/category/co-ordset.png", link: "#" },
@@ -296,14 +300,30 @@ const Home = ({ products }) => {
         </section>
 
         <section className="10-years w-full py-6 px-5">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 max-w-1920">
-            <div className="grid grid-cols-2 h-[350px] lg:h-screen">
-              <div className="bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/10-years-img-1.png)] bg-cover bg-no-repeat bg-center text-center p-2 flex items-end">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 max-w-1920 overflow-hidden">
+            <div
+              ref={parentRef}
+              className="grid grid-cols-2 h-[350px] lg:h-screen overflow-hidden"
+            >
+              {/* First div (top → bottom) */}
+              <motion.div
+                initial={{ y: "-100%", opacity: 0 }}
+                animate={isInView ? { y: "0%", opacity: 1 } : {}}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/10-years-img-1.png)] bg-cover bg-no-repeat bg-center text-center p-2 flex items-end"
+              >
                 <button className="bg-black text-white w-full py-2">Shop Now</button>
-              </div>
-              <div className="bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/10-years-img-2.png)] bg-cover bg-no-repeat bg-top text-center p-2 flex items-end">
+              </motion.div>
+
+              {/* Second div (bottom → top) */}
+              <motion.div
+                initial={{ y: "100%", opacity: 0 }}
+                animate={isInView ? { y: "0%", opacity: 1 } : {}}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/10-years-img-2.png)] bg-cover bg-no-repeat bg-top text-center p-2 flex items-end"
+              >
                 <button className="bg-black text-white w-full py-2">Shop Now</button>
-              </div>
+              </motion.div>
             </div>
             <div className="bg-white w-full h-full">
               <div className="grid grid-cols-2 h-screen">
@@ -312,7 +332,7 @@ const Home = ({ products }) => {
                   <p>Founded in 2020, House of RMartin has come a long way from its beginnings. When we first started out, our passion for fashion drove us to start our own business.</p>
                   <Link
                     href={'/about'}
-                    className="text-white bg-black px-5 py-2 rounded-full mt-2 hover:bg-gray-800" 
+                    className="text-white bg-black px-5 py-2 rounded-full mt-2 hover:bg-gray-800"
                   >
                     About Us
                   </Link>

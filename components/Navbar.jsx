@@ -12,7 +12,6 @@ import {
   LogOut,
   Info,
   UserCircle,
-  ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -199,7 +198,7 @@ export default function Navbar() {
                   />
                   <div>
                     <h3 className="font-semibold capitalize">{user.name}</h3>
-                  <p className="text-xs text-gray-600">{user.email}</p>
+                    <p className="text-xs text-gray-600">{user.email}</p>
                   </div>
                 </div>
               ) : (
@@ -219,23 +218,27 @@ export default function Navbar() {
               </div>
 
 
-              <ul className="flex flex-col">
-                {links.map((link, key) => (
-                  <li key={key}>
-                    <Link href={link.href} className="flex justify-between uppercase p-1 border-b items-center hover:bg-gray-100" onClick={() => setMenuOpen(false)}>
-                      <div className="flex items-center gap-2">
-                        <Image
-                          src={link.img}
-                          width={80}
-                          height={100}
-                          alt={link.label}
-                        />
-                        <p>{link.label}</p>
-                      </div>
-                      <ChevronRight />
-                    </Link>
-                  </li>
-                ))}
+              <ul className="flex flex-col gap-4 text-sm uppercase">
+                <li>
+                  <Link href="/" onClick={() => setMenuOpen(false)}>
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" onClick={() => setMenuOpen(false)}>
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/products" onClick={() => setMenuOpen(false)}>
+                    Shop
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" onClick={() => setMenuOpen(false)}>
+                    Contact Us
+                  </Link>
+                </li>
               </ul>
 
               {/* Logout inside menu */}
