@@ -296,8 +296,8 @@ const Home = ({ products }) => {
         </section>
 
         <section className="10-years w-full py-6 px-5">
-          <div className="grid grid-cols-2 gap-2 max-w-1920">
-            <div className="grid grid-cols-2 h-screen">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 max-w-1920">
+            <div className="grid grid-cols-2 h-[350px] lg:h-screen">
               <div className="bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/10-years-img-1.png)] bg-cover bg-no-repeat bg-center text-center p-2 flex items-end">
                 <button className="bg-black text-white w-full py-2">Shop Now</button>
               </div>
