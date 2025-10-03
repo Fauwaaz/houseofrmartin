@@ -179,7 +179,7 @@ export default function Navbar() {
 
             {/* Slide menu */}
             <motion.div
-              className="fixed top-0 left-0 h-full w-3/4 max-w-xs bg-white shadow-lg z-50 py-6 px-3 flex flex-col overflow-y-auto"
+              className="fixed top-0 left-0 h-[94vh] lg:h-full w-3/4 max-w-xs bg-white shadow-lg z-50 py-6 px-3 flex flex-col overflow-y-auto"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}

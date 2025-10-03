@@ -6,7 +6,7 @@ import Image from "next/image";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import toast from "react-hot-toast";
 import Accordion from "./common/Accordion";
-import { ChevronRight, Copy, HeartIcon } from "lucide-react";
+import { ChevronRight, HeartIcon, Tag } from "lucide-react";
 import ShareButton from "./common/ShareButton";
 
 const ProductInfo = ({ product, isMounted }) => {
@@ -206,15 +206,6 @@ const ProductInfo = ({ product, isMounted }) => {
     );
   };
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      toast.success("Coupon code copied!");
-    } catch (err) {
-      toast.error("Failed to copy");
-      console.error("Copy code failed:", err);
-    }
-  };
 
   return (
     <div>
@@ -349,7 +340,7 @@ const ProductInfo = ({ product, isMounted }) => {
           </button>
         </div>
       </div>
-      
+
       <div className="mt-6">
         <button
           className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${!selectedSize || !selectedVariation
@@ -468,9 +459,16 @@ const ProductInfo = ({ product, isMounted }) => {
           {
             title: "Details",
             content: isMounted ? (
-              <div
-                dangerouslySetInnerHTML={{ __html: product.shortDescription }}
-              />
+              <>
+                <div
+                  dangerouslySetInnerHTML={{ __html: product.shortDescription }}
+                />
+                <br />
+                <p className="font-geograph-md text-black">Fit & Wash care</p>
+                <div dangerouslySetInnerHTML={{__html: product.description}} />
+                <br />
+                <p>SKU: {product.sku}</p>
+              </>
             ) : (
               <div className="mt-4 space-y-2 animate-pulse">
                 <div className="bg-gray-200 h-4 rounded w-full" />
@@ -483,11 +481,9 @@ const ProductInfo = ({ product, isMounted }) => {
             title: "Offers ",
             content: (
               <>
-                <div className="h-[40px] w-[150px] rounded-lg flex justify-between items-center bg-green-400/30 border border-dashed border-green-500  p-3">
-                  <p className="text-black font-medium">{code}</p>
-                  <button className="cursor-pointer" onClick={handleCopy}>
-                    <Copy size={16} />
-                  </button>
+                <div className="">
+                  <p>Flat 10% off on minimum purchase of ₹2290</p>
+                  <p className="text-black font-geograph-md flex gap-2 items-center mt-2"><Tag size={18}/>CODE: FLAT10</p>
                 </div>
               </>
             )

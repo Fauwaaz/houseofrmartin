@@ -281,6 +281,7 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
             image {
               sourceUrl
             }
+            sku
             attributes {
               nodes {
                 name
