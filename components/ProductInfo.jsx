@@ -336,7 +336,7 @@ const ProductInfo = ({ product, isMounted }) => {
 
         <div>
           <button href='' onClick={handleSizeGuide} className='text-sm underline mt-2 cursor-pointer'>
-            Size guide
+            Size chart
           </button>
         </div>
       </div>
@@ -465,9 +465,14 @@ const ProductInfo = ({ product, isMounted }) => {
                 />
                 <br />
                 <p className="font-geograph-md text-black">Fit & Wash care</p>
-                <div dangerouslySetInnerHTML={{__html: product.description}} />
+                <div dangerouslySetInnerHTML={{ __html: product.description }} />
                 <br />
-                <p>SKU: {product.sku}</p>
+                <p>
+                  SKU:{" "}
+                  {selectedVariation?.sku
+                    ? selectedVariation.sku
+                    : product.sku || "Not available"}
+                </p>
               </>
             ) : (
               <div className="mt-4 space-y-2 animate-pulse">
@@ -482,8 +487,8 @@ const ProductInfo = ({ product, isMounted }) => {
             content: (
               <>
                 <div className="">
-                  <p>Flat 10% off on minimum purchase of ₹2290</p>
-                  <p className="text-black font-geograph-md flex gap-2 items-center mt-2"><Tag size={18}/>CODE: FLAT10</p>
+                  <p>Flat 10% off on minimum purchase of <span className="price-font">D</span>100</p>
+                  <p className="text-black font-geograph-md flex gap-2 items-center mt-2"><Tag size={16} className="animate-pulse"/>CODE: FLAT10</p>
                 </div>
               </>
             )

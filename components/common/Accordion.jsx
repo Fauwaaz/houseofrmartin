@@ -30,7 +30,7 @@ const AccordionItem = ({ title, content, defaultOpen = false }) => {
             }}
             className="overflow-hidden"
           >
-            <div className="pb-4 text-gray-700 text-sm">
+            <div className="pb-4 px-4 text-gray-700 text-sm">
               {typeof content === "string" ? <p>{content}</p> : content}
             </div>
           </motion.div>
