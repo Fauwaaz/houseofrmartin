@@ -21,7 +21,7 @@ const CartItem = ({
 }) => {
 
   const handleRemove = () => {
-    remove(); 
+    remove();
     toast.error('Uh Oh! Item removed from bag');
   };
 
@@ -39,8 +39,12 @@ const CartItem = ({
       <div className={styles.info}>
         <div>
           <h3 className={`${styles.name} ${styles.line_clamp} capitalize`}>
-            {name} ({color}, {size})
+            {name}
           </h3>
+          <div className="-mt-2 mb-2">
+            <p className="text-sm text-gray-600">color: {color}</p>
+            <p className="text-sm text-gray-600">size: {size}</p>
+          </div>
         </div>
 
         <div className={styles.quantity}>
@@ -58,10 +62,10 @@ const CartItem = ({
         <button id={styles.delete} onClick={handleRemove}>
           <AiOutlineCloseCircle />
         </button>
-        <div>
-          <span id={styles.price}>
-            <p className="price-font">D</p> {price}
-          </span>
+        <div className="flex">
+          <p id={styles.price}>
+            <span className="price-font mr-1">D</span> {price}
+          </p>
         </div>
       </div>
     </li>

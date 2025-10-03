@@ -2,6 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from "react-icons/fi";
 
+const links = [
+  {label: "About", href: "/about"},
+  {label: "FAQs", href: "/faqs"},
+  {label: "Return & Refund", href: "/returns-refund"},
+  {label: "Shipping", href: "/shipping"},
+  {label: "Terms and Condition", href: "/terms-condition"}
+];  
+
 const Footer = () => {
   return (
     <footer className="bg-white">
@@ -14,7 +22,7 @@ const Footer = () => {
               <Image
                 src="/logo.png"
                 alt="House of RMartin"
-                width={150}
+                width={250}
                 height={50}
                 className="mb-4 mx-auto md:mx-0"
                 unoptimized
@@ -25,11 +33,11 @@ const Footer = () => {
           <div className="uppercase">
             <h5 className="text-lg font-geograph-md">Company</h5>
             <ul className="mt-4 space-y-2 text-black/90">
-              <li><Link href="/about">About</Link></li>
-              <li><Link href="/faqs">FAQs</Link></li>
-              <li><Link href="/returns">Return Policy</Link></li>
-              <li><Link href="/shipping">Shipping Policy</Link></li>
-              <li><Link href="/terms">Terms and Conditions</Link></li>
+              {links.map((link, index) => (
+                <li key={index} className="hover:underline">
+                  <Link href={link?.href}>{link.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 

@@ -50,7 +50,7 @@ export default function Navbar() {
 
   const links = [
     { href: "/products", label: "Shop", img: "/placeholder.jpg" },
-    { href: "/products", label: "New", img: "/placeholder.jpg" },
+    { href: "/products", label: "New arrivals", img: "/placeholder.jpg" },
     { href: "/products", label: "Bestseller", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Two-Piece-Outfit-img-blue-1.png" },
     { href: "/products", label: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Mens-Slim-Fit-Cotton-Shirt-–-Breathable-Tailored-img-2.png" },
     { href: "/products", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
@@ -187,9 +187,20 @@ export default function Navbar() {
             >
               {/* User info */}
               {user ? (
-                <div className="border-b pb-4 mb-4">
-                  <h3 className="font-semibold capitalize">{user.name}</h3>
+                <div className="border-b pb-4 mb-4 flex items-start gap-2">
+                  <Image
+                    src={"https://secure.gravatar.com/avatar/23874fa782fb0b6e80485b702ff0fb976894c95b3825716aa8b6a90c86cf6547?s=96&d=mm&r=g"}
+                    alt="Profile"
+                    width={30}
+                    height={25}
+                    quality={100}
+                    unoptimized
+                    className="rounded-full border-2 border-gray-200"
+                  />
+                  <div>
+                    <h3 className="font-semibold capitalize">{user.name}</h3>
                   <p className="text-xs text-gray-600">{user.email}</p>
+                  </div>
                 </div>
               ) : (
                 <div className="border-b pb-4 mb-4">
@@ -231,7 +242,7 @@ export default function Navbar() {
               {user && (
                 <button
                   onClick={handleLogout}
-                  className="mt-3 lg:mt-auto flex items-center gap-2 text-red-600 text-sm px-4 py-2 bg-red-50 hover:bg-red-30 rounded-md"
+                  className="mt-3 flex items-center gap-2 text-red-600 text-sm px-4 py-2 bg-red-50 hover:bg-red-30 rounded-md"
                 >
                   <LogOut size={18} /> Logout
                 </button>

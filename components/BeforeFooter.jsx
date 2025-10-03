@@ -27,7 +27,7 @@ const BeforeFooter = () => {
 
           <button
             type="submit"
-            className="w-[200px] text-center bg-black  text-white p-3 rounded-full uppercase hover:bg-white transition duration-200 ease-in  cursor-pointer   hover:text-black hover:border-black"
+            className="w-[200px] text-center bg-black  text-white p-3 rounded-full uppercase hover:bg-gray-900"
           >
             Subscribe
           </button>

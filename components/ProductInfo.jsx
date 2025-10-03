@@ -17,7 +17,6 @@ const ProductInfo = ({ product, isMounted }) => {
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [code] = useState("CASH80");
   const [sizeGuide, setSizeGuide] = useState(false);
 
   useEffect(() => {
@@ -336,7 +335,7 @@ const ProductInfo = ({ product, isMounted }) => {
 
         <div>
           <button href='' onClick={handleSizeGuide} className='text-sm underline mt-2 cursor-pointer'>
-            Size chart
+            Size guide
           </button>
         </div>
       </div>
