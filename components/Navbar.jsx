@@ -16,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from "react-icons/fi";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -80,11 +81,11 @@ export default function Navbar() {
   }
 
   return (
-    <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50">
-      <nav className="flex justify-between items-center px-6 py-3">
+    <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50 justify-center flex flex-col lg:flex-row">
+      <nav className="w-full flex justify-between items-center px-6 py-3 max-w-1920">
         {/* Hamburger */}
         <button
-          className="text-2xl w-[40px] lg:w-[80px]"
+          className="text-2xl w-[40px] md:w-[200px] lg:w-[270px]"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
           {menuOpen ? <X /> : <Menu />}
@@ -103,7 +104,15 @@ export default function Navbar() {
         </Link>
 
         {/* Right section */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <div className="hidden lg:block relative w-full">
+            <input
+              type="text"
+              placeholder="Search"
+              className="text-sm py-2 border border-black w-full px-4 rounded-lg"
+            />
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+          </div>
           {user ? (
             <div ref={dropdownRef} className="relative hidden lg:block">
               <button
@@ -150,7 +159,6 @@ export default function Navbar() {
               <UserCircle size={24} />
             </Link>
           )}
-          <Search size={24} className="hidden lg:block" />
           <CartButton />
         </div>
       </nav>
@@ -178,7 +186,7 @@ export default function Navbar() {
 
             {/* Slide menu */}
             <motion.div
-              className="fixed top-0 left-0 h-[94vh] lg:h-full w-3/4 max-w-xs bg-white shadow-lg z-50 py-6 px-3 flex flex-col overflow-y-auto"
+              className="fixed top-0 left-0 h-[94vh] lg:h-full w-3/4 max-w-xs bg-white shadow-lg z-50 py-6 px-5 flex flex-col overflow-y-auto"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
@@ -218,28 +226,38 @@ export default function Navbar() {
               </div>
 
 
-              <ul className="flex flex-col gap-4 text-sm uppercase">
-                <li>
+              <ul className="flex flex-col gap-4 text-md">
+                <li className="hover:underline">
                   <Link href="/" onClick={() => setMenuOpen(false)}>
                     Home
                   </Link>
                 </li>
-                <li>
+                <li className="hover:underline">
                   <Link href="/about" onClick={() => setMenuOpen(false)}>
                     About Us
                   </Link>
                 </li>
-                <li>
+                <li className="hover:underline">
                   <Link href="/products" onClick={() => setMenuOpen(false)}>
                     Shop
                   </Link>
                 </li>
-                <li>
+                <li className="hover:underline">
                   <Link href="/contact" onClick={() => setMenuOpen(false)}>
                     Contact Us
                   </Link>
                 </li>
               </ul>
+              <hr className="mt-2" />
+              <div>
+                <h5 className="text-md mt-2">Follow Us</h5>
+                <ul className="mt-2 flex gap-4 items-center justify-center md:justify-start">
+                  <li><Link href="#"><FiInstagram size={22} /></Link></li>
+                  <li><Link href="#"><FiFacebook size={22} /></Link></li>
+                  <li><Link href="#"><FiYoutube size={22} /></Link></li>
+                  <li><Link href="#"><FiLinkedin size={22} /></Link></li>
+                </ul>
+              </div>
 
               {/* Logout inside menu */}
               {user && (

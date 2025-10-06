@@ -299,13 +299,12 @@ const Home = ({ products }) => {
           </Link>
         </section>
 
-        <section className="10-years w-full py-6 px-5">
+        <section className="10-years w-full py-6 px-5 max-w-1920">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 max-w-1920 overflow-hidden">
             <div
               ref={parentRef}
               className="grid grid-cols-2 h-[350px] lg:h-screen overflow-hidden"
             >
-              {/* First div (top → bottom) */}
               <motion.div
                 initial={{ y: "-100%", opacity: 0 }}
                 animate={isInView ? { y: "0%", opacity: 1 } : {}}
@@ -315,7 +314,6 @@ const Home = ({ products }) => {
                 <button className="bg-black text-white w-full py-2">Shop Now</button>
               </motion.div>
 
-              {/* Second div (bottom → top) */}
               <motion.div
                 initial={{ y: "100%", opacity: 0 }}
                 animate={isInView ? { y: "0%", opacity: 1 } : {}}
