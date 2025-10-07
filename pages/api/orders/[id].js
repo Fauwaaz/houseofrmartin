@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import api from "../../utils/woocommerce";
+import api from "../../../utils/woocommerce";
 
 const OrderPage = () => {
   const router = useRouter();
