@@ -81,7 +81,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50 justify-center flex flex-col lg:flex-row">
+    <header className="w-full bg-white shadow-md fixed top-0 left-0 z-50 justify-center flex flex-col lg:flex-row">
       <nav className="w-full flex justify-between items-center px-6 py-3 max-w-1920">
         {/* Hamburger */}
         <button
@@ -122,7 +122,7 @@ export default function Navbar() {
                 <UserCircle size={24} />
               </button>
               {userDropdown && (
-                <div className="absolute right-0 mt-2 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
+                <div className="absolute right-0 mt-8 w-60 bg-white shadow-lg rounded-lg overflow-hidden py-2 px-2 z-50">
                   <div className="border-b px-4 py-2">
                     <h3 className="capitalize">{user.name}</h3>
                     <p className="text-xs text-gray-600">{user.email}</p>
@@ -204,10 +204,10 @@ export default function Navbar() {
                     unoptimized
                     className="rounded-full border-2 border-gray-200"
                   />
-                  <div>
+                  <Link href='/my-account'>
                     <h3 className="font-semibold capitalize">{user.name}</h3>
                     <p className="text-xs text-gray-600">{user.email}</p>
-                  </div>
+                  </Link>
                 </div>
               ) : (
                 <div className="border-b pb-4 mb-4">
@@ -220,7 +220,7 @@ export default function Navbar() {
               )}
 
               <div className="absolute right-4">
-                <button onClick={() => setMenuOpen(false)}>
+                <button className="hover:bg-gray-100 p-1 rounded-md" onClick={() => setMenuOpen(false)}>
                   <X />
                 </button>
               </div>
@@ -248,10 +248,10 @@ export default function Navbar() {
                   </Link>
                 </li>
               </ul>
-              <hr className="mt-2" />
+              <hr className="mt-4" />
               <div>
-                <h5 className="text-md mt-2">Follow Us</h5>
-                <ul className="mt-2 flex gap-4 items-center justify-center md:justify-start">
+                <h5 className="text-md mt-4">Follow Us</h5>
+                <ul className="mt-4 flex gap-4 items-center justify-start">
                   <li><Link href="#"><FiInstagram size={22} /></Link></li>
                   <li><Link href="#"><FiFacebook size={22} /></Link></li>
                   <li><Link href="#"><FiYoutube size={22} /></Link></li>
@@ -263,7 +263,7 @@ export default function Navbar() {
               {user && (
                 <button
                   onClick={handleLogout}
-                  className="mt-3 flex items-center gap-2 text-red-600 text-sm px-4 py-2 bg-red-50 hover:bg-red-30 rounded-md"
+                  className="mt-auto flex items-center gap-2 text-red-600 text-sm px-4 py-2 bg-red-50 hover:bg-red-30 rounded-md"
                 >
                   <LogOut size={18} /> Logout
                 </button>
