@@ -1,10 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import React from "react";
 import { FiShoppingBag } from "react-icons/fi";
 import { BackgroundAnimation, CartAnimation } from "../animations";
 import { useStateContext } from "../context/StateContext";
-import getStripe from "../libs/getStripe";
 import styles from "../styles/Cart.module.css";
 import CartItem from "./CartItem";
 import { X } from "lucide-react";
@@ -26,6 +24,18 @@ const Cart = () => {
     (total, item) => total + Number(item.price) * item.quantity,
     0
   );
+
+  const user = {
+    name: "Fauwaaz Shaikh",
+    email: "fauwaaz@example.com",
+    phone: "971500000000",
+    address: "Flat 401, Dubai Marina",
+    city: "Dubai",
+    state: "Dubai",
+    zip: "00000",
+    country: "AE",
+  };
+
 
   return (
     <AnimatePresence>
@@ -88,7 +98,7 @@ const Cart = () => {
                     <span><span className="price-font">D</span>   {Number(totalPrice || 0).toFixed(2)}</span>
                   </div>
                   <div className={styles.checkout}>
-                    <PayButton cartItems={cartItems} totalPrice={totalPrice} />
+                    <PayButton cartItems={cartItems} totalPrice={totalPrice} user={user} />
                   </div>
                 </div>
               </div>

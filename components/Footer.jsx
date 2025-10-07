@@ -5,9 +5,9 @@ import { FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from "react-icons/fi";
 const links = [
   {label: "About", href: "/about"},
   {label: "FAQs", href: "/faqs"},
-  {label: "Return & Refund", href: "/returns-refund"},
-  {label: "Shipping", href: "/shipping"},
-  {label: "Terms and Condition", href: "/terms-condition"}
+  {label: "Shipping, Return and Refund", href: "/shipping-return-refund"},
+  {label: "Terms and Condition", href: "/terms-condition"},
+  {label: "Privacy Policy", href: "/privacy-policy"}
 ];  
 
 const Footer = () => {
@@ -30,8 +30,8 @@ const Footer = () => {
             </Link>
           </div>
 
-          <div className="uppercase">
-            <h5 className="text-lg font-geograph-md">Company</h5>
+          <div className="">
+            <h5 className="text-lg font-geograph-md uppercase">Company</h5>
             <ul className="mt-4 space-y-2 text-black/90">
               {links.map((link, index) => (
                 <li key={index} className="hover:underline">
@@ -41,8 +41,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="uppercase">
-            <h5 className="text-lg font-geograph-md">Shop</h5>
+          <div className="">
+            <h5 className="text-lg font-geograph-md uppercase">Shop</h5>
             <ul className="mt-4 space-y-2 text-black/90">
               <li><Link href="/shop/bestsellers">Best Seller</Link></li>
               <li><Link href="/shop/new">New Arrivals</Link></li>
@@ -50,8 +50,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="uppercase">
-            <h5 className="text-lg font-geograph-md">Follow us</h5>
+          <div className="">
+            <h5 className="text-lg font-geograph-md uppercase">Follow us</h5>
             <ul className="mt-4 flex gap-4 items-center justify-center md:justify-start">
               <li><Link href="#"><FiInstagram size={22} /></Link></li>
               <li><Link href="#"><FiFacebook size={22} /></Link></li>
