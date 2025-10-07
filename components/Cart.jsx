@@ -7,6 +7,8 @@ import styles from "../styles/Cart.module.css";
 import CartItem from "./CartItem";
 import { X } from "lucide-react";
 import PayButton from "./PayButton";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Cart = () => {
   const {
@@ -25,16 +27,49 @@ const Cart = () => {
     0
   );
 
-  const user = {
-    name: "Fauwaaz Shaikh",
-    email: "fauwaaz@example.com",
-    phone: "971500000000",
-    address: "Flat 401, Dubai Marina",
-    city: "Dubai",
-    state: "Dubai",
-    zip: "00000",
-    country: "AE",
+  const [user, setUser] = useState(null)
+
+  // const user = {
+  //   name: "Fauwaaz Shaikh",
+  //   email: "fauwaaz@example.com",
+  //   phone: "971500000000",
+  //   address: "Flat 401, Dubai Marina",
+  //   city: "Dubai",
+  //   state: "Dubai",
+  //   zip: "00000",
+  //   country: "AE",
+  // };
+
+  useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const { data } = await axios.get("/api/user/profile");
+
+      if (data.success && data.user) {
+        const profile = data.user;
+        const meta = profile.meta || {};
+
+        setUser({
+          name: `${meta.first_name ?? ""} ${meta.last_name ?? ""}`.trim(),
+          email: profile.user_email ?? "guest@example.com",
+          phone: meta.billing_phone ?? "0000000000",
+          address: meta.billing_address_1 ?? "N/A",
+          city: meta.billing_city ?? "N/A",
+          state: meta.billing_state ?? "N/A",
+          zip: meta.billing_postcode ?? "0000",
+          country: meta.billing_country ?? "AE",
+        });
+      } else {
+        console.warn("User info missing, using guest fallback:", data.message);
+      }
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+    }
   };
+
+  fetchProfile();
+}, []);
+
 
 
   return (

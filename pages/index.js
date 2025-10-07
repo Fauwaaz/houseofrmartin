@@ -43,10 +43,10 @@ const Home = ({ products }) => {
   const isInView = useInView(parentRef, { amount: 0.5, once: true }); 
 
   const categoriesSection = [
-    { title: "Co-ord set", img: "/category/co-ordset.png", link: "#" },
-    { title: "Shirts", img: "/category/shirts.png", link: "#" },
-    { title: "Pants", img: "/category/pants.png", link: "#" },
-    { title: "Tshirts", img: "/category/tshirts.png", link: "#" },
+    { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "#" },
+    { title: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/shirt-scaled.jpg", link: "#" },
+    { title: "Pants", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/pant-scaled.jpg", link: "#" },
+    { title: "Tshirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "#" },
   ];
 
   const [hoveredIndex, setHoveredIndex] = useState(null);

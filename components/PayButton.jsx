@@ -38,10 +38,15 @@
 // };
 
 // export default PayButton;
+
 "use client";
 import axios from "axios";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 const PayButton = ({ cartItems, totalPrice, user }) => {
+  const router = useRouter();
+
   const handlePayment = async () => {
     try {
       const orderId = "ORDER-" + Date.now();
@@ -64,7 +69,7 @@ const PayButton = ({ cartItems, totalPrice, user }) => {
         amount: totalPrice,
         user,
         cartItems,
-        redirectUrl: `${window.location.origin}/payment-success?order=${orderData.id}`,
+        redirectUrl: `${window.location.origin}/payment/success?order=${orderData.id}`,
       });
 
       if (data?.encRequest && data?.transactionUrl) {
@@ -92,7 +97,8 @@ const PayButton = ({ cartItems, totalPrice, user }) => {
       }
     } catch (err) {
       console.error("Payment error:", err.response?.data || err.message);
-      alert("Payment failed. Check console for details.");
+      toast.error("Kindly Login/Sign Up")
+      router.push('/auth');
     }
   };
 
