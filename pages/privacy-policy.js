@@ -35,6 +35,7 @@ export default function PrivacyPolicy() {
 
             <h2 className="text-2xl font-semibold mt-6 mb-2">3. Data Protection</h2>
             <p>Your personal data is stored securely and accessed only by authorized personnel. Payment details are encrypted and processed through secure gateways.</p>
+            <p>Credit/debit card details and personally identifiable information will not be sorted, sold, shared, or rented to any third parties.</p>
 
             <h2 className="text-2xl font-semibold mt-6 mb-2">4. Cookies</h2>
             <p>Our website uses cookies to enhance your browsing experience. You can modify your browser settings to refuse cookies, though this may limit site functionality.</p>

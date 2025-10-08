@@ -93,7 +93,7 @@ const Products = ({ products }) => {
         />
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 px-3 lg:px-6 mb-10">
           {loading ? (
             <p className="col-span-full text-center min-h-screen">Loading...</p>
           ) : (
@@ -115,7 +115,7 @@ const Products = ({ products }) => {
               return (
                 <div
                   key={product.id}
-                  className="bg-white shadow-sm rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
+                  className="bg-white shadow-sm rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
                     <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">

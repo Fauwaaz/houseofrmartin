@@ -14,6 +14,7 @@ import {
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Loading from "../components/Loading.jsx";
+import { useRouter } from "next/router.js";
 
 const MyAccount = () => {
     const [user, setUser] = useState(null);
@@ -25,6 +26,7 @@ const MyAccount = () => {
     const [trackOrderId, setTrackOrderId] = useState("");
     const [manualTrackingInfo, setManualTrackingInfo] = useState(null);
     const fileInputRef = useRef(null);
+    const router = useRouter();
 
     const [profileForm, setProfileForm] = useState({
         first_name: "",
@@ -247,7 +249,7 @@ const MyAccount = () => {
     // Logout
     const handleLogout = async () => {
         await fetch("/api/auth/logout", { method: "POST" });
-        window.location.href = "/";
+        router.push('/')
         toast.success('Logging out')
     };
 

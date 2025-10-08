@@ -88,7 +88,7 @@ export default function Navbar() {
           className="text-2xl w-[40px] md:w-[200px] lg:w-[270px]"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
-          {menuOpen ? <X /> : <Menu />}
+          {menuOpen ? <X /> : <Menu className="hover:bg-gray-100 p-2 rounded-full" />}
         </button>
 
         {/* Logo */}
@@ -220,7 +220,7 @@ export default function Navbar() {
               )}
 
               <div className="absolute right-4">
-                <button className='hover:bg-gray-100 rounded-lg p-1' onClick={() => setMenuOpen(false)}>
+                <button className='hover:bg-gray-100 rounded-full p-2' onClick={() => setMenuOpen(false)}>
                   <X />
                 </button>
               </div>

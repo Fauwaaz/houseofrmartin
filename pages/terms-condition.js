@@ -21,6 +21,7 @@ export default function TermsAndConditions() {
                     <li>Prices are in AED (VAT included unless stated otherwise).</li>
                     <li>We reserve the right to modify or discontinue products, services, or prices without notice.</li>
                     <li>All content, imagery, and design elements are property of House of R-Martin.</li>
+                    <li>Will not provide any services or products to any Office of Foreign Assets Control (OFAC) sanctioned countries in accordance with UAE law.</li>
                 </ul>
 
                 <h2 className="text-2xl font-semibold mt-6 mb-2">2. Orders</h2>

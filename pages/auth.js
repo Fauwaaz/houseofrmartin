@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
 import Head from 'next/head';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +15,8 @@ const AuthPage = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState('');
+
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -41,7 +44,7 @@ const AuthPage = () => {
             clearTimeout(timer);
             timer = setTimeout(() => {
                 document.cookie = 'session=; Max-Age=0; path=/'; // clear session
-                window.location.href = '/auth'; // redirect to login
+                router.push('/auth') // redirect to login
             }, 60 * 60 * 1000); // 1 hour
         };
 
@@ -117,12 +120,12 @@ const AuthPage = () => {
                 if (isLogin) {
                     // Redirect to home after login
                     setTimeout(() => {
-                        window.location.href = '/';
+                        router.push('/');
                     }, 1500);
                 } else {
                     // Switch to login after signup
                     setTimeout(() => setIsLogin(true), 1500);
-                    window.location.href = '/';
+                    router.push('/');
                 }
             }
         } catch (err) {

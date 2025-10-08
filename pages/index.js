@@ -142,14 +142,14 @@ const Home = ({ products }) => {
         <section className="py-10 w-full recents text-center flex flex-col items-center">
           <div>
             <h2 className="text-center uppercase text-4xl font-akkurat">
-              Our Bestsellter
+              Our Bestseller
             </h2>
             <p className="pt-1 text-sm lg:text-lg text-center">
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-1 lg:gap-3 px-3 lg:px-6 max-w-1920 my-10">
-            {products.slice(0, 4).map((product) => {
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-3 px-3 lg:px-6 max-w-1920 my-10">
+            {products.slice(0, 5).map((product) => {
               let displayPrice = null;
               let firstVariation = null;
 
@@ -345,17 +345,14 @@ const Home = ({ products }) => {
         <section className="products-showcase">
           <div className="inline-block space-x-10 lg:space-x-20 w-full recents text-center">
             <p className="text-sm lg:text-lg text-center font-akkurat underline">
-              NEW ARRIVALS
-            </p>
-            <p className="text-sm lg:text-lg text-center font-akkurat">
               SALE
             </p>
             <p className="text-sm lg:text-lg text-center font-akkurat">
               FEATURED
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 px-3 lg:px-6 max-w-1920 my-10">
-            {products.slice(0, 4).map((product) => {
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 px-3 lg:px-6 max-w-1920 my-10">
+            {products.slice(0, 5).map((product) => {
               let displayPrice = null;
               let firstVariation = null;
 
