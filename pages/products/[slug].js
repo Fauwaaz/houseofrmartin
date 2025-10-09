@@ -66,6 +66,30 @@ const ProductDetails = ({ item }) => {
 
   const seo = product?.seo || {};
 
+  const handleVariantChange = (variant) => {
+    if (!variant) return;
+
+    const newFeatured = variant.image?.sourceUrl
+      ? { node: { sourceUrl: variant.image.sourceUrl } }
+      : product.featuredImage;
+
+    // Prefer variant gallery images if available (if your API provides them)
+    const newGallery = variant.galleryImages?.nodes?.length
+      ? variant.galleryImages
+      : product.galleryImages;
+
+    // Update product images
+    setProduct((prev) => ({
+      ...prev,
+      featuredImage: newFeatured,
+      galleryImages: newGallery,
+    }));
+
+    // Reset the gallery to the first image
+    setSlideImage(0);
+    setSelectedIndex(0);
+  };
+
   return (
     <Layout>
       <Head>
@@ -92,12 +116,12 @@ const ProductDetails = ({ item }) => {
                 className={styles.featured}
               >
                 <motion.div
-                  key={slideImage}
+                  key={product.featuredImage?.node?.sourceUrl || "placeholder"}
                   className={styles.featuredInner}
-                  initial={{ opacity: 0, x: 0 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 0 }}
-                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
                 >
                   <Image
                     alt={product.name}
@@ -149,7 +173,11 @@ const ProductDetails = ({ item }) => {
 
           <div className={styles.right}>
             <Suspense fallback={<ProductInfoSkeleton />}>
-              <ProductInfo product={product} isMounted={isMounted} />
+              <ProductInfo
+                product={product}
+                isMounted={isMounted}
+                onVariantChange={handleVariantChange}
+              />
             </Suspense>
           </div>
         </div>

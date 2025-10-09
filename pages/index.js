@@ -40,7 +40,7 @@ const getDiscountPercent = (regular, sale) => {
 const Home = ({ products }) => {
   const { onAdd, qty } = useStateContext();
   const parentRef = useRef(null);
-  const isInView = useInView(parentRef, { amount: 0.5, once: true }); 
+  const isInView = useInView(parentRef, { amount: 0.5, once: true });
 
   const categoriesSection = [
     { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "#" },
@@ -119,7 +119,7 @@ const Home = ({ products }) => {
           </div>
         </section>
 
-        <section className="story-banner h-[500px] lg:min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full">
+        {/* <section className="story-banner h-[500px] lg:min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 justify-items-center">
             <div className="story-banner-image"></div>
             <div className="story-banner-content w-3/4 ">
@@ -135,6 +135,35 @@ const Home = ({ products }) => {
               >
                 Shop All
               </Link>
+            </div>
+          </div>
+        </section> */}
+
+        <section className="w-full">
+          <div className="px-6 grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <div className="bg-gray-300 h-[245px] lg:h-[700px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/R-Martin-Banner-3-1.jpg)] bg-cover bg-center bg-no-repeat">
+            </div>
+            <div className="flex flex-col gap-3">
+              <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
+                <Image
+                  className="object-cover w-full h-full"
+                  height={100}
+                  width={100}
+                  alt={'banner2'}
+                  unoptimized
+                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/R-Martin-Banner-1-1.jpg'}
+                />
+              </div>
+              <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
+                <Image
+                  className="object-cover w-full h-full"
+                  height={100}
+                  width={100}
+                  alt={'banner3'}
+                  unoptimized
+                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/R-Martin-Banner-2-1.jpg'}
+                />
+              </div>
             </div>
           </div>
         </section>

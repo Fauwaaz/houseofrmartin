@@ -9,10 +9,10 @@ import Accordion from "./common/Accordion";
 import { ChevronRight, HeartIcon, Tag } from "lucide-react";
 import ShareButton from "./common/ShareButton";
 
-const ProductInfo = ({ product, isMounted }) => {
+const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
 
-  
+
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
@@ -197,6 +197,9 @@ const ProductInfo = ({ product, isMounted }) => {
 
     if (matchingVariant) {
       setSelectedVariation(matchingVariant);
+      if (onVariantChange) {
+        onVariantChange(matchingVariant); 
+      }
     }
   };
 
@@ -444,14 +447,6 @@ const ProductInfo = ({ product, isMounted }) => {
         </>
       )}
 
-      {/* <hr className="border-black/10 border-solid my-3" /> */}
-
-      {/* <div className="flex gap-2">
-        <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
-        <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
-        <div className="w-[200px] h-[50px] bg-gray-200 border border-dashed border-black/20 rounded-lg flex items-center justify-center">Sticker</div>
-      </div> */}
-
       <hr className="border-black/10 border-solid mt-3" />
 
       <Accordion
@@ -488,7 +483,7 @@ const ProductInfo = ({ product, isMounted }) => {
               <>
                 <div className="">
                   <p>Flat 10% off on minimum purchase of <span className="price-font">D</span>100</p>
-                  <p className="text-black font-geograph-md flex gap-2 items-center mt-2"><Tag size={16} className="animate-pulse"/>CODE: FLAT10</p>
+                  <p className="text-black font-geograph-md flex gap-2 items-center mt-2"><Tag size={16} className="animate-pulse" />CODE: FLAT10</p>
                 </div>
               </>
             )
