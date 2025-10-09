@@ -12,7 +12,7 @@ import ShareButton from "./common/ShareButton";
 const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
 
-  const [selectedSize, setSelectedSize] = useState("S");
+  
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
@@ -112,6 +112,7 @@ const ProductInfo = ({ product, isMounted }) => {
     });
   };
 
+  const [selectedSize, setSelectedSize] = useState(sizes.includes("M") ? "M" : "30");
 
   const getVariationImage = (variation, colorName) => {
     // Only use the variation's main image
@@ -466,7 +467,7 @@ const ProductInfo = ({ product, isMounted }) => {
                 <p className="font-geograph-md text-black">Fit & Wash care</p>
                 <div dangerouslySetInnerHTML={{ __html: product.description }} />
                 <br />
-                <p>
+                <p className="text-black">
                   SKU:{" "}
                   {selectedVariation?.sku
                     ? selectedVariation.sku

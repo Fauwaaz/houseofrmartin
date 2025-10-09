@@ -29,6 +29,19 @@ const Products = ({ products }) => {
   const [loading, setLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(products);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 15;
+
+  // Derived pagination values
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Pagination handlers
+  const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+
   const handleColorSelect = (colors) => {
     if (colors.length === 0) {
       setFilteredProducts(products);
@@ -97,7 +110,7 @@ const Products = ({ products }) => {
           {loading ? (
             <p className="col-span-full text-center min-h-screen">Loading...</p>
           ) : (
-            filteredProducts.map((product) => {
+            currentProducts.map((product) => {
               let displayPrice = null;
               let firstVariation = null;
 
@@ -239,6 +252,35 @@ const Products = ({ products }) => {
             })
           )}
         </div>
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-4 py-8">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-md border ${currentPage === 1
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-800"
+                }`}
+            >
+              Prev
+            </button>
+
+            <p className="text-sm">
+              Page {currentPage} of {totalPages}
+            </p>
+
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-md border ${currentPage === totalPages
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-800"
+                }`}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </Layout>
   );

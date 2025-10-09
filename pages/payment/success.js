@@ -4,7 +4,7 @@ import axios from "axios";
 import Loading from "../../components/Loading"
 import { Layout } from "../../components";
 import Link from "next/link";
-import { CheckCircle, CheckCircle2Icon, ChevronLeft } from "lucide-react";
+import { CheckCircle, ChevronLeft } from "lucide-react";
 
 export default function PaymentSuccess() {
   const router = useRouter();
@@ -15,11 +15,12 @@ export default function PaymentSuccess() {
 
   useEffect(() => {
     if (!order) return;
-
     async function fetchOrder() {
       try {
         const res = await axios.get(`/api/woo/order?orderId=${order}`);
         setOrderData(res.data.order);
+        localStorage.clear();
+        console.log(orderData);
       } catch (err) {
         setError("Failed to fetch order details");
         console.error("Error fetching order:", err);
