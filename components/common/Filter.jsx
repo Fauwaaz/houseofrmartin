@@ -89,8 +89,9 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
             <Settings2Icon size={16} />
           </span>
           Filter
+          <span className="capitalize ml-2">Showing results ({products.length})</span>
         </button>
-
+        
         {/* Dropdown */}
         <select
           className="w-[120px] lg:w-[150px] border border-black rounded-full px-2 py-1"
@@ -188,7 +189,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
                   >
                     reset
                   </p>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-3 gap-3 max-h-[180px] overflow-y-auto">
                     {uniqueColors.map((color, index) => {
                       const isSelected = selectedColors.includes(color);
                       return (

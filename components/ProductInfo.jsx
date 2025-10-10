@@ -200,7 +200,7 @@ const ProductInfo = ({ product, isMounted }) => {
 
   return (
     <div>
-      <ul className="inline-flex gap-1 text-sm mb-2">
+      <ul className="inline-flex gap-1 text-[10px] lg:text-[12px] mb-2">
         <li className="flex gap-1 items-center">
           Men <ChevronRight size={16} />
         </li>
@@ -371,7 +371,7 @@ const ProductInfo = ({ product, isMounted }) => {
       {availableColors.length > 0 && (
         <>
           <p className="mt-3">Also available colors: ({availableColors.length})</p>
-          <div className="flex mt-2 gap-2 flex-wrap">
+          <div className="flex mt-2 gap-2 lg:flex-wrap overflow-x-auto">
             {availableColors.map((color, index) => {
               const isAvailable = isColorAvailableForSize(color.name);
               const isSelected = selectedVariation && getColorName(selectedVariation).toLowerCase() === color.name.toLowerCase();

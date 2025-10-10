@@ -12,7 +12,7 @@ import stylesCommon from "../styles/common.module.css";
 import BeforeFooter from "../components/BeforeFooter";
 import { useState } from "react";
 import { colorMap } from "../utils/data";
-import { Heart } from "lucide-react";
+import { ChevronDown, Heart } from "lucide-react";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 
@@ -69,7 +69,7 @@ const Home = ({ products }) => {
             {categoriesSection.map((category, index) => (
               <div
                 key={index}
-                className="h-full w-full bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm relative overflow-hidden hover:rounded-[55px] transition-all duration-500 ease-in-out"
+                className="h-full w-full bg-slate-700 rounded-[20px] flex flex-col items-center justify-center shadow-sm relative overflow-hidden hover:rounded-[30px] transition-all duration-500 ease-in-out"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
@@ -177,7 +177,7 @@ const Home = ({ products }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-3 px-3 lg:px-6 max-w-1920 my-10">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
             {products.slice(0, 5).map((product) => {
               let displayPrice = null;
               let firstVariation = null;
@@ -196,10 +196,10 @@ const Home = ({ products }) => {
               return (
                 <div
                   key={product.id}
-                  className="bg-white shadow-sm rounded-md lg:rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
+                  className="bg-white shadow-sm rounded-none lg:rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
-                    <div className="bg-black/70 px-4 py-2 text-[12px] lg:text-sm text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
+                    <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
                       {product.productTags.nodes[0].name}
                     </div>
                   )}
@@ -219,7 +219,7 @@ const Home = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[248px] lg:max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -233,7 +233,7 @@ const Home = ({ products }) => {
                     )}
                   </Link>
 
-                  <div className="flex w-full flex-col lg:flex-row lg:items-center lg:justify-between px-3">
+                  <div className="flex w-full flex-col lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
                       <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
                         {product.name.length > 35
@@ -255,19 +255,19 @@ const Home = ({ products }) => {
                       const remaining = colors.length - 3;
 
                       return (
-                        <div className="flex items-center gap-2 justify-between">
-                          <div className="flex justify-center gap-2">
+                        <div className="flex items-start lg:items-center gap-2 flex-col lg:flex-row justify-start lg:justify-between">
+                          <div className="flex items-center justify-center gap-2">
                             {limitedColors.map((color, index) => (
                               <span
                                 key={index}
-                                className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
-                                style={{ backgroundColor: colorMap[color] || "#ccc" }}
+                                className="inline-block w-3 lg:w-5 h-3 lg:h-5 rounded-full border hover:border-black border-gray-300"
+                                style={{ background: colorMap[color] || "#ccc" }}
                                 title={color}
                               />
                             ))}
 
                             {remaining > 0 && (
-                              <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-sm text-black">
+                              <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-[12px] lg:text-sm text-black">
                                 +{remaining}
                               </span>
                             )}
@@ -315,7 +315,6 @@ const Home = ({ products }) => {
                       );
                     })()}
                   </div>
-
                 </div>
               );
             })}
@@ -328,7 +327,7 @@ const Home = ({ products }) => {
           </Link>
         </section>
 
-        <section className="10-years w-full py-6 px-5 max-w-1920">
+        <section className="10-years w-full pb-6 px-5 max-w-1920">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 max-w-1920 overflow-hidden">
             <div
               ref={parentRef}
@@ -380,7 +379,7 @@ const Home = ({ products }) => {
               FEATURED
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 px-3 lg:px-6 max-w-1920 my-10">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
             {products.slice(0, 5).map((product) => {
               let displayPrice = null;
               let firstVariation = null;
@@ -399,10 +398,10 @@ const Home = ({ products }) => {
               return (
                 <div
                   key={product.id}
-                  className="bg-white shadow-sm rounded-md lg:rounded-[20px] flex flex-col items-center overflow-hidden pb-4 relative"
+                  className="bg-white shadow-sm rounded-none lg:rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
-                    <div className="bg-black/70 px-4 py-2 text-[12px] lg:text-sm text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
+                    <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
                       {product.productTags.nodes[0].name}
                     </div>
                   )}
@@ -422,7 +421,7 @@ const Home = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[248px] lg:max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -436,7 +435,7 @@ const Home = ({ products }) => {
                     )}
                   </Link>
 
-                  <div className="flex w-full flex-col lg:flex-row lg:items-center lg:justify-between px-3">
+                  <div className="flex w-full flex-col lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
                       <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
                         {product.name.length > 35
@@ -458,19 +457,19 @@ const Home = ({ products }) => {
                       const remaining = colors.length - 3;
 
                       return (
-                        <div className="flex items-center gap-2 justify-between">
-                          <div className="flex justify-center gap-2">
+                        <div className="flex items-start lg:items-center gap-2 flex-col lg:flex-row justify-start lg:justify-between">
+                          <div className="flex items-center justify-center gap-2">
                             {limitedColors.map((color, index) => (
                               <span
                                 key={index}
-                                className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
-                                style={{ backgroundColor: colorMap[color] || "#ccc" }}
+                                className="inline-block w-3 lg:w-5 h-3 lg:h-5 rounded-full border hover:border-black border-gray-300"
+                                style={{ background: colorMap[color] || "#ccc" }}
                                 title={color}
                               />
                             ))}
 
                             {remaining > 0 && (
-                              <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-sm text-black">
+                              <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-[12px] lg:text-sm text-black">
                                 +{remaining}
                               </span>
                             )}
@@ -518,7 +517,6 @@ const Home = ({ products }) => {
                       );
                     })()}
                   </div>
-
                 </div>
               );
             })}

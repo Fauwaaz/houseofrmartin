@@ -16,4 +16,6 @@ export const colorMap = {
     brown: '#964b00',
     darkgrey: '#595959',
     green: '#357a00',
+    blueblack: "linear-gradient(90deg,rgba(0, 204, 255, 1) 50%, rgba(0, 0, 0, 1) 50%)",
+    greengrey: "linear-gradient(90deg,rgba(25, 189, 0, 1) 50%, rgba(110, 110, 110, 1) 50%)",
 }

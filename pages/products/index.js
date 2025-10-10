@@ -85,6 +85,10 @@ const Products = ({ products }) => {
     }
   };
 
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   return (
     <Layout>
       <div className="mt-[130px] lg:mt-[120px] w-full">
@@ -106,7 +110,7 @@ const Products = ({ products }) => {
         />
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 px-3 lg:px-6 mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-0.5 lg:gap-3 px-0 lg:px-6 mb-10">
           {loading ? (
             <p className="col-span-full text-center min-h-screen">Loading...</p>
           ) : (
@@ -128,7 +132,7 @@ const Products = ({ products }) => {
               return (
                 <div
                   key={product.id}
-                  className="bg-white shadow-sm rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
+                  className="bg-white shadow-sm rounded-none lg:rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
                     <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
@@ -151,7 +155,7 @@ const Products = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[248px] lg:max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -165,7 +169,7 @@ const Products = ({ products }) => {
                     )}
                   </Link>
 
-                  <div className="flex w-full flex-col lg:flex-row lg:items-center lg:justify-between px-3">
+                  <div className="flex w-full flex-col lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
                       <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
                         {product.name.length > 35
@@ -187,19 +191,19 @@ const Products = ({ products }) => {
                       const remaining = colors.length - 3;
 
                       return (
-                        <div className="flex items-center gap-2 justify-between">
-                          <div className="flex justify-center gap-2">
+                        <div className="flex items-start lg:items-center gap-2 flex-col lg:flex-row justify-start lg:justify-between">
+                          <div className="flex items-center justify-center gap-2">
                             {limitedColors.map((color, index) => (
                               <span
                                 key={index}
-                                className="inline-block w-5 h-5 rounded-full border hover:border-black border-gray-300"
-                                style={{ backgroundColor: colorMap[color] || "#ccc" }}
+                                className="inline-block w-3 lg:w-5 h-3 lg:h-5 rounded-full border hover:border-black border-gray-300"
+                                style={{ background: colorMap[color] || "#ccc" }}
                                 title={color}
                               />
                             ))}
 
                             {remaining > 0 && (
-                              <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-sm text-black">
+                              <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-[12px] lg:text-sm text-black">
                                 +{remaining}
                               </span>
                             )}
@@ -255,7 +259,7 @@ const Products = ({ products }) => {
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-4 pb-6">
             <button
-              onClick={prevPage}
+              onClick={() => { prevPage(); handleScrollToTop(); }}
               disabled={currentPage === 1}
               className={`px-4 py-2 rounded-md border ${currentPage === 1
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
@@ -270,7 +274,7 @@ const Products = ({ products }) => {
             </p>
 
             <button
-              onClick={nextPage}
+              onClick={() => { nextPage(); handleScrollToTop(); }}
               disabled={currentPage === totalPages}
               className={`px-4 py-2 rounded-md border ${currentPage === totalPages
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"

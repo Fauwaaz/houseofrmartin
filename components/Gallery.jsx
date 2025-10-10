@@ -21,8 +21,8 @@ const Gallery = ({ product, setSlideImage, selectedIndex, setSelectedIndex }) =>
             slide={i}
             className={
               i === selectedIndex
-                ? styles.gallery_image_not_selected
-                : `${styles.gallery_image_not_selected} hover:border-black hover:border-1`
+                ? `${styles.gallery_image_not_selected} border-1 border-gray-700`
+                : `hover:border-black hover:border-1`
             }
           >
             <button

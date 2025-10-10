@@ -142,7 +142,7 @@ const ProductDetails = ({ item }) => {
                     src={mergedGallery[slideImage]?.sourceUrl || product.featuredImage?.node?.sourceUrl || "/placeholder.jpg"}
                     priority
                     fill
-                    className="object-cover rounded-[20px]"
+                    className="object-cover object-left rounded-[20px]"
                     unoptimized
                     onError={(e) => (e.target.src = "/placeholder.jpg")}
                   />
