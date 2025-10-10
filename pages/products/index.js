@@ -155,7 +155,7 @@ const Products = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover object-top max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -164,7 +164,7 @@ const Products = ({ products }) => {
                         alt={`${product.name} gallery`}
                         width={600}
                         height={300}
-                        className="object-cover absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        className="object-cover object-top absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                       />
                     )}
                   </Link>

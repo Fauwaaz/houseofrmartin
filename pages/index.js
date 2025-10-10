@@ -10,9 +10,9 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import stylesCommon from "../styles/common.module.css";
 import BeforeFooter from "../components/BeforeFooter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colorMap } from "../utils/data";
-import { ChevronDown, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 
@@ -37,10 +37,19 @@ const getDiscountPercent = (regular, sale) => {
 }
 
 
+
 const Home = ({ products }) => {
   const { onAdd, qty } = useStateContext();
   const parentRef = useRef(null);
   const isInView = useInView(parentRef, { amount: 0.5, once: true });
+  const [randomProducts, setRandomProducts] = useState([]);
+
+  useEffect(() => {
+    if (products?.length > 0) {
+      const shuffled = [...products].sort(() => Math.random() - 0.5).slice(0, 4);
+      setRandomProducts(shuffled);
+    }
+  }, [products]);
 
   const categoriesSection = [
     { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "/products" },
@@ -156,7 +165,7 @@ const Home = ({ products }) => {
               </div>
               <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
                 <Image
-                  className="object-cover w-full h-full"
+                  className="object-cover object-top w-full h-full"
                   height={100}
                   width={100}
                   alt={'banner3'}
@@ -177,11 +186,10 @@ const Home = ({ products }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
-            {products.slice(0, 4).map((product) => {
-              let displayPrice = null;
-              let firstVariation = null;
 
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
+            {randomProducts.map((product) => {
+              let firstVariation = null;
               if (
                 product.__typename === "VariableProduct" &&
                 product.variations?.nodes?.length > 0
@@ -190,7 +198,6 @@ const Home = ({ products }) => {
                   (a, b) => parseFloat(a.price) - parseFloat(b.price)
                 );
                 firstVariation = sorted[0];
-                displayPrice = firstVariation.price;
               }
 
               return (
@@ -219,7 +226,7 @@ const Home = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover object-top max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -228,7 +235,7 @@ const Home = ({ products }) => {
                         alt={`${product.name} gallery`}
                         width={600}
                         height={300}
-                        className="object-cover absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        className="object-cover object-top absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                       />
                     )}
                   </Link>
@@ -242,11 +249,14 @@ const Home = ({ products }) => {
                             : product.name}
                         </h3>
                       </Link>
-                      <p className="text-sm text-gray-500">{product.productCategories?.nodes?.[0]?.name || ""}</p>
+                      <p className="text-sm text-gray-500">
+                        {product.productCategories?.nodes?.[0]?.name || ""}
+                      </p>
                     </div>
                   </div>
 
                   <div className="mt-2 px-3 w-full">
+                    {/* Colors and Prices */}
                     {(() => {
                       const colors =
                         product.attributes?.nodes
@@ -267,7 +277,6 @@ const Home = ({ products }) => {
                                 title={color}
                               />
                             ))}
-
                             {remaining > 0 && (
                               <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-[12px] lg:text-sm text-black">
                                 +{remaining}
@@ -294,6 +303,7 @@ const Home = ({ products }) => {
                               )}
                             </div>
                           )}
+
                           {product.__typename === "VariableProduct" && firstVariation && (
                             <div className="text-center flex items-center gap-1">
                               {firstVariation.salePrice ? (
@@ -309,7 +319,9 @@ const Home = ({ products }) => {
                                   </span>
                                 </>
                               ) : (
-                                <p className="text-md lg:text-lg price-font">D {firstVariation.regularPrice}</p>
+                                <p className="text-md lg:text-lg price-font">
+                                  D {firstVariation.regularPrice}
+                                </p>
                               )}
                             </div>
                           )}
@@ -321,6 +333,7 @@ const Home = ({ products }) => {
               );
             })}
           </div>
+
           <Link
             href="/products"
             className="text-center bg-black text-white px-10 py-3 rounded-full uppercase border border-white hover:bg-gray-800 cursor-pointer "
@@ -382,7 +395,7 @@ const Home = ({ products }) => {
             </p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
-            {products.slice(0, 4).map((product) => {
+            {randomProducts.map((product) => {
               let displayPrice = null;
               let firstVariation = null;
 
