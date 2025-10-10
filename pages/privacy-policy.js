@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
             </Head>
             <Cart />
             <Navbar />
-            <div className="px-6 mt-[80px] py-6">
+            <div className="px-6 mt-[120px] lg:mt-[80px] py-6">
                 <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
             <p>Introduction</p>
             <p>
@@ -49,6 +49,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold mt-6 mb-2">7. Policy Updates</h2>
             <p>We may revise this Privacy Policy occasionally. Updates will be posted on this page with an updated “Last Revised” date.</p>
             </div>
+            <FooterBar />
             <Footer />
         </>
     );

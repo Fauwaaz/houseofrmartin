@@ -2,6 +2,7 @@ import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Cart from "../components/Cart";
+import FooterBar from "../components/common/FooterBar";
 
 export default function TermsAndConditions() {
     return (
@@ -11,7 +12,7 @@ export default function TermsAndConditions() {
             </Head>
             <Cart />
             <Navbar />
-            <div className="px-6 mt-[80px] py-6 text-left">
+            <div className="px-6 mt-[120px] lg:mt-[80px] py-6 text-left">
                 <h1 className="text-3xl font-bold mb-4">Terms & Conditions</h1>
                 <p>Welcome to House of R-Martin, a brand rooted in timeless elegance and refined craftsmanship. These Terms & Conditions govern your use of our website and purchase of products in the UAE.</p>
 
@@ -43,6 +44,7 @@ export default function TermsAndConditions() {
                 <h2 className="text-2xl font-semibold mt-6 mb-2">6. Governing Law</h2>
                 <p>These Terms are governed by UAE law. Disputes fall under Dubai courts jurisdiction.</p>
             </div>
+            <FooterBar />
             <Footer />
         </>
     );

@@ -2,6 +2,7 @@ import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Cart from "../components/Cart";
+import FooterBar from "../components/common/FooterBar";
 
 export default function ShippingAndRefund() {
     return (
@@ -11,7 +12,7 @@ export default function ShippingAndRefund() {
             </Head>
             <Cart />
             <Navbar />
-            <div className="px-6 mt-[80px] py-6 text-left">
+            <div className="px-6 mt-[120px] lg:mt-[80px] py-6 text-left">
                 <h1 className="text-3xl font-bold mb-4">Refund, Return & Shipping Policy</h1>
 
                 <h2 className="text-2xl font-semibold mt-6 mb-2">1. Shipping</h2>
@@ -38,6 +39,7 @@ export default function ShippingAndRefund() {
                 <h2 className="text-2xl font-semibold mt-6 mb-2">4. Order Cancellation</h2>
                 <p>Orders can be cancelled within 12 hours if not shipped. Once dispatched, standard return/exchange policies apply.</p>
             </div>
+            <FooterBar />
             <Footer />
         </>
     );

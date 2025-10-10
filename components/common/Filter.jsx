@@ -89,7 +89,7 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
             <Settings2Icon size={16} />
           </span>
           Filter
-          <span className="capitalize ml-2">Showing results ({products.length})</span>
+          <span className="capitalize ml-1">Results ({products.length})</span>
         </button>
         
         {/* Dropdown */}

@@ -82,13 +82,13 @@ export default function Navbar() {
 
   return (
     <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50 justify-center flex flex-col lg:flex-row">
-      <nav className="w-full flex justify-between items-center px-6 py-3 max-w-1920">
+      <nav className="w-full flex justify-between items-center px-3 lg:px-6 py-3 max-w-1920">
         {/* Hamburger */}
         <button
           className="text-2xl w-[40px] md:w-[200px] lg:w-[270px]"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
-          {menuOpen ? <X /> : <Menu className="hover:bg-gray-100 p-2 rounded-full" />}
+          {menuOpen ? <X /> : <Menu className="hover:bg-gray-100 p-2 rounded-full border border-gray-100" />}
         </button>
 
         {/* Logo */}
@@ -251,7 +251,7 @@ export default function Navbar() {
               <hr className="mt-4" />
               <div>
                 <h5 className="text-md mt-4">Follow Us</h5>
-                <ul className="mt-4 flex gap-4 items-center justify-center md:justify-start">
+                <ul className="mt-4 flex gap-4 items-center justify-start">
                   <li><Link href="#"><FiInstagram size={22} /></Link></li>
                   <li><Link href="#"><FiFacebook size={22} /></Link></li>
                   <li><Link href="#"><FiYoutube size={22} /></Link></li>

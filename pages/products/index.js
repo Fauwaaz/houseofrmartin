@@ -30,7 +30,7 @@ const Products = ({ products }) => {
   const [filteredProducts, setFilteredProducts] = useState(products);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 15;
+  const productsPerPage = 16;
 
   // Derived pagination values
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
@@ -91,7 +91,7 @@ const Products = ({ products }) => {
 
   return (
     <Layout>
-      <div className="mt-[130px] lg:mt-[120px] w-full">
+      <div className="mt-[140px] lg:mt-[120px] w-full">
         <div className="flex flex-col gap-2 items-center justify-center pb-6">
           <h1 className="text-xl lg:text-3xl">Shop All</h1>
           <p className="text-center px-4">
@@ -110,7 +110,7 @@ const Products = ({ products }) => {
         />
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-0.5 lg:gap-3 px-0 lg:px-6 mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 px-0 lg:px-6 mb-10">
           {loading ? (
             <p className="col-span-full text-center min-h-screen">Loading...</p>
           ) : (
@@ -135,7 +135,7 @@ const Products = ({ products }) => {
                   className="bg-white shadow-sm rounded-none lg:rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
-                    <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
+                    <div className="bg-black/70 px-[7px] py-[5px] lg:px-4 lg:py-2 text-[8px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
                       {product.productTags.nodes[0].name}
                     </div>
                   )}
@@ -155,7 +155,7 @@ const Products = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[248px] lg:max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -171,11 +171,13 @@ const Products = ({ products }) => {
 
                   <div className="flex w-full flex-col lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
-                      <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
-                        {product.name.length > 35
-                          ? product.name.substring(0, 35) + "..."
-                          : product.name}
-                      </h3>
+                      <Link href={`/products/${product.slug}`} className="hover:underline">
+                        <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
+                          {product.name.length > 35
+                            ? product.name.substring(0, 40) + "..."
+                            : product.name}
+                        </h3>
+                      </Link>
                       <p className="text-sm text-gray-500">{product.productCategories?.nodes?.[0]?.name || ""}</p>
                     </div>
                   </div>
@@ -192,7 +194,7 @@ const Products = ({ products }) => {
 
                       return (
                         <div className="flex items-start lg:items-center gap-2 flex-col lg:flex-row justify-start lg:justify-between">
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1">
                             {limitedColors.map((color, index) => (
                               <span
                                 key={index}

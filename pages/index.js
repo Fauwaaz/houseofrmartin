@@ -43,10 +43,10 @@ const Home = ({ products }) => {
   const isInView = useInView(parentRef, { amount: 0.5, once: true });
 
   const categoriesSection = [
-    { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "#" },
-    { title: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/shirt-scaled.jpg", link: "#" },
-    { title: "Pants", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/pant-scaled.jpg", link: "#" },
-    { title: "Tshirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "#" },
+    { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "/products" },
+    { title: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/shirt-scaled.jpg", link: "/products" },
+    { title: "Pants", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/pant-scaled.jpg", link: "/products" },
+    { title: "Tshirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "/products" },
   ];
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -140,7 +140,7 @@ const Home = ({ products }) => {
         </section> */}
 
         <section className="w-full">
-          <div className="px-6 grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div className="px-3 lg:px-5 grid grid-cols-1 lg:grid-cols-2 gap-3">
             <div className="bg-gray-300 h-[245px] lg:h-[700px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/R-Martin-Banner-3-1.jpg)] bg-cover bg-center bg-no-repeat">
             </div>
             <div className="flex flex-col gap-3">
@@ -177,8 +177,8 @@ const Home = ({ products }) => {
               Don&apos;t Miss Out
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
-            {products.slice(0, 5).map((product) => {
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
+            {products.slice(0, 4).map((product) => {
               let displayPrice = null;
               let firstVariation = null;
 
@@ -199,7 +199,7 @@ const Home = ({ products }) => {
                   className="bg-white shadow-sm rounded-none lg:rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
-                    <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
+                    <div className="bg-black/70 px-[7px] py-[5px] lg:px-4 lg:py-2 text-[8px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
                       {product.productTags.nodes[0].name}
                     </div>
                   )}
@@ -219,7 +219,7 @@ const Home = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[248px] lg:max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -235,11 +235,13 @@ const Home = ({ products }) => {
 
                   <div className="flex w-full flex-col lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
-                      <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
-                        {product.name.length > 35
-                          ? product.name.substring(0, 35) + "..."
-                          : product.name}
-                      </h3>
+                      <Link href={`/products/${product.slug}`} className="hover:underline">
+                        <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
+                          {product.name.length > 35
+                            ? product.name.substring(0, 40) + "..."
+                            : product.name}
+                        </h3>
+                      </Link>
                       <p className="text-sm text-gray-500">{product.productCategories?.nodes?.[0]?.name || ""}</p>
                     </div>
                   </div>
@@ -320,7 +322,7 @@ const Home = ({ products }) => {
             })}
           </div>
           <Link
-            href="/shop?bestsellers=true"
+            href="/products"
             className="text-center bg-black text-white px-10 py-3 rounded-full uppercase border border-white hover:bg-gray-800 cursor-pointer "
           >
             Shop Best Seller
@@ -379,8 +381,8 @@ const Home = ({ products }) => {
               FEATURED
             </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
-            {products.slice(0, 5).map((product) => {
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
+            {products.slice(0, 4).map((product) => {
               let displayPrice = null;
               let firstVariation = null;
 
@@ -401,7 +403,7 @@ const Home = ({ products }) => {
                   className="bg-white shadow-sm rounded-none lg:rounded-[10px] flex flex-col items-center overflow-hidden pb-4 relative"
                 >
                   {product.productTags?.nodes?.length > 0 && (
-                    <div className="bg-black/70 px-4 py-2 text-[10px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
+                    <div className="bg-black/70 px-[7px] py-[5px] lg:px-4 lg:py-2 text-[8px] lg:text-[12px] text-white text-center absolute rounded-2xl z-10 uppercase top-2 left-2">
                       {product.productTags.nodes[0].name}
                     </div>
                   )}
@@ -421,7 +423,7 @@ const Home = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover max-h-[248px] lg:max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -437,11 +439,13 @@ const Home = ({ products }) => {
 
                   <div className="flex w-full flex-col lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
-                      <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
-                        {product.name.length > 35
-                          ? product.name.substring(0, 35) + "..."
-                          : product.name}
-                      </h3>
+                      <Link href={`/products/${product.slug}`} className="hover:underline">
+                        <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
+                          {product.name.length > 35
+                            ? product.name.substring(0, 40) + "..."
+                            : product.name}
+                        </h3>
+                      </Link>
                       <p className="text-sm text-gray-500">{product.productCategories?.nodes?.[0]?.name || ""}</p>
                     </div>
                   </div>
