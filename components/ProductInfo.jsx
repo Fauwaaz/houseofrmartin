@@ -9,10 +9,8 @@ import Accordion from "./common/Accordion";
 import { ChevronRight, HeartIcon, Tag } from "lucide-react";
 import ShareButton from "./common/ShareButton";
 
-const ProductInfo = ({ product, isMounted, onVariantChange }) => {
+const ProductInfo = ({ product, isMounted }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
-
-
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
@@ -22,7 +20,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   useEffect(() => {
     console.log("Variants:", allVariants);
   }, [allVariants]);
-
 
   useEffect(() => {
     if (product) {
@@ -36,7 +33,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
       );
 
       const colors = [];
-
       if (colorAttribute && colorAttribute.options) {
         // For each color option, find the best variant to represent it
         colorAttribute.options.forEach(colorName => {
@@ -60,18 +56,12 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
           if (!bestVariant) {
             bestVariant = {
               attributes: {
-                nodes: [{
-                  name: "pa_color",
-                  value: colorName
-                }]
+                nodes: [{ name: "pa_color", value: colorName }]
               }
             };
           }
 
-          colors.push({
-            name: colorName,
-            variant: bestVariant
-          });
+          colors.push({ name: colorName, variant: bestVariant });
         });
       } else {
         // Fallback: extract colors from variants
@@ -80,7 +70,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
           const colorAttr = variant.attributes?.nodes?.find(
             attr => attr.name.toLowerCase() === "pa_color"
           );
-
           if (colorAttr && !colorMap.has(colorAttr.value.toLowerCase())) {
             colorMap.set(colorAttr.value.toLowerCase(), {
               name: colorAttr.value,
@@ -88,10 +77,8 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
             });
           }
         });
-
         colors.push(...Array.from(colorMap.values()));
       }
-
       setAvailableColors(colors);
     }
   }, [product]);
@@ -101,8 +88,10 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
     product.attributes?.nodes
       ?.filter((attr) => attr.name.toLowerCase() === "pa_size")
       ?.flatMap((attr) => attr.options) || [];
+
   sizes = Array.from(new Set(sizes.map(s => s.toUpperCase())));
   sizes.sort((a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b));
+
   const getVariantsForSize = (size) => {
     return allVariants.filter((variant) => {
       const sizeAttr = variant.attributes?.nodes?.find(
@@ -136,15 +125,19 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   };
 
   const getColorName = (variation) => {
-    return variation?.attributes?.nodes?.find(
-      (attr) => attr.name.toLowerCase() === "pa_color"
-    )?.value || "Unknown";
+    return (
+      variation?.attributes?.nodes?.find(
+        (attr) => attr.name.toLowerCase() === "pa_color"
+      )?.value || "Unknown"
+    );
   };
 
   const getSize = (variation) => {
-    return variation?.attributes?.nodes?.find(
-      (attr) => attr.name.toLowerCase() === "pa_size"
-    )?.value || "Unknown";
+    return (
+      variation?.attributes?.nodes?.find(
+        (attr) => attr.name.toLowerCase() === "pa_size"
+      )?.value || "Unknown"
+    );
   };
 
   const handleSizeSelect = (size) => {
@@ -154,8 +147,8 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
     if (selectedVariation) {
       const currentColor = getColorName(selectedVariation);
       const variantsForNewSize = getVariantsForSize(size);
-      const matchingVariant = variantsForNewSize.find(variant =>
-        getColorName(variant).toLowerCase() === currentColor.toLowerCase()
+      const matchingVariant = variantsForNewSize.find(
+        variant => getColorName(variant).toLowerCase() === currentColor.toLowerCase()
       );
 
       if (matchingVariant) {
@@ -176,7 +169,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   };
 
   const handleSizeGuide = () => {
-
+    // Logic for showing size guide, if any
   };
 
   useEffect(() => {
@@ -191,31 +184,29 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
 
   const handleColorSelect = (colorName) => {
     const variantsForSize = getVariantsForSize(selectedSize);
-    const matchingVariant = variantsForSize.find(variant =>
-      getColorName(variant).toLowerCase() === colorName.toLowerCase()
+    const matchingVariant = variantsForSize.find(
+      variant => getColorName(variant).toLowerCase() === colorName.toLowerCase()
     );
-
     if (matchingVariant) {
       setSelectedVariation(matchingVariant);
-      if (onVariantChange) {
-        onVariantChange(matchingVariant); 
-      }
     }
   };
 
   const isColorAvailableForSize = (colorName) => {
-    return getVariantsForSize(selectedSize).some(variant =>
-      getColorName(variant).toLowerCase() === colorName.toLowerCase()
+    return getVariantsForSize(selectedSize).some(
+      variant => getColorName(variant).toLowerCase() === colorName.toLowerCase()
     );
   };
-
 
   return (
     <div>
       <ul className="inline-flex gap-1 text-sm mb-2">
-        <li className="flex gap-1 items-center">Men <ChevronRight size={16} /> </li>
+        <li className="flex gap-1 items-center">
+          Men <ChevronRight size={16} />
+        </li>
         <li className="flex gap-1 items-center">{product?.name} </li>
       </ul>
+
       <div className="flex justify-between items-center">
         <h1 className="text-2xl lg:text-3xl mb-2 font-geograph">
           {product?.name || (
@@ -233,51 +224,51 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
         </div>
       </div>
 
-      {"price" in product ? (() => {
-        const cleanPrice = parseFloat(
-          String(product.regularPrice));
-        const cleanSale = product.salePrice
-          ? parseFloat(String(product.salePrice))
-          : null;
-
-        const discount =
-          cleanSale && cleanPrice
-            ? Math.round(((cleanPrice - cleanSale) / cleanPrice) * 100)
+      {"price" in product ? (
+        (() => {
+          const cleanPrice = parseFloat(
+            String(product.regularPrice)
+          );
+          const cleanSale = product.salePrice
+            ? parseFloat(String(product.salePrice))
             : null;
+          const discount =
+            cleanSale && cleanPrice
+              ? Math.round(((cleanPrice - cleanSale) / cleanPrice) * 100)
+              : null;
 
-        return (
-          <div className="flex items-center gap-2">
-            {cleanSale ? (
-              <>
-                {/* Selling Price */}
-                <span className="text-xl lg:text-2xl font-semibold text-black">
-                  <span className="price-font">D</span> {cleanSale}
-                </span>
-
-                {/* Regular Price */}
-                <span className="text-lg line-through text-gray-500">
+          return (
+            <div className="flex items-center gap-2">
+              {cleanSale ? (
+                <>
+                  {/* Selling Price */}
+                  <span className="text-xl lg:text-2xl font-semibold text-black">
+                    <span className="price-font">D</span> {cleanSale}
+                  </span>
+                  {/* Regular Price */}
+                  <span className="text-lg line-through text-gray-500">
+                    <span className="price-font">D</span> {cleanPrice}
+                  </span>
+                  {/* Discount % */}
+                  {discount !== null && (
+                    <span className="text-lg font-medium uppercase text-red-500">
+                      {" "}
+                      ({discount}% off){" "}
+                    </span>
+                  )}
+                </>
+              ) : (
+                // Only Price
+                <span className="text-xl lg:text-2xl font-semibold">
                   <span className="price-font">D</span> {cleanPrice}
                 </span>
-
-                {/* Discount % */}
-                {discount !== null && (
-                  <span className="text-lg font-medium uppercase text-red-500">
-                    ({discount}% off)
-                  </span>
-                )}
-              </>
-            ) : (
-              // Only Price
-              <span className="text-xl lg:text-2xl font-semibold">
-                <span className="price-font">D</span> {cleanPrice}
-              </span>
-            )}
-          </div>
-        );
-      })() : (
+              )}
+            </div>
+          );
+        })()
+      ) : (
         <div className="animate-pulse bg-gray-200 h-6 w-24 rounded" />
       )}
-
 
       <hr className="border-black/10 border-solid my-3" />
 
@@ -289,10 +280,11 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
               {sizes.map((size, index) => (
                 <button
                   key={index}
-                  className={`px-4 py-2 border rounded uppercase cursor-pointer ${selectedSize === size
-                    ? "bg-black text-white"
-                    : "border-gray-400 bg-white"
-                    }`}
+                  className={`px-4 py-2 border rounded uppercase cursor-pointer ${
+                    selectedSize === size
+                      ? "bg-black text-white"
+                      : "border-gray-400 bg-white"
+                  }`}
                   onClick={() => handleSizeSelect(size)}
                 >
                   {size}
@@ -336,9 +328,12 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
             </button>
           </div>
         </div>
-
         <div>
-          <button href='' onClick={handleSizeGuide} className='text-sm underline mt-2 cursor-pointer'>
+          <button
+            href=''
+            onClick={handleSizeGuide}
+            className='text-sm underline mt-2 cursor-pointer'
+          >
             Size guide
           </button>
         </div>
@@ -346,10 +341,9 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
 
       <div className="mt-6">
         <button
-          className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${!selectedSize || !selectedVariation
-            ? "opacity-50 cursor-not-allowed"
-            : ""
-            }`}
+          className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${
+            !selectedSize || !selectedVariation ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!selectedSize || !selectedVariation}
           onClick={() => {
             if (!selectedVariation) return;
@@ -380,8 +374,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
           <div className="flex mt-2 gap-2 flex-wrap">
             {availableColors.map((color, index) => {
               const isAvailable = isColorAvailableForSize(color.name);
-              const isSelected = selectedVariation &&
-                getColorName(selectedVariation).toLowerCase() === color.name.toLowerCase();
+              const isSelected = selectedVariation && getColorName(selectedVariation).toLowerCase() === color.name.toLowerCase();
 
               // Use the variant image for this color
               const imageUrl = getVariationImage(color.variant, color.name);
@@ -390,15 +383,17 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                 <div key={index} className="flex flex-col items-center">
                   <button
                     onClick={() => isAvailable && handleColorSelect(color.name)}
-                    className={`relative w-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${isSelected
-                      ? "border-black shadow-md"
-                      : isAvailable
+                    className={`relative w-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
+                      isSelected
+                        ? "border-black shadow-md"
+                        : isAvailable
                         ? "border-gray-300 hover:border-gray-400"
                         : "border-gray-300 opacity-40 cursor-not-allowed"
-                      }`}
-                    title={isAvailable
-                      ? `${color.name} - Size ${selectedSize}`
-                      : `${color.name} not available in size ${selectedSize}`
+                    }`}
+                    title={
+                      isAvailable
+                        ? `${color.name} - Size ${selectedSize}`
+                        : `${color.name} not available in size ${selectedSize}`
                     }
                     disabled={!isAvailable}
                   >
@@ -416,21 +411,19 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                         }}
                       />
                     </div>
-
                     {/* Border overlay for selected */}
                     {isSelected && (
                       <span className="absolute inset-0 border-2 border-black rounded-lg pointer-events-none"></span>
                     )}
-
                     {/* Overlay for unavailable colors */}
                     {!isAvailable && (
                       <span className="absolute inset-0 bg-gray-100 opacity-50 rounded-lg pointer-events-none"></span>
                     )}
                   </button>
-
                   {/* Color text below thumbnail */}
-                  <p className={`text-xs text-center capitalize mt-1 font-medium ${isSelected ? 'font-bold' : isAvailable ? 'text-gray-600' : 'text-gray-400'
-                    }`}>
+                  <p className={`text-xs text-center capitalize mt-1 font-medium ${
+                    isSelected ? 'font-bold' : isAvailable ? 'text-gray-600' : 'text-gray-400'
+                  }`}>
                     {color.name}
                   </p>
                 </div>
@@ -460,9 +453,12 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                 />
                 <br />
                 <p className="font-geograph-md text-black">Fit & Wash care</p>
-                <div dangerouslySetInnerHTML={{ __html: product.description }} />
+                <div
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
                 <br />
                 <p className="text-black">
+                  {" "}
                   SKU:{" "}
                   {selectedVariation?.sku
                     ? selectedVariation.sku
@@ -482,23 +478,25 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
             content: (
               <>
                 <div className="">
-                  <p>Flat 10% off on minimum purchase of <span className="price-font">D</span>100</p>
-                  <p className="text-black font-geograph-md flex gap-2 items-center mt-2"><Tag size={16} className="animate-pulse" />CODE: FLAT10</p>
+                  <p>
+                    Flat 10% off on minimum purchase of{" "}
+                    <span className="price-font">D</span>100
+                  </p>
+                  <p className="text-black font-geograph-md flex gap-2 items-center mt-2">
+                    <Tag size={16} className="animate-pulse" />
+                    CODE: FLAT10
+                  </p>
                 </div>
               </>
             )
           },
           {
             title: "Shipping",
-            content: (
-              <p>Shipping details</p>
-            )
+            content: <p>Shipping details</p>,
           },
           {
             title: "Reviews",
-            content: (
-              <p> Reviews here   </p>
-            )
+            content: <p> Reviews here </p>,
           },
         ]}
       />

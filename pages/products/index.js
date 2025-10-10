@@ -151,7 +151,7 @@ const Products = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -253,7 +253,7 @@ const Products = ({ products }) => {
           )}
         </div>
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-4 py-8">
+          <div className="flex justify-center items-center gap-4 pb-6">
             <button
               onClick={prevPage}
               disabled={currentPage === 1}

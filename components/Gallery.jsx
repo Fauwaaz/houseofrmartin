@@ -26,7 +26,7 @@ const Gallery = ({ product, setSlideImage, selectedIndex, setSelectedIndex }) =>
             }
           >
             <button
-              onMouseEnter={() => selectImage(i - 1)}
+              onMouseEnter={() => selectImage(i)}
               slide={i}
               className={styles.gallery_image}
             >

@@ -219,7 +219,7 @@ const Home = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (
@@ -422,7 +422,7 @@ const Home = ({ products }) => {
                       alt={product.name}
                       width={600}
                       height={300}
-                      className="object-cover transition-opacity duration-300 group-hover:opacity-0"
+                      className="object-cover max-h-[480px] transition-opacity duration-300 group-hover:opacity-0"
                     />
 
                     {product.galleryImages?.nodes?.length > 0 && (

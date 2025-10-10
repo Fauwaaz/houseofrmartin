@@ -64,43 +64,59 @@ const ProductDetails = ({ item }) => {
     setMount(true);
   }, []);
 
+  // Merge featured + gallery while removing duplicates & placeholder issues
+  const mergedGallery = (() => {
+    const featured = product?.featuredImage?.node?.sourceUrl
+      ? [{ sourceUrl: product.featuredImage.node.sourceUrl }]
+      : [];
+
+    const gallery = product?.galleryImages?.nodes || [];
+
+    // Remove duplicates (featured already included in gallery in some WP setups)
+    const uniqueImages = [...featured, ...gallery].filter(
+      (img, i, arr) =>
+        img?.sourceUrl &&
+        arr.findIndex((x) => x.sourceUrl === img.sourceUrl) === i
+    );
+
+    // If duplicate still appears at start, slice one
+    if (
+      uniqueImages.length > 1 &&
+      uniqueImages[0].sourceUrl === uniqueImages[1].sourceUrl
+    ) {
+      return uniqueImages.slice(1);
+    }
+
+    return uniqueImages;
+  })();
+
+
+
   const seo = product?.seo || {};
-
-  const handleVariantChange = (variant) => {
-    if (!variant) return;
-
-    const newFeatured = variant.image?.sourceUrl
-      ? { node: { sourceUrl: variant.image.sourceUrl } }
-      : product.featuredImage;
-
-    // Prefer variant gallery images if available (if your API provides them)
-    const newGallery = variant.galleryImages?.nodes?.length
-      ? variant.galleryImages
-      : product.galleryImages;
-
-    // Update product images
-    setProduct((prev) => ({
-      ...prev,
-      featuredImage: newFeatured,
-      galleryImages: newGallery,
-    }));
-
-    // Reset the gallery to the first image
-    setSlideImage(0);
-    setSelectedIndex(0);
-  };
 
   return (
     <Layout>
       <Head>
         <title>{seo.title || product.name}</title>
-        <meta name="description" content={seo.metaDesc || product.description?.slice(0, 155)} />
+        <meta
+          name="description"
+          content={seo.metaDesc || product.description?.slice(0, 155)}
+        />
         {seo.metaKeywords && <meta name="keywords" content={seo.metaKeywords} />}
 
         {/* OpenGraph tags */}
         <meta property="og:title" content={seo.title || product.name} />
-        <meta property="og:description" content={seo.metaDesc || product.description?.slice(0, 155)} />
-        <meta property="og:image" content={seo.opengraphImage?.sourceUrl || product.featuredImage?.node?.sourceUrl} />
+        <meta
+          property="og:description"
+          content={seo.metaDesc || product.shortDescription?.slice(0, 155)}
+        />
+        <meta
+          property="og:image"
+          content={
+            seo.opengraphImage?.sourceUrl ||
+            product.featuredImage?.node?.sourceUrl
+          }
+        />
       </Head>
       <div className="mt-[105px] lg:mt-[60px]">
         <div className={styles.wrapper}>
@@ -112,28 +128,23 @@ const ProductDetails = ({ item }) => {
               setSelectedIndex={setSelectedIndex}
             />
             <div className="relative w-full">
-              <div
-                className={styles.featured}
-              >
+              <div className={styles.featured}>
                 <motion.div
-                  key={product.featuredImage?.node?.sourceUrl || "placeholder"}
+                  key={slideImage}
                   className={styles.featuredInner}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
+                  initial={{ opacity: 0, x: 0 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 0 }}
+                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 >
                   <Image
                     alt={product.name}
-                    src={
-                      product.galleryImages?.nodes[slideImage]?.sourceUrl ||
-                      product.featuredImage?.node?.sourceUrl ||
-                      "/placeholder.jpg"
-                    }
+                    src={mergedGallery[slideImage]?.sourceUrl || product.featuredImage?.node?.sourceUrl || "/placeholder.jpg"}
                     priority
                     fill
                     className="object-cover rounded-[20px]"
                     unoptimized
+                    onError={(e) => (e.target.src = "/placeholder.jpg")}
                   />
                 </motion.div>
                 {product.productTags?.nodes?.length > 0 && (
@@ -141,15 +152,12 @@ const ProductDetails = ({ item }) => {
                     {product.productTags.nodes[0].name}
                   </div>
                 )}
-
               </div>
-
               <div>
                 <button
                   onClick={() =>
                     setSlideImage(
-                      (slideImage - 1 + product.galleryImages?.nodes.length) %
-                      product.galleryImages?.nodes.length
+                      (slideImage - 1 + mergedGallery.length) % mergedGallery.length
                     )
                   }
                   className="absolute left-1 top-[220px] lg:top-[350px] -translate-y-1/2 bg-black/80 p-2 rounded-full shadow hover:bg-gray-800 cursor-pointer"
@@ -159,29 +167,22 @@ const ProductDetails = ({ item }) => {
 
                 <button
                   onClick={() =>
-                    setSlideImage(
-                      (slideImage + 1) % product.galleryImages?.nodes.length
-                    )
+                    setSlideImage((slideImage + 1) % mergedGallery.length)
                   }
                   className="absolute right-1 top-[220px] lg:top-[350px] -translate-y-1/2 bg-black/80 p-2 rounded-full shadow hover:bg-gray-800 cursor-pointer"
                 >
                   <ArrowRight size={22} color="white" />
                 </button>
+
               </div>
             </div>
           </div>
-
           <div className={styles.right}>
             <Suspense fallback={<ProductInfoSkeleton />}>
-              <ProductInfo
-                product={product}
-                isMounted={isMounted}
-                onVariantChange={handleVariantChange}
-              />
+              <ProductInfo product={product} isMounted={isMounted} />
             </Suspense>
           </div>
         </div>
-
         <div className="pb-6">
           <h2 className="text-3xl text-center">You may also like</h2>
         </div>

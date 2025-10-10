@@ -108,7 +108,7 @@ const Hero = () => {
           </div>
         </div>
       </div> */}
-      <div className="w-full hidden lg:flex">
+      <div className="w-full hidden lg:flex min-h-screen">
         <div
           style={{
             backgroundImage: "url('/hero/rmartin-hero-1.png')",
