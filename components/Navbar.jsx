@@ -252,8 +252,8 @@ export default function Navbar() {
               <div>
                 <h5 className="text-md mt-4">Follow Us</h5>
                 <ul className="mt-4 flex gap-4 items-center justify-start">
-                  <li><Link href="#"><FiInstagram size={22} /></Link></li>
-                  <li><Link href="#"><FiFacebook size={22} /></Link></li>
+                  <li><Link href="https://www.instagram.com/houseofrmartin_ae/"><FiInstagram size={22} /></Link></li>
+                  <li><Link href="https://www.facebook.com/people/House-Of-R-Martin/61581764362800/"><FiFacebook size={22} /></Link></li>
                   <li><Link href="#"><FiYoutube size={22} /></Link></li>
                   <li><Link href="#"><FiLinkedin size={22} /></Link></li>
                 </ul>

@@ -90,6 +90,29 @@ const ProductDetails = ({ item }) => {
     return uniqueImages;
   })();
 
+  const handleVariantChange = (variant) => {
+    if (!variant) return;
+
+    const newFeatured = variant.image?.sourceUrl
+      ? { node: { sourceUrl: variant.image.sourceUrl } }
+      : product.featuredImage;
+
+    // Prefer variant gallery images if available (if your API provides them)
+    const newGallery = variant.galleryImages?.nodes?.length
+      ? variant.galleryImages
+      : product.galleryImages;
+
+    // Update product images
+    setProduct((prev) => ({
+      ...prev,
+      featuredImage: newFeatured,
+      galleryImages: newGallery,
+    }));
+
+    // Reset the gallery to the first image
+    setSlideImage(0);
+    setSelectedIndex(0);
+  };
 
 
   const seo = product?.seo || {};
@@ -179,7 +202,7 @@ const ProductDetails = ({ item }) => {
           </div>
           <div className={styles.right}>
             <Suspense fallback={<ProductInfoSkeleton />}>
-              <ProductInfo product={product} isMounted={isMounted} />
+              <ProductInfo product={product} isMounted={isMounted} onVariantChange={handleVariantChange}/>
             </Suspense>
           </div>
         </div>

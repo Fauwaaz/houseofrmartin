@@ -9,7 +9,7 @@ import Accordion from "./common/Accordion";
 import { ChevronRight, HeartIcon, Tag } from "lucide-react";
 import ShareButton from "./common/ShareButton";
 
-const ProductInfo = ({ product, isMounted }) => {
+const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [allVariants, setAllVariants] = useState([]);
@@ -189,6 +189,9 @@ const ProductInfo = ({ product, isMounted }) => {
     );
     if (matchingVariant) {
       setSelectedVariation(matchingVariant);
+      if (onVariantChange) {
+        onVariantChange(matchingVariant);
+      }
     }
   };
 
@@ -280,11 +283,10 @@ const ProductInfo = ({ product, isMounted }) => {
               {sizes.map((size, index) => (
                 <button
                   key={index}
-                  className={`px-4 py-2 border rounded uppercase cursor-pointer ${
-                    selectedSize === size
-                      ? "bg-black text-white"
-                      : "border-gray-400 bg-white"
-                  }`}
+                  className={`px-4 py-2 border rounded uppercase cursor-pointer ${selectedSize === size
+                    ? "bg-black text-white"
+                    : "border-gray-400 bg-white"
+                    }`}
                   onClick={() => handleSizeSelect(size)}
                 >
                   {size}
@@ -341,9 +343,8 @@ const ProductInfo = ({ product, isMounted }) => {
 
       <div className="mt-6">
         <button
-          className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${
-            !selectedSize || !selectedVariation ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${!selectedSize || !selectedVariation ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           disabled={!selectedSize || !selectedVariation}
           onClick={() => {
             if (!selectedVariation) return;
@@ -383,13 +384,12 @@ const ProductInfo = ({ product, isMounted }) => {
                 <div key={index} className="flex flex-col items-center">
                   <button
                     onClick={() => isAvailable && handleColorSelect(color.name)}
-                    className={`relative w-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                      isSelected
-                        ? "border-black shadow-md"
-                        : isAvailable
+                    className={`relative w-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${isSelected
+                      ? "border-black shadow-md"
+                      : isAvailable
                         ? "border-gray-300 hover:border-gray-400"
                         : "border-gray-300 opacity-40 cursor-not-allowed"
-                    }`}
+                      }`}
                     title={
                       isAvailable
                         ? `${color.name} - Size ${selectedSize}`
@@ -421,9 +421,8 @@ const ProductInfo = ({ product, isMounted }) => {
                     )}
                   </button>
                   {/* Color text below thumbnail */}
-                  <p className={`text-xs text-center capitalize mt-1 font-medium ${
-                    isSelected ? 'font-bold' : isAvailable ? 'text-gray-600' : 'text-gray-400'
-                  }`}>
+                  <p className={`text-xs text-center capitalize mt-1 font-medium ${isSelected ? 'font-bold' : isAvailable ? 'text-gray-600' : 'text-gray-400'
+                    }`}>
                     {color.name}
                   </p>
                 </div>
@@ -484,7 +483,7 @@ const ProductInfo = ({ product, isMounted }) => {
                   </p>
                   <p className="text-black font-geograph-md flex gap-2 items-center mt-2">
                     <Tag size={16} className="animate-pulse" />
-                    CODE: FLAT10
+                    CODE: DIWLAI30
                   </p>
                 </div>
               </>
@@ -492,7 +491,27 @@ const ProductInfo = ({ product, isMounted }) => {
           },
           {
             title: "Shipping",
-            content: <p>Shipping details</p>,
+            content: (
+              <>
+                <div className="flex items-center">
+                  <Image
+                    src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/aramex-logo-english-e1760165607545.webp'}
+                    height={60}
+                    width={150}
+                    alt="Shipping Info express"
+                    className="object-contain"
+                  />
+                  <Image
+                    src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/eco-express-1.png'}
+                    height={60}
+                    width={180}
+                    alt="Shipping Info express"
+                    className="object-contain"
+                  />
+                </div>
+                <p className="mt-4 text-black"> Note: Orders in COD method will have shipping charge: <span className="price-font">D</span>10</p>
+              </>
+            )
           },
           {
             title: "Reviews",

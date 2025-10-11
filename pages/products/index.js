@@ -1,3 +1,5 @@
+"use client";
+
 import { Layout } from "../../components";
 import { useStateContext } from "../../context/StateContext";
 import client from "../../libs/apollo";
@@ -6,8 +8,9 @@ import Link from "next/link";
 import { GET_ALL } from "../../utils/queries";
 import { colorMap } from "../../utils/data";
 import Filter from "../../components/common/Filter";
-import { useState } from "react";
-import { Heart } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import Head from "next/head";
 
 export async function getStaticProps() {
   const { data } = await client.query({ query: GET_ALL });
@@ -37,6 +40,14 @@ const Products = ({ products }) => {
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+
+  useEffect(() => {
+    if (products?.length > 0) {
+      const shuffled = [...products].sort(() => Math.random() - 0.5);
+      setFilteredProducts(shuffled);
+    }
+  }, [products]);
 
   // Pagination handlers
   const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
@@ -91,6 +102,12 @@ const Products = ({ products }) => {
 
   return (
     <Layout>
+      <Head>
+        <title>Products | House of R-Martin</title>
+        <meta name="description" content="Shop all our designs in one place and discover the full story of R-Martin." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="mt-[140px] lg:mt-[120px] w-full">
         <div className="flex flex-col gap-2 items-center justify-center pb-6">
           <h1 className="text-xl lg:text-3xl">Shop All</h1>
@@ -169,7 +186,7 @@ const Products = ({ products }) => {
                     )}
                   </Link>
 
-                  <div className="flex w-full flex-col lg:flex-row items-start lg:items-center lg:justify-between px-3">
+                  <div className="flex w-full flex-col border-t lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
                       <Link href={`/products/${product.slug}`} className="hover:underline">
                         <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
@@ -259,34 +276,58 @@ const Products = ({ products }) => {
           )}
         </div>
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-4 pb-6">
+          <div className="flex flex-wrap justify-center items-center gap-2 pb-6">
+            {/* Prev Button */}
             <button
-              onClick={() => { prevPage(); handleScrollToTop(); }}
+              onClick={() => {
+                prevPage();
+                handleScrollToTop();
+              }}
               disabled={currentPage === 1}
-              className={`px-4 py-2 rounded-md border ${currentPage === 1
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-black text-white hover:bg-gray-800"
+              className={`px-4 py-2 flex gap-1 items-center justify-between rounded-md border ${currentPage === 1
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-black text-white hover:bg-gray-800"
                 }`}
             >
-              Prev
+              <ChevronLeft size={18}/> Prev
             </button>
 
-            <p className="text-sm">
-              Page {currentPage} of {totalPages}
-            </p>
+            {/* Page Numbers */}
+            <div className="flex flex-wrap justify-center items-center gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => {
+                    setCurrentPage(pageNum);
+                    handleScrollToTop();
+                  }}
+                  className={`px-3 py-2 rounded-md border transition-all duration-200 ${currentPage === pageNum
+                      ? "bg-black text-white border-black"
+                      : "bg-white text-black hover:bg-gray-200"
+                    }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+            </div>
 
+            {/* Next Button */}
             <button
-              onClick={() => { nextPage(); handleScrollToTop(); }}
+              onClick={() => {
+                nextPage();
+                handleScrollToTop();
+              }}
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded-md border ${currentPage === totalPages
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-black text-white hover:bg-gray-800"
+              className={`px-4 py-2 flex gap-1 items-center justify-between rounded-md border ${currentPage === totalPages
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "bg-black text-white hover:bg-gray-800"
                 }`}
             >
-              Next
+              Next <ChevronRight size={18}/> 
             </button>
           </div>
         )}
+
       </div>
     </Layout>
   );

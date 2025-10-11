@@ -146,7 +146,7 @@ const Hero = () => {
         <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
           <h1 className="text-5xl md:text-5xl lg:text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>
         </div>
-        <motion.div
+        {/* <motion.div
           className="border-[5px] border-white/80 rounded-full absolute top-1/2 left-1/4 cursor-pointer"
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}
@@ -159,7 +159,7 @@ const Hero = () => {
           whileTap={{ scale: 0.9 }}
         >
           <div className="m-1 rounded-full w-5 h-5 bg-white/50"></div>
-        </motion.div>
+        </motion.div> */}
       </div>
       <div className="block lg:hidden">
         <Image 
