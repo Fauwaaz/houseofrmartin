@@ -120,7 +120,7 @@ const GET_ALL = gql`
             slug
           }
         }
-        productCategories {
+        productCategories(first: 10) {
           nodes {
             id
             name

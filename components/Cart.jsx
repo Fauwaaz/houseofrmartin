@@ -165,7 +165,7 @@ const Cart = () => {
                 <div className="flex flex-col justify-center items-start gap-2 mt-4 px-2 border-t pt-4">
                   {!coupon ? (
                     <>
-                      <p className="text-black text-sm flex gap-1 items-center">Flat 30% off Apply Code<Tag size={18} className="animate-pulse" />DIWALI30</p>
+                      <p className="text-black text-sm flex gap-1 items-center">Flat 30% off Apply Code<Tag size={18} className="animate-pulse" />DIWALI10</p>
                       <div className="flex gap-2 justify-center w-full">
                         <input
                           type="text"

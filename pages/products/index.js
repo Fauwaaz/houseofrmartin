@@ -32,15 +32,6 @@ const Products = ({ products }) => {
   const [loading, setLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(products);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 16;
-
-  // Derived pagination values
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-
 
   useEffect(() => {
     if (products?.length > 0) {
@@ -49,9 +40,23 @@ const Products = ({ products }) => {
     }
   }, [products]);
 
-  // Pagination handlers
-  const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
-  const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+  const [displayCount, setDisplayCount] = useState(12);
+  const currentProducts = filteredProducts.slice(0, displayCount);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
+      ) {
+        setDisplayCount((prev) =>
+          prev < filteredProducts.length ? prev + 12 : prev
+        );
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [filteredProducts]);
+
 
   const handleColorSelect = (colors) => {
     if (colors.length === 0) {
@@ -106,7 +111,7 @@ const Products = ({ products }) => {
         <title>Products | House of R-Martin</title>
         <meta name="description" content="Shop all our designs in one place and discover the full story of R-Martin." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <div className="mt-[140px] lg:mt-[120px] w-full">
         <div className="flex flex-col gap-2 items-center justify-center pb-6">
@@ -275,59 +280,6 @@ const Products = ({ products }) => {
             })
           )}
         </div>
-        {totalPages > 1 && (
-          <div className="flex flex-wrap justify-center items-center gap-2 pb-6">
-            {/* Prev Button */}
-            <button
-              onClick={() => {
-                prevPage();
-                handleScrollToTop();
-              }}
-              disabled={currentPage === 1}
-              className={`px-4 py-2 flex gap-1 items-center justify-between rounded-md border ${currentPage === 1
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-black text-white hover:bg-gray-800"
-                }`}
-            >
-              <ChevronLeft size={18}/> Prev
-            </button>
-
-            {/* Page Numbers */}
-            <div className="flex flex-wrap justify-center items-center gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  onClick={() => {
-                    setCurrentPage(pageNum);
-                    handleScrollToTop();
-                  }}
-                  className={`px-3 py-2 rounded-md border transition-all duration-200 ${currentPage === pageNum
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-black hover:bg-gray-200"
-                    }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-            </div>
-
-            {/* Next Button */}
-            <button
-              onClick={() => {
-                nextPage();
-                handleScrollToTop();
-              }}
-              disabled={currentPage === totalPages}
-              className={`px-4 py-2 flex gap-1 items-center justify-between rounded-md border ${currentPage === totalPages
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-black text-white hover:bg-gray-800"
-                }`}
-            >
-              Next <ChevronRight size={18}/> 
-            </button>
-          </div>
-        )}
-
       </div>
     </Layout>
   );

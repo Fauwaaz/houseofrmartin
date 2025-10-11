@@ -5,7 +5,6 @@ import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { colorMap } from "../../utils/data";
 
-// ✅ Component only (remove getStaticProps if you're using app router or CSR)
 const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSizeSelect, onCategorySelect }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("featured");
@@ -13,7 +12,6 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
 
-  // ✅ Helpers
   const toggleSelection = (list, setList, value, callback) => {
     const updated = list.includes(value)
       ? list.filter((v) => v !== value)

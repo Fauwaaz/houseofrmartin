@@ -117,6 +117,7 @@ const Hero = () => {
             backgroundRepeat: "no-repeat",
             width: "30%",
             height: "auto",
+            fetchPriority: "high",
           }}
         >
         </div>
@@ -140,6 +141,7 @@ const Hero = () => {
             backgroundRepeat: "no-repeat",
             width: "30%",
             height: "auto",
+            fetchPriority: "high",
           }}
         >
         </div>
@@ -170,6 +172,7 @@ const Hero = () => {
           className='object-cover w-full'
           unoptimized
           quality={100}
+          fetchPriority="high"          
         />
         <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 text-center w-full font-geograph-md">
           <h1 className="text-5xl md:text-5xl lg:text-8xl text-[#DBDBDB] text-outline">Wear What makes you -<span className="text-outline-white text-[#FF0000]">you</span></h1>

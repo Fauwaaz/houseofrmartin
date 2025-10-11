@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useStateContext } from "../context/StateContext";
 import styles from "../styles/ProductInfo.module.css";
 import { FiShoppingBag } from "react-icons/fi";
@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Accordion from "./common/Accordion";
 import { ChevronRight, HeartIcon, Tag } from "lucide-react";
 import ShareButton from "./common/ShareButton";
+import SizeChart from "./common/SizeChart";
 
 const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -15,11 +16,20 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [sizeGuide, setSizeGuide] = useState(false);
 
-  useEffect(() => {
-    console.log("Variants:", allVariants);
-  }, [allVariants]);
+  const categories = product?.productCategories?.nodes || [];
+
+  const keywords = ["jeans", "shirt", "tshirt", "trouser", "belt"];
+
+  // Find the first matching category (case-insensitive)
+  const matchedCategory = categories.find(cat =>
+    keywords.some(keyword =>
+      cat?.name?.toLowerCase()?.includes(keyword)
+    )
+  );
+
+  // Extract the matched category name (or empty string)
+  const categoryName = matchedCategory?.name || "";
 
   useEffect(() => {
     if (product) {
@@ -168,10 +178,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
     }
   };
 
-  const handleSizeGuide = () => {
-    // Logic for showing size guide, if any
-  };
-
   useEffect(() => {
     // Set initial selected variation based on default selected size
     if (allVariants.length > 0 && !selectedVariation) {
@@ -205,7 +211,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
     <div>
       <ul className="inline-flex gap-1 text-[10px] lg:text-[12px] mb-2">
         <li className="flex gap-1 items-center">
-          Men <ChevronRight size={16} />
+          {product?.productCategories?.nodes?.[0].name} <ChevronRight size={16} />
         </li>
         <li className="flex gap-1 items-center">{product?.name} </li>
       </ul>
@@ -331,13 +337,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
           </div>
         </div>
         <div>
-          <button
-            href=''
-            onClick={handleSizeGuide}
-            className='text-sm underline mt-2 cursor-pointer'
-          >
-            Size guide
-          </button>
+          <SizeChart category={categoryName} />
         </div>
       </div>
 
@@ -483,7 +483,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                   </p>
                   <p className="text-black font-geograph-md flex gap-2 items-center mt-2">
                     <Tag size={16} className="animate-pulse" />
-                    CODE: DIWLAI30
+                    CODE: DIWLAI10
                   </p>
                 </div>
               </>

@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-regular-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^3.0.2",
+    "@headlessui/react": "^2.2.9",
     "@next/env": "^12.3.1",
     "@stripe/stripe-js": "^1.42.0",
     "@woocommerce/woocommerce-rest-api": "^1.0.2",
