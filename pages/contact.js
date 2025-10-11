@@ -93,14 +93,14 @@ const Contact = () => {
                     <div className="text-center mb-12">
                         <h1 className="roboto-condensed text-4xl md:text-6xl lg:text-6xl text-[#242222] pt-10">Get In Touch</h1>
                         <p className="text-gray-600 text-lg animate-fade-in-delay">
-                            We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.
+                            We&apos;d love to hear from you. Send us a message and we&apos;ll get back to you as soon as possible.
                         </p>
                     </div>
 
                     {submitStatus === 'success' && (
                         <div className="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 animate-fade-in">
                             <p className="font-medium">Message sent successfully!</p>
-                            <p className="text-sm mt-1">We've sent you a confirmation email and will get back to you as soon as possible.</p>
+                            <p className="text-sm mt-1">We&apos;ve sent you a confirmation email and will get back to you as soon as possible.</p>
                         </div>
                     )}
 
