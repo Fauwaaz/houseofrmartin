@@ -38,17 +38,6 @@ export async function getStaticProps() {
   };
 }
 
-const links = [
-  { href: "/products", label: "Shop", img: "/placeholder.jpg" },
-  { href: "/products", label: "New", img: "/placeholder.jpg" },
-  { href: "/products", label: "Bestseller", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Two-Piece-Outfit-img-blue-1.png" },
-  { href: "/products", label: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Mens-Slim-Fit-Cotton-Shirt-–-Breathable-Tailored-img-2.png" },
-  { href: "/products", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
-  { href: "/products", label: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Essential-Mens-Jeans-–-Classic-Denim-Slim-Fit-img-4.png" },
-  { href: "/products", label: "Pants", img: "/placeholder.jpg" },
-  { href: "/products", label: "Belts", img: "/placeholder.jpg" },
-]
-
 export default function Navbar({ products = [] }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
@@ -87,7 +76,7 @@ export default function Navbar({ products = [] }) {
     { href: "/products?category=T-shirts", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
     { href: "/products?category=Jeans", label: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Essential-Mens-Jeans-–-Classic-Denim-Slim-Fit-img-4.png" },
     { href: "/products?category=Pants", label: "Pants", img: "/placeholder.jpg" },
-    { href: "/products?category=Belts", label: "Belts", img: "/placeholder.jpg" },
+    { href: "/products?category=Belt", label: "Belts", img: "/placeholder.jpg" },
   ]
 
   async function handleLogout() {

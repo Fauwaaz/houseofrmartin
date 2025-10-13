@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronRight, ChevronDown, X } from "lucide-react";
 
 const ShopDropdown = ({ links, setMenuOpen }) => {
   const [open, setOpen] = useState(false);
@@ -30,6 +30,12 @@ const ShopDropdown = ({ links, setMenuOpen }) => {
             transition={{ duration: 0.25 }}
             className="absolute left-0 mt-2 w-[250px] bg-white shadow-lg border border-gray-200 rounded-lg overflow-hidden z-50"
           >
+            <div className="p-2 flex justify-between items-center gap-1 border-b">
+              <p className="text-sm">Categories</p>
+              <button onClick={() => setOpen(false) } className="text-xs underline">
+                close
+              </button>
+            </div>
             {links.map((link, key) => (
               <li key={key}>
                 <Link

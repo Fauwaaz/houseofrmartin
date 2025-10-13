@@ -6,7 +6,7 @@ import Gallery from "../../components/Gallery";
 import ProductInfo from "../../components/ProductInfo";
 import client from "../../libs/apollo";
 import styles from "../../styles/ProductDetails.module.css";
-import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../utils/queries";
+import { GET_PRODUCT_DETAILS, GET_SLUG, GET_ALL } from "../../utils/queries";
 import ProductInfoSkeleton from "../../components/ProductInfoSkeleton";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Head from "next/head";
@@ -48,11 +48,21 @@ export const getStaticProps = async ({ params: { slug } }) => {
   };
 };
 
-const ProductDetails = ({ item }) => {
+const ProductDetails = ({ item, products }) => {
   const [isMounted, setMount] = useState(false);
   const [product, setProduct] = useState(item);
   const [slideImage, setSlideImage] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [zoom, setZoom] = useState({ active: false, x: 50, y: 50 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    setZoom({ active: true, x, y });
+  };
+
 
   useEffect(() => {
     if (product.price) {
@@ -154,22 +164,55 @@ const ProductDetails = ({ item }) => {
               <div className={styles.featured}>
                 <motion.div
                   key={slideImage}
-                  className={styles.featuredInner}
+                  className={`${styles.featuredInner} relative overflow-hidden rounded-[20px]`}
                   initial={{ opacity: 0, x: 0 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 0 }}
                   transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 >
-                  <Image
-                    alt={product.name}
-                    src={mergedGallery[slideImage]?.sourceUrl || product.featuredImage?.node?.sourceUrl || "/placeholder.jpg"}
-                    priority
-                    fill
-                    className="object-cover object-left rounded-[20px]"
-                    unoptimized
-                    onError={(e) => (e.target.src = "/placeholder.jpg")}
-                  />
+                  <div
+                    className="relative w-full h-full overflow-hidden cursor-zoom-in"
+                    onMouseMove={(e) => handleMouseMove(e)}
+                    onMouseLeave={() => setZoom({ active: false })}
+                  >
+                    <Image
+                      alt={product.name}
+                      src={
+                        mergedGallery[slideImage]?.sourceUrl ||
+                        product.featuredImage?.node?.sourceUrl ||
+                        "/placeholder.jpg"
+                      }
+                      fill
+                      priority
+                      className="object-cover object-center transition-transform duration-200"
+                      unoptimized
+                      fetchPriority="high"
+                    />
+                    {zoom.active && (
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          transformOrigin: `${zoom.x}% ${zoom.y}%`,
+                          transform: "scale(2)",
+                          transition: "transform 0.1s ease-out",
+                        }}
+                      >
+                        <Image
+                          alt={product.name}
+                          src={
+                            mergedGallery[slideImage]?.sourceUrl ||
+                            product.featuredImage?.node?.sourceUrl ||
+                            "/placeholder.jpg"
+                          }
+                          fill
+                          unoptimized
+                          className="object-cover rounded-[20px]"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
+
                 {product.productTags?.nodes?.length > 0 && (
                   <div className="bg-black/70 px-4 py-2 text-[12px] lg:text-sm text-white text-center absolute z-10 uppercase rounded-2xl top-2 left-2">
                     {product.productTags.nodes[0].name}
@@ -202,12 +245,14 @@ const ProductDetails = ({ item }) => {
           </div>
           <div className={styles.right}>
             <Suspense fallback={<ProductInfoSkeleton />}>
-              <ProductInfo product={product} isMounted={isMounted} onVariantChange={handleVariantChange}/>
+              <ProductInfo product={product} isMounted={isMounted} onVariantChange={handleVariantChange} />
             </Suspense>
           </div>
         </div>
         <div className="pb-6">
           <h2 className="text-3xl text-center">You may also like</h2>
+          <div className="mt-6">
+          </div>
         </div>
       </div>
     </Layout>

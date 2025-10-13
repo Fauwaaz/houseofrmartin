@@ -65,7 +65,7 @@ export default function SizeChart({ category }) {
     charts[
       Object.keys(charts).find((key) =>
         category?.toLowerCase()?.includes(key)
-      ) || ""
+      ) || "t-shirts"
     ];
 
   return (

@@ -64,7 +64,7 @@ const Footer = () => {
 
       <div className="py-5 px-6 md:px-16 border-t border-dashed border-gray-300 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-gray-600 text-center md:text-left">
-          &copy; {new Date().getFullYear()} House of RMartin. All rights reserved.
+          &copy; {new Date().getFullYear()} House of R-Martin. All rights reserved.
         </p>
         <Link
           href="https://sparkcloud.in"
