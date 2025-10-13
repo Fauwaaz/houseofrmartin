@@ -5,6 +5,8 @@ import Loading from "../../components/Loading"
 import { Layout } from "../../components";
 import Link from "next/link";
 import { CheckCircle, ChevronLeft } from "lucide-react";
+import { useStateContext } from "../../context/StateContext";
+import { runConfetti } from "../../utils/utils";
 
 export default function PaymentSuccess() {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function PaymentSuccess() {
   const [orderData, setOrderData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { setCartItems, setTotalPrice, setTotalQuantities } = useStateContext();
 
   useEffect(() => {
     if (!order) return;
@@ -20,6 +23,10 @@ export default function PaymentSuccess() {
         const res = await axios.get(`/api/woo/order?orderId=${order}`);
         setOrderData(res.data.order);
         localStorage.clear();
+        runConfetti();
+        setCartItems([]);
+        setTotalPrice(0);
+        setTotalQuantities(0);
         console.log(orderData);
       } catch (err) {
         setError("Failed to fetch order details");

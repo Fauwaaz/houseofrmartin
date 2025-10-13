@@ -13,8 +13,9 @@ const Checkout = () => {
   const router = useRouter();
   const { cartItems, totalPrice, setCartItems } = useStateContext();
   const [loading, setLoading] = useState(false);
-  const [shippingCharge] = useState(10);
-  const finalTotal = (Number(totalPrice) + shippingCharge).toFixed(2);
+  const [shippingCharge, setShippingCharge] = useState(8);
+  const finalTotal = (Number(totalPrice) + Number(shippingCharge)).toFixed(2);
+
 
   const [user, setUser] = useState({
     first_name: "",
@@ -52,6 +53,15 @@ const Checkout = () => {
     };
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    if (totalPrice < 100) {
+      setShippingCharge(8);
+    } else {
+      setShippingCharge(0);
+    }
+  }, [totalPrice]);
+
 
   const handlePlaceOrder = async () => {
     if (!cartItems.length) return toast.error("Your cart is empty.");
@@ -168,7 +178,7 @@ const Checkout = () => {
                 className="border p-2 rounded-md"
               />
             </div>
-              <input type="text" placeholder="Country" value={user.country} onChange={(e) => setUser({ ...user, country: e.target.value })} className="border p-2 rounded-md w-full mt-3" />
+            <input type="text" placeholder="Country" value={user.country} onChange={(e) => setUser({ ...user, country: e.target.value })} className="border p-2 rounded-md w-full mt-3" />
           </div>
 
           {/* Order Summary */}
@@ -207,8 +217,13 @@ const Checkout = () => {
 
               <div className="flex justify-between text-sm">
                 <p>Shipping:</p>
-                <p><span className="price-font">D</span> {shippingCharge.toFixed(2)}</p>
+                {shippingCharge === 0 ? (
+                  <p className="text-green-600 font-medium">Free Shipping</p>
+                ) : (
+                  <p><span className="price-font">D</span> {shippingCharge.toFixed(2)}</p>
+                )}
               </div>
+
 
               <div className="flex justify-between text-lg mt-3 border-t pt-3">
                 <p>Total:</p>

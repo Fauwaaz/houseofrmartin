@@ -1,6 +1,6 @@
 "use client";
 
-import { Layout, ProductCard } from "../components";
+import { Layout } from "../components";
 import Hero from "../components/Hero";
 import { useStateContext } from "../context/StateContext";
 import client from "../libs/apollo";
@@ -53,10 +53,11 @@ const Home = ({ products }) => {
   }, [products]);
 
   const categoriesSection = [
-    { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "/products" },
-    { title: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/shirt-scaled.jpg", link: "/products" },
-    { title: "Pants", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/pant-scaled.jpg", link: "/products" },
-    { title: "Tshirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "/products" },
+    { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "/products?category=Co-ord+Set" },
+    { title: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/shirt-scaled.jpg", link: "/products?category=Shirts" },
+    { title: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/pant-scaled.jpg", link: "/products?category=Jeans" },
+    { title: "Tshirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "/products?category=T-shirts" },
+    {title: "Accessories", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/MEN_S-BELT-R-M-777-1BLACK.jpg", link: "/products?category=Belt" },
   ];
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -75,7 +76,7 @@ const Home = ({ products }) => {
               Explore styles for every mood and moment
             </p>
           </div>
-          <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3 h-[750px] lg:h-[600px] w-full max-w-1920 px-3 lg:px-6">
+          <div className="grid grid-cols-1 justify-items-center md:grid-cols-3 lg:grid-cols-5 mt-5 gap-3 h-[750px] lg:h-[600px] w-full max-w-1920 px-3 lg:px-6">
             {categoriesSection.map((category, index) => (
               <div
                 key={index}

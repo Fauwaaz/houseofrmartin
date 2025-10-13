@@ -206,9 +206,9 @@ const ProductDetails = ({ item }) => {
             </Suspense>
           </div>
         </div>
-        {/* <div className="pb-6">
+        <div className="pb-6">
           <h2 className="text-3xl text-center">You may also like</h2>
-        </div> */}
+        </div>
       </div>
     </Layout>
   );

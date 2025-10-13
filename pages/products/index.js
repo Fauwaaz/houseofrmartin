@@ -2,6 +2,7 @@
 
 import { Layout } from "../../components";
 import { useStateContext } from "../../context/StateContext";
+import { Heart, Heart as HeartOutline } from "lucide-react";
 import client from "../../libs/apollo";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,8 +10,8 @@ import { GET_ALL } from "../../utils/queries";
 import { colorMap } from "../../utils/data";
 import Filter from "../../components/common/Filter";
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import Head from "next/head";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export async function getStaticProps() {
   const { data } = await client.query({ query: GET_ALL });
@@ -24,32 +25,71 @@ export async function getStaticProps() {
 
 const getDiscountPercent = (regular, sale) => {
   if (!regular || !sale || parseFloat(regular) <= parseFloat(sale)) return null;
-  return Math.round(((regular - sale) / regular * 100))
-}
+  return Math.round(((regular - sale) / regular) * 100);
+};
 
 const Products = ({ products }) => {
   const { onAdd, qty } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [displayCount, setDisplayCount] = useState(8);
 
+  const { toggleWishlist, isInWishlist } = useStateContext();
+  const inWishlist = isInWishlist(products.id);
+
+  const router = useRouter();
+  const searchParams = useSearchParams(); // ✅ get query params
+  const searchQuery = searchParams.get("search") || "";
 
   useEffect(() => {
-    if (products?.length > 0) {
-      const shuffled = [...products].sort(() => Math.random() - 0.5);
-      setFilteredProducts(shuffled);
+    if (searchQuery) {
+      const filtered = products.filter((p) =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
     }
-  }, [products]);
+  }, [searchQuery, products]);
 
-  const [displayCount, setDisplayCount] = useState(12);
-  const currentProducts = filteredProducts.slice(0, displayCount);
+  const handleCategorySelect = (categories) => {
+    if (categories.length === 0) {
+      setFilteredProducts(products);
+      router.push(`/products`, { scroll: false, shallow: true });
+    } else {
+      const filtered = products.filter((product) =>
+        product.productCategories?.nodes?.some((cat) =>
+          categories.includes(cat.name)
+        )
+      );
+      setFilteredProducts(filtered);
+
+      const query = new URLSearchParams();
+      categories.forEach((cat) => query.append("category", cat));
+      router.push(`/products?${query.toString()}`, { scroll: false, shallow: true });
+    }
+  };
+
+  // ✅ On first load or when URL changes (like user clicks back/forward), filter based on URL params
+  useEffect(() => {
+    const categoriesFromURL = searchParams.getAll("category");
+    if (categoriesFromURL.length > 0) {
+      const filtered = products.filter((product) =>
+        product.productCategories?.nodes?.some((cat) =>
+          categoriesFromURL.includes(cat.name)
+        )
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [searchParams, products]);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
-      ) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
         setDisplayCount((prev) =>
-          prev < filteredProducts.length ? prev + 12 : prev
+          prev < filteredProducts.length ? prev + 8 : prev
         );
       }
     };
@@ -57,7 +97,7 @@ const Products = ({ products }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [filteredProducts]);
 
-
+  // ✅ Color Filter
   const handleColorSelect = (colors) => {
     if (colors.length === 0) {
       setFilteredProducts(products);
@@ -73,46 +113,36 @@ const Products = ({ products }) => {
     }
   };
 
-  const handleSizeSelect = (size) => {
-    if (size.length === 0) {
+  // ✅ Size Filter
+  const handleSizeSelect = (sizes) => {
+    if (sizes.length === 0) {
       setFilteredProducts(products);
     } else {
       const filtered = products.filter((product) =>
         product.attributes?.nodes?.some(
           (attr) =>
             attr.name === "pa_size" &&
-            attr.options.some((opt) => size.includes(opt))
-        )
-      );
-      setFilteredProducts(filtered);
-    }
-  }
-
-  const handleCategorySelect = (categories) => {
-    if (categories.length === 0) {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter((product) =>
-        product.productCategories?.nodes?.some((cat) =>
-          categories.includes(cat.name)
+            attr.options.some((opt) => sizes.includes(opt))
         )
       );
       setFilteredProducts(filtered);
     }
   };
 
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  const currentProducts = filteredProducts.slice(0, displayCount);
 
   return (
     <Layout>
       <Head>
         <title>Products | House of R-Martin</title>
-        <meta name="description" content="Shop all our designs in one place and discover the full story of R-Martin." />
+        <meta
+          name="description"
+          content="Shop all our designs in one place and discover the full story of R-Martin."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>
+
       <div className="mt-[140px] lg:mt-[120px] w-full">
         <div className="flex flex-col gap-2 items-center justify-center pb-6">
           <h1 className="text-xl lg:text-3xl">Shop All</h1>
@@ -121,7 +151,7 @@ const Products = ({ products }) => {
           </p>
         </div>
 
-        {/* Filter Bar - pass props */}
+        {/* ✅ Filter Component */}
         <Filter
           products={products}
           setFilteredProducts={setFilteredProducts}
@@ -129,9 +159,10 @@ const Products = ({ products }) => {
           onColorSelect={handleColorSelect}
           onSizeSelect={handleSizeSelect}
           onCategorySelect={handleCategorySelect}
+          filteredProducts={filteredProducts}
         />
 
-        {/* Product Grid */}
+        {/* ✅ Product Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 px-0 lg:px-6 mb-10">
           {loading ? (
             <p className="col-span-full text-center min-h-screen">Loading...</p>
@@ -163,8 +194,12 @@ const Products = ({ products }) => {
                   )}
 
                   <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
-                    <button>
-                      <Heart />
+                    <button onClick={() => toggleWishlist(product)}>
+                      {inWishlist ? (
+                        <Heart fill="black" />
+                      ) : (
+                        <HeartOutline className="text-gray-500" />
+                      )}
                     </button>
                   </div>
 
@@ -179,7 +214,6 @@ const Products = ({ products }) => {
                       height={300}
                       className="object-cover object-top max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
                     />
-
                     {product.galleryImages?.nodes?.length > 0 && (
                       <Image
                         src={product.galleryImages.nodes[0].sourceUrl}
@@ -200,7 +234,9 @@ const Products = ({ products }) => {
                             : product.name}
                         </h3>
                       </Link>
-                      <p className="text-sm text-gray-500">{product.productCategories?.nodes?.[0]?.name || ""}</p>
+                      <p className="text-sm text-gray-500">
+                        {product.productCategories?.nodes?.[0]?.name || ""}
+                      </p>
                     </div>
                   </div>
 
@@ -225,7 +261,6 @@ const Products = ({ products }) => {
                                 title={color}
                               />
                             ))}
-
                             {remaining > 0 && (
                               <span className="inline-flex -ml-1 items-center font-geograph-md underline justify-center w-5 h-5 text-[12px] lg:text-sm text-black">
                                 +{remaining}
@@ -248,10 +283,13 @@ const Products = ({ products }) => {
                                   </span>
                                 </>
                               ) : (
-                                <p className="text-md lg:text-lg price-font">D {product.regularPrice}</p>
+                                <p className="text-md lg:text-lg price-font">
+                                  D {product.regularPrice}
+                                </p>
                               )}
                             </div>
                           )}
+
                           {product.__typename === "VariableProduct" && firstVariation && (
                             <div className="text-center flex items-center gap-1">
                               {firstVariation.salePrice ? (
@@ -263,11 +301,18 @@ const Products = ({ products }) => {
                                     D {firstVariation.regularPrice}
                                   </p>
                                   <span className="text-sm text-red-500">
-                                    ({getDiscountPercent(firstVariation.regularPrice, firstVariation.salePrice)}% OFF)
+                                    (
+                                    {getDiscountPercent(
+                                      firstVariation.regularPrice,
+                                      firstVariation.salePrice
+                                    )}
+                                    % OFF)
                                   </span>
                                 </>
                               ) : (
-                                <p className="text-md lg:text-lg price-font">D {firstVariation.regularPrice}</p>
+                                <p className="text-md lg:text-lg price-font">
+                                  D {firstVariation.regularPrice}
+                                </p>
                               )}
                             </div>
                           )}

@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { colorMap } from "../../utils/data";
 
-const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSizeSelect, onCategorySelect }) => {
+const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSizeSelect, onCategorySelect, filteredProducts }) => {
   const [showFilter, setShowFilter] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("featured");
   const [selectedColors, setSelectedColors] = useState([]);
@@ -87,9 +87,11 @@ const Filter = ({ products, setFilteredProducts, setLoading, onColorSelect, onSi
             <Settings2Icon size={16} />
           </span>
           Filter
-          <span className="capitalize ml-1">Results ({products.length})</span>
+          <span className="text-sm capitalize ml-1">
+            Results ({filteredProducts.length})
+          </span>
         </button>
-        
+
         {/* Dropdown */}
         <select
           className="w-[120px] lg:w-[150px] border border-black rounded-full px-2 py-1"

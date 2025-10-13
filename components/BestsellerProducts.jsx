@@ -118,7 +118,7 @@ export default function BestsellerProducts({ products = [] }) {
                   alt={product.name}
                   width={600}
                   height={300}
-                  className="object-cover max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
+                  className="object-cover object-top max-h-[248px] lg:max-h-[600px] transition-opacity duration-300 group-hover:opacity-0"
                 />
 
                 {product.galleryImages?.nodes?.length > 0 && (

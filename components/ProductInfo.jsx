@@ -356,6 +356,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
               image: selectedVariation?.image?.sourceUrl || product?.featuredImage[0]?.node?.sourceUrl || "/placeholder.jpg",
               size: getSize(selectedVariation),
               color: getColorName(selectedVariation),
+              slug: product.slug,
               quantity,
             };
 
@@ -509,7 +510,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                     className="object-contain"
                   />
                 </div>
-                <p className="mt-4 text-black"> Note: Orders in COD method will have shipping charge: <span className="price-font">D</span>10</p>
+                <p className="mt-4 text-black"> Note: Orders less than <span className="price-font">D</span>100 will have shipping charge: <span className="price-font">+D</span>08</p>
               </>
             )
           },

@@ -12,13 +12,44 @@ import {
   LogOut,
   Info,
   UserCircle,
+  ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from "react-icons/fi";
+import SearchBar from "./common/SearchBar";
+import client from "../libs/apollo";
+import { GET_ALL } from "../utils/queries";
+import ShopDropdown from "./common/ShopDropdown";
 
-export default function Navbar() {
+export async function getStaticProps() {
+  const { data } = await client.query({
+    query: GET_ALL,
+  });
+
+  const products = data?.products?.nodes || [];
+
+  return {
+    props: {
+      products,
+    },
+    revalidate: 60,
+  };
+}
+
+const links = [
+  { href: "/products", label: "Shop", img: "/placeholder.jpg" },
+  { href: "/products", label: "New", img: "/placeholder.jpg" },
+  { href: "/products", label: "Bestseller", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Two-Piece-Outfit-img-blue-1.png" },
+  { href: "/products", label: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Mens-Slim-Fit-Cotton-Shirt-–-Breathable-Tailored-img-2.png" },
+  { href: "/products", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
+  { href: "/products", label: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Essential-Mens-Jeans-–-Classic-Denim-Slim-Fit-img-4.png" },
+  { href: "/products", label: "Pants", img: "/placeholder.jpg" },
+  { href: "/products", label: "Belts", img: "/placeholder.jpg" },
+]
+
+export default function Navbar({ products = [] }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [user, setUser] = useState(null);
@@ -49,14 +80,14 @@ export default function Navbar() {
   }, []);
 
   const links = [
-    { href: "/products", label: "Shop", img: "/placeholder.jpg" },
+    { href: "/products", label: "All", img: "/placeholder.jpg" },
     { href: "/products", label: "New arrivals", img: "/placeholder.jpg" },
-    { href: "/products", label: "Bestseller", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Two-Piece-Outfit-img-blue-1.png" },
-    { href: "/products", label: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Mens-Slim-Fit-Cotton-Shirt-–-Breathable-Tailored-img-2.png" },
-    { href: "/products", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
-    { href: "/products", label: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Essential-Mens-Jeans-–-Classic-Denim-Slim-Fit-img-4.png" },
-    { href: "/products", label: "Pants", img: "/placeholder.jpg" },
-    { href: "/products", label: "Belts", img: "/placeholder.jpg" },
+    { href: "/products?category=Bestseller", label: "Bestseller", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Two-Piece-Outfit-img-blue-1.png" },
+    { href: "/products?category=Shirts", label: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Mens-Slim-Fit-Cotton-Shirt-–-Breathable-Tailored-img-2.png" },
+    { href: "/products?category=T-shirts", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
+    { href: "/products?category=Jeans", label: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Essential-Mens-Jeans-–-Classic-Denim-Slim-Fit-img-4.png" },
+    { href: "/products?category=Pants", label: "Pants", img: "/placeholder.jpg" },
+    { href: "/products?category=Belts", label: "Belts", img: "/placeholder.jpg" },
   ]
 
   async function handleLogout() {
@@ -105,13 +136,16 @@ export default function Navbar() {
 
         {/* Right section */}
         <div className="flex items-center gap-3">
-          <div className="hidden lg:block relative w-full">
+          {/* <div className="hidden lg:block relative w-full">
             <input
               type="text"
               placeholder="Search"
               className="text-sm py-2 border border-black w-full px-4 rounded-lg"
             />
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+          </div> */}
+          <div className="hidden lg:block relative w-full">
+            <SearchBar products={products || []} />
           </div>
           {user ? (
             <div ref={dropdownRef} className="relative hidden lg:block">
@@ -162,13 +196,17 @@ export default function Navbar() {
           <CartButton />
         </div>
       </nav>
-      <div className="md:hidden relative w-full mb-2 px-3">
+      {/* <div className="md:hidden relative w-full mb-2 px-3">
         <input
           type="text"
           placeholder="Search"
           className="text-sm py-2 border w-full px-4 pr-10 rounded-lg"
         />
         <Search className="absolute right-7 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+      </div> */}
+
+      <div className="md:hidden relative w-full mb-2 px-3">
+        <SearchBar products={products || []} />
       </div>
 
       {/* Mobile Slide Menu */}
@@ -225,7 +263,6 @@ export default function Navbar() {
                 </button>
               </div>
 
-
               <ul className="flex flex-col gap-4 text-md">
                 <li className="hover:underline">
                   <Link href="/" onClick={() => setMenuOpen(false)}>
@@ -237,10 +274,8 @@ export default function Navbar() {
                     About Us
                   </Link>
                 </li>
-                <li className="hover:underline">
-                  <Link href="/products" onClick={() => setMenuOpen(false)}>
-                    Shop
-                  </Link>
+                <li>
+                  <ShopDropdown links={links} setMenuOpen={setMenuOpen} />
                 </li>
                 <li className="hover:underline">
                   <Link href="/contact" onClick={() => setMenuOpen(false)}>

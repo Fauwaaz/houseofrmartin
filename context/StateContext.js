@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getLocalCart, getLocalValues } from "../utils/utils";
 
 const Context = createContext();
@@ -12,7 +12,31 @@ export const StateContext = ({ children }) => {
     getLocalValues("quantities", 0)
   );
   const [qty, setQty] = useState(getLocalValues("quantity", 1));
+  const [wishlist, setWishlist] = useState([]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedWishlist = localStorage.getItem("wishlist");
+      if (storedWishlist) setWishlist(JSON.parse(storedWishlist));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    }
+  }, [wishlist]);
+
+  const toggleWishlist = (product) => {
+    const exists = wishlist.find((p) => p.id === product.id);
+    if (exists) {
+      setWishlist(wishlist.filter((p) => p.id !== product.id));
+    } else {
+      setWishlist([...wishlist, product]);
+    }
+  };
+
+  const isInWishlist = (productId) => wishlist.some((p) => p.id === productId);
   let foundProduct;
   let index;
 
@@ -21,7 +45,8 @@ export const StateContext = ({ children }) => {
       (item) =>
         item.id === product.id &&
         item.size === product.size &&
-        item.color === product.color
+        item.color === product.color &&
+        item.slug === product.slug
     );
 
     setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
@@ -31,6 +56,7 @@ export const StateContext = ({ children }) => {
       const updatedCartItems = cartItems.map((cartItem) =>
         cartItem.id === product.id &&
           cartItem.size === product.size &&
+          cartItem.slug === product.slug &&
           cartItem.color === product.color
           ? { ...cartItem, quantity: cartItem.quantity + quantity }
           : cartItem
@@ -39,6 +65,7 @@ export const StateContext = ({ children }) => {
     } else {
       const newProduct = {
         ...product,
+        slug: product.slug,
         quantity,
         image: product.image || "/placeholder.jpg",
       };
@@ -143,6 +170,10 @@ export const StateContext = ({ children }) => {
         onAdd,
         toggleCartItemQuantity,
         onRemove,
+        wishlist,
+        setWishlist,
+        toggleWishlist,
+        isInWishlist,
       }}
     >
       {children}

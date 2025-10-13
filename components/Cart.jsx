@@ -27,6 +27,7 @@ const Cart = () => {
   const [discountAmount, setDiscountAmount] = useState(0);
   const [isApplying, setIsApplying] = useState(false);
   const [error, setError] = useState("");
+  const [shippingCharge, setShippingCharge] = useState(8);
 
   // Fetch user profile
   useEffect(() => {
@@ -103,6 +104,14 @@ const Cart = () => {
     setCouponCode("");
   };
 
+  useEffect(() => {
+    if (finalTotal < 100) {
+      setShippingCharge(8);
+    } else {
+      setShippingCharge(0);
+    }
+  }, [finalTotal]);
+
   return (
     <AnimatePresence>
       {showCart && (
@@ -148,6 +157,7 @@ const Cart = () => {
                   {cartItems.map((item, i) => (
                     <CartItem
                       key={i}
+                      slug={item.slug}
                       name={item.name}
                       quantity={item.quantity}
                       price={item.price}
@@ -212,13 +222,35 @@ const Cart = () => {
                     </div>
                   )}
 
-                  <div className="flex justify-between items-center w-full font-semibold mt-1">
+                  {/* Subtotal */}
+                  <div className="flex justify-between items-center w-full text-sm text-gray-700">
+                    <h4>Subtotal:</h4>
+                    <span>
+                      <span className="price-font">D</span> {finalTotal.toFixed(2)}
+                    </span>
+                  </div>
+
+                  {/* Shipping */}
+                  <div className="flex justify-between items-center w-full text-sm mt-1">
+                    <h4 className="py-1" style={{fontSize: '14px'}}>Shipping:</h4>
+                    {shippingCharge === 0 ? (
+                      <span className="text-green-600" style={{fontSize: '14px'}}>Free Shipping</span>
+                    ) : (
+                      <span style={{fontSize: '14px'}}>
+                        <span className="price-font" style={{fontSize: '14px'}}>+ D</span> {shippingCharge.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Grand Total */}
+                  <div className="flex justify-between items-center w-full font-semibold mt-2 border-t pt-2">
                     <h4>Total:</h4>
                     <span>
                       <span className="price-font">D</span>{" "}
-                      {Number(finalTotal || 0).toFixed(2)}
+                      {(finalTotal + shippingCharge).toFixed(2)}
                     </span>
                   </div>
+
 
                   <div className={styles.checkout}>
                     <PayButton
