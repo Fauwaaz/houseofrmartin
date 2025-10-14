@@ -25,9 +25,9 @@ const Wishlist = () => {
                 <h1 className="text-2xl mb-4">Your Wishlist</h1>
                 <ol className="space-y-6">
                     {wishlist.map((item, idx) => {
-                        const [selectedSize, setSelectedSize] = useState(item.size);
-                        const [selectedColor, setSelectedColor] = useState(item.color);
-                        const [quantity, setQuantity] = useState(item.quantity || 1);
+                        // const [selectedSize, setSelectedSize] = useState(item.size);
+                        // const [selectedColor, setSelectedColor] = useState(item.color);
+                        // const [quantity, setQuantity] = useState(item.quantity || 1);
 
                         return (
                             <li key={`${item.productId}-${item.variationId}`} className="border p-4 rounded-md flex bg-white/50 gap-4 flex-col md:flex-row items-start">
