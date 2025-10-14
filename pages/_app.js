@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 import Loading from "../components/Loading.jsx";
+import { WishlistProvider } from "../context/WishListStateContext.js";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -60,8 +61,10 @@ function App({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
       <StateContext>
-        {loading ? <Loading /> : <Component {...pageProps} />}
-        <Toaster position="bottom-center" reverseOrder={false} />
+        <WishlistProvider>
+          {loading ? <Loading /> : <Component {...pageProps} />}
+          <Toaster position="bottom-center" reverseOrder={false} />
+        </WishlistProvider>
       </StateContext>
     </ApolloProvider>
   );

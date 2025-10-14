@@ -129,7 +129,7 @@ const Hero = () => {
             playsInline
             style={{ width: "100%", height: "auto" }}
           >
-            <source src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/banner-video.mp4" type="video/mp4" />
+            <source src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/houseofrmartin-video.mp4" type="video/mp4"  fetchPriority='high'/>
             Your browser does not support the video tag.
           </video>
         </div>

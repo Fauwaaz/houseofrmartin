@@ -9,6 +9,7 @@ import Accordion from "./common/Accordion";
 import { ChevronRight, HeartIcon, Tag } from "lucide-react";
 import ShareButton from "./common/ShareButton";
 import SizeChart from "./common/SizeChart";
+import { useWishlist } from "../context/WishListStateContext";
 
 const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
@@ -16,6 +17,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const { addToWishlist } = useWishlist();
 
   const categories = product?.productCategories?.nodes || [];
 
@@ -49,7 +51,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                 bestVariant = variant;
                 break;
               } else if (!bestVariant) {
-                bestVariant = variant; 
+                bestVariant = variant;
               }
             }
           }
@@ -207,10 +209,26 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
         <div className="flex gap-2">
           <ShareButton />
           <button
-            className="rounded-full p-2 bg-white cursor-pointer hover:border-1"
-            title="Add wishlist"
+            onClick={() => {
+              if (!selectedVariation && product.type === "VARIABLE") {
+                toast.error("Please select a color and size first!");
+                return;
+              }
+
+              const productId = product?.databaseId || product?.id;
+              const variationId = selectedVariation?.databaseId || null;
+
+              addToWishlist(productId, variationId, quantity);
+              toast.success("Added to wishlist ❤️");
+            }}
+            className="rounded-full p-2 bg-white cursor-pointer border hover:bg-gray-100 transition"
+            title="Add to wishlist"
           >
-            <HeartIcon />
+            <HeartIcon
+              size={20}
+              strokeWidth={1.5}
+              className="text-black hover:text-red-500 transition"
+            />
           </button>
         </div>
       </div>

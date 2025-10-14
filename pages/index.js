@@ -163,7 +163,7 @@ const Home = ({ products }) => {
                   alt={'banner2'}
                   unoptimized
                   quality={100}
-                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/baner-2.jpg'}
+                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-2.jpg'}
                 />
               </div>
               <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
@@ -374,7 +374,7 @@ const Home = ({ products }) => {
               <div className="grid grid-cols-2 h-screen">
                 <div className="pl-6 flex flex-col justify-center items-start">
                   <h3 className="uppercase font-akkurat text-xl lg:text-4xl">10 years of comfort</h3>
-                  <p>Founded in 2020, House of RMartin has come a long way from its beginnings. When we first started out, our passion for fashion drove us to start our own business.</p>
+                  <p>Founded in 2020, House of R-Martin has come a long way from its beginnings. When we first started out, our passion for fashion drove us to start our own business.</p>
                   <Link
                     href={'/about'}
                     className="text-white bg-black px-5 py-2 rounded-full mt-2 hover:bg-gray-800"
