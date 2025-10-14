@@ -58,6 +58,13 @@ export default function SizeChart({ category }) {
             ["48-Inch/115-cm", "[1.35 in / 3.5 cm]"],
             ["50-Inch/125-cm", "[1.35 in / 3.5 cm]"],
         ],
+    },
+    nosize: {
+        title: "No Size Chart Available",
+        headers: ["N/A", "N/A"],
+        rows: [
+          ["N/A", "N/A"]            
+        ],
     }
   };
 
@@ -65,7 +72,7 @@ export default function SizeChart({ category }) {
     charts[
       Object.keys(charts).find((key) =>
         category?.toLowerCase()?.includes(key)
-      ) || "t-shirts"
+      ) || "nosize"
     ];
 
   return (

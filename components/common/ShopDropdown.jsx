@@ -28,7 +28,7 @@ const ShopDropdown = ({ links, setMenuOpen }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="absolute left-0 mt-2 w-[250px] bg-white shadow-lg border border-gray-200 rounded-lg overflow-hidden z-50"
+            className="absolute left-0 mt-2 w-[250px] h-[400px] bg-white shadow-lg border border-gray-200 rounded-lg overflow-y-scroll z-50"
           >
             <div className="p-2 flex justify-between items-center gap-1 border-b">
               <p className="text-sm">Categories</p>

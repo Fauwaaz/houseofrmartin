@@ -69,14 +69,13 @@ export default function Navbar({ products = [] }) {
   }, []);
 
   const links = [
-    { href: "/products", label: "All", img: "/placeholder.jpg" },
-    { href: "/products", label: "New arrivals", img: "/placeholder.jpg" },
+    { href: "/products", label: "All", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/MENS-COTTON-SHIRT-LIGHT-BROWN-2-scaled.jpg" },
     { href: "/products?category=Bestseller", label: "Bestseller", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Two-Piece-Outfit-img-blue-1.png" },
     { href: "/products?category=Shirts", label: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Mens-Slim-Fit-Cotton-Shirt-–-Breathable-Tailored-img-2.png" },
     { href: "/products?category=T-shirts", label: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/polo-blue-4.png" },
     { href: "/products?category=Jeans", label: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/09/Essential-Mens-Jeans-–-Classic-Denim-Slim-Fit-img-4.png" },
-    { href: "/products?category=Pants", label: "Pants", img: "/placeholder.jpg" },
-    { href: "/products?category=Belt", label: "Belts", img: "/placeholder.jpg" },
+    { href: "/products?category=Trousers", label: "Trousers", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/MEN_S-BAGGY-RFD-TROUSER-BLACK-scaled.jpg" },
+    { href: "/products?category=Belt", label: "Belts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/MEN_S-BELT-R-M-777-13BLACK.jpg" },
   ]
 
   async function handleLogout() {

@@ -152,7 +152,7 @@ const Home = ({ products }) => {
 
         <section className="w-full">
           <div className="px-3 lg:px-5 grid grid-cols-1 lg:grid-cols-2 gap-3">
-            <div className="bg-gray-300 h-[245px] lg:h-[700px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/R-Martin-Banner-3-1.jpg)] bg-cover bg-center bg-no-repeat">
+            <div className="bg-gray-300 h-[245px] lg:h-[700px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner1.jpg)] bg-cover bg-center bg-no-repeat">
             </div>
             <div className="flex flex-col gap-3">
               <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
@@ -162,7 +162,7 @@ const Home = ({ products }) => {
                   width={100}
                   alt={'banner2'}
                   unoptimized
-                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/R-Martin-Banner-1-1.jpg'}
+                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner2.jpg'}
                 />
               </div>
               <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
@@ -172,7 +172,7 @@ const Home = ({ products }) => {
                   width={100}
                   alt={'banner3'}
                   unoptimized
-                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/R-Martin-Banner-2-1.jpg'}
+                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner3.jpg'}
                 />
               </div>
             </div>
@@ -356,7 +356,7 @@ const Home = ({ products }) => {
                 transition={{ duration: 1, ease: "easeOut" }}
                 className="bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/10-years-img-1.png)] bg-cover bg-no-repeat bg-center text-center p-2 flex items-end"
               >
-                <button className="bg-black text-white w-full py-2">Shop Now</button>
+                <Link href={'/products'} className="bg-black text-white w-full py-2">Shop Now</Link>
               </motion.div>
 
               <motion.div
@@ -365,7 +365,7 @@ const Home = ({ products }) => {
                 transition={{ duration: 1, ease: "easeOut" }}
                 className="bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/10-years-img-2.png)] bg-cover bg-no-repeat bg-top text-center p-2 flex items-end"
               >
-                <button className="bg-black text-white w-full py-2">Shop Now</button>
+                <Link href={'/products'} className="bg-black text-white w-full py-2">Shop Now</Link>
               </motion.div>
             </div>
             <div className="bg-white w-full h-full">
