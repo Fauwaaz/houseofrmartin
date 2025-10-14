@@ -288,6 +288,10 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
                 value
               }
             }
+            metaData {
+              key
+              value
+            }
           }
         }
       }

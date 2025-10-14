@@ -21,35 +21,27 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
 
   const keywords = ["jeans", "shirt", "tshirt", "trouser", "belt"];
 
-  // Find the first matching category (case-insensitive)
   const matchedCategory = categories.find(cat =>
     keywords.some(keyword =>
       cat?.name?.toLowerCase()?.includes(keyword)
     )
   );
 
-  // Extract the matched category name (or empty string)
   const categoryName = matchedCategory?.name || "";
 
   useEffect(() => {
     if (product) {
-      // Get all variants
       const variants = product.variations?.nodes || [];
       setAllVariants(variants);
 
-      // Extract all color attributes from the product
       const colorAttribute = product.attributes?.nodes?.find(
         attr => attr.name.toLowerCase() === "pa_color"
       );
 
       const colors = [];
       if (colorAttribute && colorAttribute.options) {
-        // For each color option, find the best variant to represent it
         colorAttribute.options.forEach(colorName => {
-          // Try to find a variant with this color that has an image
           let bestVariant = null;
-
-          // First priority: variant with this color that has its own image
           for (const variant of variants) {
             const variantColor = getColorName(variant);
             if (variantColor.toLowerCase() === colorName.toLowerCase()) {
@@ -57,12 +49,10 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                 bestVariant = variant;
                 break;
               } else if (!bestVariant) {
-                bestVariant = variant; // Fallback to any variant with this color
+                bestVariant = variant; 
               }
             }
           }
-
-          // If no variant found, try to find an image in gallery
           if (!bestVariant) {
             bestVariant = {
               attributes: {
@@ -74,7 +64,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
           colors.push({ name: colorName, variant: bestVariant });
         });
       } else {
-        // Fallback: extract colors from variants
         const colorMap = new Map();
         variants.forEach(variant => {
           const colorAttr = variant.attributes?.nodes?.find(
@@ -111,15 +100,13 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
     });
   };
 
-  const [selectedSize, setSelectedSize] = useState(sizes.includes("M") ? "M" : "30");
+  const [selectedSize, setSelectedSize] = useState(sizes.includes("M") ? "M" : sizes[0] || "");
 
   const getVariationImage = (variation, colorName) => {
-    // Only use the variation's main image
     if (variation?.image?.sourceUrl) {
       return variation.image.sourceUrl;
     }
 
-    // Try matching product gallery by color
     if (colorName && product?.galleryImages?.nodes?.length > 0) {
       const match = product.galleryImages.nodes.find(
         (img) =>
@@ -130,7 +117,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
       if (match) return match.sourceUrl;
     }
 
-    // Fallback to product featured image
     return product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg";
   };
 
@@ -153,7 +139,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
 
-    // Try to maintain the same color when changing size
     if (selectedVariation) {
       const currentColor = getColorName(selectedVariation);
       const variantsForNewSize = getVariantsForSize(size);
@@ -164,13 +149,11 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
       if (matchingVariant) {
         setSelectedVariation(matchingVariant);
       } else if (variantsForNewSize.length > 0) {
-        // Fallback to first available variant for the new size
         setSelectedVariation(variantsForNewSize[0]);
       } else {
         setSelectedVariation(null);
       }
     } else {
-      // If no variant selected, select the first one for the new size
       const variantsForNewSize = getVariantsForSize(size);
       if (variantsForNewSize.length > 0) {
         setSelectedVariation(variantsForNewSize[0]);
@@ -179,7 +162,6 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   };
 
   useEffect(() => {
-    // Set initial selected variation based on default selected size
     if (allVariants.length > 0 && !selectedVariation) {
       const variantsForSize = getVariantsForSize(selectedSize);
       if (variantsForSize.length > 0) {
@@ -414,7 +396,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                     </div>
                     {/* Border overlay for selected */}
                     {isSelected && (
-                      <span className="absolute inset-0 border-2 border-black rounded-lg pointer-events-none"></span>
+                      <span className="absolute inset-0 border border-black rounded-lg pointer-events-none"></span>
                     )}
                     {/* Overlay for unavailable colors */}
                     {!isAvailable && (

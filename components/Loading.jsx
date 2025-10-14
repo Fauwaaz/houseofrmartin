@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Layout from "./Layout";
 import Navbar from "./Navbar";
 import FooterBar from "./common/FooterBar";
 

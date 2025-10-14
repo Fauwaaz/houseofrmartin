@@ -100,29 +100,60 @@ const ProductDetails = ({ item, products }) => {
     return uniqueImages;
   })();
 
-  const handleVariantChange = (variant) => {
+  // Helper to fetch image URLs by ID from your WordPress REST API
+  const fetchImageUrl = async (id) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/custom/v1/image/${id}`
+      );
+      const data = await res.json();
+      return data.url;
+    } catch (err) {
+      console.error("Error fetching image URL:", err);
+      return null;
+    }
+  };
+
+
+  const handleVariantChange = async (variant) => {
     if (!variant) return;
 
     const newFeatured = variant.image?.sourceUrl
       ? { node: { sourceUrl: variant.image.sourceUrl } }
       : product.featuredImage;
 
-    // Prefer variant gallery images if available (if your API provides them)
-    const newGallery = variant.galleryImages?.nodes?.length
-      ? variant.galleryImages
-      : product.galleryImages;
+    // ✅ Get meta for Variation Images Gallery plugin
+    const meta = variant.metaData?.find((m) => m.key === "rtwpvg_images");
+    let newGallery = product.galleryImages;
 
-    // Update product images
+    if (meta && meta.value) {
+      try {
+        const ids = JSON.parse(meta.value);
+        const urls = await Promise.all(ids.map(fetchImageUrl));
+        const validUrls = urls
+          .filter(Boolean)
+          .map((url) => ({ sourceUrl: url }));
+
+        if (validUrls.length > 0) {
+          newGallery = { nodes: validUrls };
+        }
+      } catch (e) {
+        console.error("Error parsing rtwpvg_images meta:", e);
+      }
+    }
+
+    // Update state
     setProduct((prev) => ({
       ...prev,
       featuredImage: newFeatured,
       galleryImages: newGallery,
     }));
 
-    // Reset the gallery to the first image
     setSlideImage(0);
     setSelectedIndex(0);
   };
+
+
 
 
   const seo = product?.seo || {};
@@ -155,6 +186,7 @@ const ProductDetails = ({ item, products }) => {
         <div className={styles.wrapper}>
           <div className={styles.left}>
             <Gallery
+              key={product?.galleryImages?.nodes?.map((img) => img.sourceUrl).join(",") || product.id}
               product={product}
               selectedIndex={selectedIndex}
               setSlideImage={setSlideImage}
