@@ -37,7 +37,6 @@ const Gallery = ({ product, setSlideImage, selectedIndex, setSelectedIndex }) =>
                 className={`object-contain transition-opacity duration-500`}
                 fill
                 fetchPriority="high"
-                unoptimized
               />
             </button>
           </li>

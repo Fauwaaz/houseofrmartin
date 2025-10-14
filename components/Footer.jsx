@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from "react-icons/fi";
+import { FaTiktok } from "react-icons/fa";
 
 const links = [
   {label: "About", href: "/about"},
@@ -44,19 +45,17 @@ const Footer = () => {
           <div className="">
             <h5 className="text-lg font-geograph-md uppercase">Shop</h5>
             <ul className="mt-4 space-y-2 text-black/90">
-              <li><Link href="/shop/bestsellers">Best Seller</Link></li>
-              <li><Link href="/shop/new">New Arrivals</Link></li>
-              <li><Link href="/shop/sale">Sale</Link></li>
+              <li><Link href="/products?category=Bestseller">Best Seller</Link></li>
+              <li><Link href="/products">Sale</Link></li>
             </ul>
           </div>
 
           <div className="">
             <h5 className="text-lg font-geograph-md uppercase">Follow us</h5>
             <ul className="mt-4 flex gap-4 items-center justify-center md:justify-start">
-              <li><Link href="https://www.instagram.com/houseofrmartin_ae/"><FiInstagram size={22} /></Link></li>
-              <li><Link href="https://www.facebook.com/people/House-Of-R-Martin/61581764362800/"><FiFacebook size={22} /></Link></li>
-              <li><Link href="#"><FiYoutube size={22} /></Link></li>
-              <li><Link href="#"><FiLinkedin size={22} /></Link></li>
+              <li><Link href="https://www.instagram.com/houseofrmartin/" target='_blank'><FiInstagram size={22} /></Link></li>
+              <li><Link href="https://www.tiktok.com/@houseofrmartin" target="_blank"><FaTiktok size={22} /></Link></li>
+              <li><Link href="https://www.linkedin.com/company/house-of-r-martin" target="_blank"><FiLinkedin size={22} /></Link></li>
             </ul>
           </div>
         </div>

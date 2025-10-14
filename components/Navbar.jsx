@@ -22,6 +22,7 @@ import SearchBar from "./common/SearchBar";
 import client from "../libs/apollo";
 import { GET_ALL } from "../utils/queries";
 import ShopDropdown from "./common/ShopDropdown";
+import { FaTiktok } from "react-icons/fa";
 
 export async function getStaticProps() {
   const { data } = await client.query({
@@ -275,10 +276,9 @@ export default function Navbar({ products = [] }) {
               <div>
                 <h5 className="text-md mt-4">Follow Us</h5>
                 <ul className="mt-4 flex gap-4 items-center justify-start">
-                  <li><Link href="https://www.instagram.com/houseofrmartin_ae/"><FiInstagram size={22} /></Link></li>
-                  <li><Link href="https://www.facebook.com/people/House-Of-R-Martin/61581764362800/"><FiFacebook size={22} /></Link></li>
-                  <li><Link href="#"><FiYoutube size={22} /></Link></li>
-                  <li><Link href="#"><FiLinkedin size={22} /></Link></li>
+                  <li><Link href="https://www.instagram.com/houseofrmartin/" target='_blank'><FiInstagram size={22} /></Link></li>
+                  <li><Link href="https://www.tiktok.com/@houseofrmartin" target="_blank"><FaTiktok size={22} /></Link></li>
+                  <li><Link href="https://www.linkedin.com/company/house-of-r-martin" target="_blank"><FiLinkedin size={22} /></Link></li>
                 </ul>
               </div>
 

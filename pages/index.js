@@ -57,7 +57,7 @@ const Home = ({ products }) => {
     { title: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/shirt-scaled.jpg", link: "/products?category=Shirts" },
     { title: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/pant-scaled.jpg", link: "/products?category=Jeans" },
     { title: "Tshirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "/products?category=T-shirts" },
-    {title: "Accessories", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/MEN_S-BELT-R-M-777-1BLACK.jpg", link: "/products?category=Belt" },
+    { title: "Accessories", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/MEN_S-BELT-R-M-777-1BLACK.jpg", link: "/products?category=Belt" },
   ];
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -151,34 +151,36 @@ const Home = ({ products }) => {
         </section> */}
 
         <section className="w-full">
-          <div className="px-3 lg:px-5 grid grid-cols-1 lg:grid-cols-2 gap-3">
-            <div className="bg-gray-300 h-[245px] lg:h-[700px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-1.jpg)] bg-cover bg-center bg-no-repeat">
-            </div>
-            <div className="flex flex-col gap-3">
-              <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover w-full h-full"
-                  height={100}
-                  width={100}
-                  alt={'banner2'}
-                  unoptimized
-                  quality={100}
-                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-2.jpg'}
-                />
+          <Link href="/products">
+            <div className="px-3 lg:px-5 grid grid-cols-1 lg:grid-cols-2 gap-3">
+              <div className="bg-gray-300 h-[245px] lg:h-[700px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-1.jpg)] bg-cover bg-center bg-no-repeat">
               </div>
-              <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
-                <Image
-                  className="object-cover object-top w-full h-full"
-                  height={100}
-                  width={100}
-                  alt={'banner3'}
-                  unoptimized
-                  quality={100}
-                  src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-3.jpg'}
-                />
+              <div className="flex flex-col gap-3">
+                <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
+                  <Image
+                    className="object-cover w-full h-full"
+                    height={100}
+                    width={100}
+                    alt={'banner2'}
+                    unoptimized
+                    quality={100}
+                    src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-2.jpg'}
+                  />
+                </div>
+                <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
+                  <Image
+                    className="object-cover object-top w-full h-full"
+                    height={100}
+                    width={100}
+                    alt={'banner3'}
+                    unoptimized
+                    quality={100}
+                    src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-3-2.jpg'}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         </section>
 
         <section className="py-10 w-full recents text-center flex flex-col items-center">
@@ -390,7 +392,6 @@ const Home = ({ products }) => {
         </section>
 
         <BestsellerProducts products={products} />
-
         <BeforeFooter />
       </Layout>
     </>

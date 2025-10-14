@@ -190,7 +190,7 @@ const AuthPage = () => {
                                 <InputField
                                     type="number"
                                     name="phone"
-                                    placeholder="Phone Number +91"
+                                    placeholder="Phone Number"
                                     icon={Phone}
                                     value={formData.phone}
                                     onChange={handleInputChange}

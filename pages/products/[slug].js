@@ -1,15 +1,16 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
-import { Layout } from "../../components";
+import { Layout, Navbar } from "../../components";
 import Gallery from "../../components/Gallery";
 import ProductInfo from "../../components/ProductInfo";
 import client from "../../libs/apollo";
 import styles from "../../styles/ProductDetails.module.css";
-import { GET_PRODUCT_DETAILS, GET_SLUG, GET_ALL } from "../../utils/queries";
+import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../utils/queries";
 import ProductInfoSkeleton from "../../components/ProductInfoSkeleton";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Head from "next/head";
+import RandomProductCard from "../../components/common/RandomProductCard";
 
 export const getStaticPaths = async () => {
   const { data } = await client.query({
@@ -281,11 +282,12 @@ const ProductDetails = ({ item, products }) => {
             </Suspense>
           </div>
         </div>
-        <div className="pb-6">
+        {/* <div className="pb-6">
           <h2 className="text-3xl text-center">You may also like</h2>
           <div className="mt-6">
+            <RandomProductCard />
           </div>
-        </div>
+        </div> */}
       </div>
     </Layout>
   );

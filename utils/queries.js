@@ -69,7 +69,7 @@ const GET_PAGE_DETAILS = (slug) => gql`
 
 const GET_ALL = gql`
   query Products {
-    products(first: 500) {
+    products(first: 100) {
       nodes {
         id
         name

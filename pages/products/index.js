@@ -12,6 +12,7 @@ import Filter from "../../components/common/Filter";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useWishlist } from "../../context/WishListStateContext";
 
 export async function getStaticProps() {
   const { data } = await client.query({ query: GET_ALL });
@@ -34,8 +35,7 @@ const Products = ({ products }) => {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [displayCount, setDisplayCount] = useState(8);
 
-  const { toggleWishlist, isInWishlist } = useStateContext();
-  const inWishlist = isInWishlist(products.id);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   const router = useRouter();
   const searchParams = useSearchParams(); // ✅ get query params
@@ -168,6 +168,7 @@ const Products = ({ products }) => {
             <p className="col-span-full text-center min-h-screen">Loading...</p>
           ) : (
             currentProducts.map((product) => {
+              const inWishlist = isInWishlist(product.id);
               let displayPrice = null;
               let firstVariation = null;
 
@@ -182,6 +183,26 @@ const Products = ({ products }) => {
                 displayPrice = firstVariation.price;
               }
 
+              const handleWishlistClick = () => {
+                if (inWishlist) {
+                  removeFromWishlist(product.id);
+                } else {
+                  addToWishlist({
+                    productId: product.id,
+                    name: product.name,
+                    image: product.featuredImage?.node?.sourceUrl || "/placeholder.jpg",
+                    color: "",
+                    size: "",
+                    product: product.description,
+                    quantity: 1,
+                    price:
+                      product.__typename === "VariableProduct"
+                        ? parseFloat(product.variations?.nodes?.[0]?.price || 0)
+                        : parseFloat(product.price || 0),
+                    slug: product.slug,
+                  });
+                }
+              };
               return (
                 <div
                   key={product.id}
@@ -194,9 +215,9 @@ const Products = ({ products }) => {
                   )}
 
                   <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
-                    <button onClick={() => toggleWishlist(product)}>
+                    <button onClick={handleWishlistClick}>
                       {inWishlist ? (
-                        <Heart fill="black" />
+                        <Heart fill="red" stroke="red" />
                       ) : (
                         <HeartOutline className="text-gray-500" />
                       )}

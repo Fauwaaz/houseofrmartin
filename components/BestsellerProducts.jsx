@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react"; // assuming you're using lucide-react for icons
+import { Heart, Heart as HeartOutline } from "lucide-react";
+import { useWishlist } from "../context/WishListStateContext";
 
 // Utility functions
 const colorMap = {
@@ -27,6 +28,7 @@ function getDiscountPercent(regular, sale) {
 export default function BestsellerProducts({ products = [] }) {
   const [activeTab, setActiveTab] = useState("bestseller");
   const [displayedProducts, setDisplayedProducts] = useState([]);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
     if (!products.length) return;
@@ -58,17 +60,15 @@ export default function BestsellerProducts({ products = [] }) {
       <div className="inline-block space-x-10 lg:space-x-20 w-full recents text-center mb-6">
         <button
           onClick={() => setActiveTab("bestseller")}
-          className={`text-sm lg:text-lg font-akkurat ${
-            activeTab === "bestseller" ? "underline" : "text-gray-500"
-          }`}
+          className={`text-sm lg:text-lg font-akkurat ${activeTab === "bestseller" ? "underline" : "text-gray-500"
+            }`}
         >
           SALE
         </button>
         <button
           onClick={() => setActiveTab("essential")}
-          className={`text-sm lg:text-lg font-akkurat ${
-            activeTab === "essential" ? "underline" : "text-gray-500"
-          }`}
+          className={`text-sm lg:text-lg font-akkurat ${activeTab === "essential" ? "underline" : "text-gray-500"
+            }`}
         >
           ESSENTIAL COLLECTION
         </button>
@@ -77,6 +77,8 @@ export default function BestsellerProducts({ products = [] }) {
       {/* Product Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 mx-auto">
         {displayedProducts.map((product) => {
+          const inWishlist = isInWishlist(product.id);
+          let displayPrice = null;
           let firstVariation = null;
 
           if (
@@ -87,7 +89,28 @@ export default function BestsellerProducts({ products = [] }) {
               (a, b) => parseFloat(a.price) - parseFloat(b.price)
             );
             firstVariation = sorted[0];
+            displayPrice = firstVariation.price;
           }
+
+          const handleWishlistClick = () => {
+            if (inWishlist) {
+              removeFromWishlist(product.id);
+            } else {
+              addToWishlist({
+                productId: product.id,
+                name: product.name,
+                image: product.featuredImage?.node?.sourceUrl || "/placeholder.jpg",
+                color: "",
+                size: "",
+                quantity: 1,
+                price:
+                  product.__typename === "VariableProduct"
+                    ? parseFloat(product.variations?.nodes?.[0]?.price || 0)
+                    : parseFloat(product.price || 0),
+                slug: product.slug,
+              });
+            }
+          };
 
           return (
             <div
@@ -103,8 +126,12 @@ export default function BestsellerProducts({ products = [] }) {
 
               {/* Wishlist Button */}
               <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
-                <button>
-                  <Heart />
+                <button onClick={handleWishlistClick}>
+                  {inWishlist ? (
+                    <Heart fill="red" stroke="red" />
+                  ) : (
+                    <HeartOutline className="text-gray-500" />
+                  )}
                 </button>
               </div>
 

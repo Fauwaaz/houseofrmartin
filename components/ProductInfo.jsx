@@ -17,8 +17,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const [allVariants, setAllVariants] = useState([]);
   const [availableColors, setAvailableColors] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const { addToWishlist } = useWishlist();
-
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const categories = product?.productCategories?.nodes || [];
 
   const keywords = ["jeans", "shirt", "tshirt", "trouser", "belt"];
@@ -191,6 +190,29 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
     );
   };
 
+  const inWishlist = isInWishlist(product.id, selectedVariation?.id);
+
+  const handleWishlistClick = () => {
+    if (!selectedVariation) return;
+
+    if (inWishlist) {
+      removeFromWishlist(product.id, selectedVariation.id);
+    } else {
+      addToWishlist({
+        productId: product.id,
+        variationId: selectedVariation.id,
+        name: product.name,
+        image: selectedVariation?.image?.sourceUrl || product?.featuredImage?.node?.sourceUrl || "/placeholder.jpg",
+        color: getColorName(selectedVariation),
+        size: getSize(selectedVariation),
+        quantity: 1,
+        price: selectedVariation?.price || product?.price || 0,
+        slug: product.slug
+      });
+    }
+  };
+
+
   return (
     <div>
       <ul className="inline-flex gap-1 text-[10px] lg:text-[12px] mb-2">
@@ -209,26 +231,11 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
         <div className="flex gap-2">
           <ShareButton />
           <button
-            onClick={() => {
-              if (!selectedVariation && product.type === "VARIABLE") {
-                toast.error("Please select a color and size first!");
-                return;
-              }
-
-              const productId = product?.databaseId || product?.id;
-              const variationId = selectedVariation?.databaseId || null;
-
-              addToWishlist(productId, variationId, quantity);
-              toast.success("Added to wishlist ❤️");
-            }}
-            className="rounded-full p-2 bg-white cursor-pointer border hover:bg-gray-100 transition"
-            title="Add to wishlist"
+            onClick={handleWishlistClick}
+            className={`p-2 rounded-full ${inWishlist ? "bg-red-500 text-white" : "bg-white border border-gray-300"
+              }`}
           >
-            <HeartIcon
-              size={20}
-              strokeWidth={1.5}
-              className="text-black hover:text-red-500 transition"
-            />
+            <HeartIcon />
           </button>
         </div>
       </div>
@@ -484,7 +491,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                   </p>
                   <p className="text-black font-geograph-md flex gap-2 items-center mt-2">
                     <Tag size={16} className="animate-pulse" />
-                    CODE: DIWLAI10
+                    CODE: DIWALI10
                   </p>
                 </div>
               </>
