@@ -517,7 +517,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                     className="object-contain"
                   />
                 </div>
-                <p className="mt-4 text-black"> Note: Orders less than <span className="price-font">D</span>100 will have shipping charge: <span className="price-font">+D</span>08</p>
+                <p className="mt-4 text-black"> Note: Orders less than <span className="price-font">D</span>100 will have shipping charge: <span className="price-font">+D</span>8</p>
               </>
             )
           },

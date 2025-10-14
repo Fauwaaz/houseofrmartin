@@ -2,7 +2,6 @@ import { Layout } from "../components";
 import { useWishlist } from "../context/WishListStateContext";
 import { useStateContext } from "../context/StateContext";
 import Image from "next/image";
-import { useState } from "react";
 import Link from "next/link";
 
 const Wishlist = () => {

@@ -10,44 +10,46 @@ import { GET_PRODUCT_DETAILS, GET_SLUG } from "../../utils/queries";
 import ProductInfoSkeleton from "../../components/ProductInfoSkeleton";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Head from "next/head";
-import RandomProductCard from "../../components/common/RandomProductCard";
 
 export const getStaticPaths = async () => {
-  const { data } = await client.query({
-    query: GET_SLUG,
-  });
+  try {
+    const { data } = await client.query({ query: GET_SLUG });
 
-  const paths =
-    data?.products?.nodes
-      ?.filter((product) => product?.slug)
-      .map((product) => ({
-        params: { slug: String(product.slug) },
-      })) || [];
+    const paths =
+      data?.products?.nodes
+        ?.filter((product) => product?.slug)
+        .map((product) => ({
+          params: { slug: String(product.slug) },
+        })) || [];
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
+    return {
+      paths,
+      fallback: "blocking", // if path not pre-rendered, build it on demand
+    };
+  } catch (err) {
+    console.error("Error fetching slugs:", err);
+    return { paths: [], fallback: "blocking" }; // fallback prevents build crash
+  }
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  const { data } = await client.query({
-    query: GET_PRODUCT_DETAILS(slug),
-  });
+  try {
+    const { data } = await client.query({ query: GET_PRODUCT_DETAILS(slug) });
 
-  if (!data?.product) {
+    if (!data?.product) {
+      return { notFound: true };
+    }
+
     return {
-      notFound: true, // show 404 if no product
+      props: { item: data.product },
+      revalidate: 60, // regenerate page every 60 seconds
     };
+  } catch (err) {
+    console.error("Error fetching product details:", err);
+    return { notFound: true }; // safely show 404 if fetch fails
   }
-
-  return {
-    props: {
-      item: data.product,
-    },
-    revalidate: 60, // increase from 1 sec to reduce load
-  };
 };
+
 
 const ProductDetails = ({ item, products }) => {
   const [isMounted, setMount] = useState(false);
@@ -101,7 +103,6 @@ const ProductDetails = ({ item, products }) => {
     return uniqueImages;
   })();
 
-  // Helper to fetch image URLs by ID from your WordPress REST API
   const fetchImageUrl = async (id) => {
     try {
       const res = await fetch(
