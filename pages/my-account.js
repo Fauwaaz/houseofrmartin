@@ -9,6 +9,9 @@ import {
     Camera,
     Save,
     UserCircle,
+    ChevronDown,
+    ShoppingBag,
+    Truck,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -26,6 +29,7 @@ const MyAccount = () => {
     const [manualTrackingInfo, setManualTrackingInfo] = useState(null);
     const fileInputRef = useRef(null);
     const router = useRouter();
+    const [openTracking, setOpenTracking] = useState(null);
 
     const [profileForm, setProfileForm] = useState({
         first_name: "",
@@ -301,7 +305,7 @@ const MyAccount = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     order_id: orderId,
-                    action, 
+                    action,
                 }),
             });
 
@@ -778,6 +782,75 @@ const MyAccount = () => {
                                                                             )}
                                                                         </div>
 
+                                                                        <div className="mt-4 pt-4 border-t">
+                                                                            <button
+                                                                                onClick={() => setOpenTracking(openTracking === order.id ? null : order.id)}
+                                                                                className="flex items-center gap-2 text-sm hover:text-gray-600 transition-colors"
+                                                                            >
+                                                                                <span className={`transform transition-transform ${openTracking === order.id ? 'rotate-180' : ''}`}>
+                                                                                    <ChevronDown size={16} />
+                                                                                </span>
+                                                                                Track Package
+                                                                            </button>
+
+                                                                            {openTracking === order.id && (
+                                                                                <div className="mt-8 mb-12 px-4 transition-all duration-300 ease-in-out">
+                                                                                    {/* Visual Timeline Container */}
+                                                                                    <div className="relative flex items-center justify-between w-full max-w-xl mx-auto">
+
+                                                                                        {/* Background Progress Line */}
+                                                                                        <div className="absolute top-5 left-0 w-full h-0.5 bg-gray-200 z-0" />
+
+                                                                                        {/* Active Progress Line */}
+                                                                                        <div
+                                                                                            className="absolute top-5 left-0 h-0.5 bg-black transition-all duration-700 z-0"
+                                                                                            style={{
+                                                                                                width: order.status === 'processing' ? '0%' :
+                                                                                                    order.status === 'on-hold' ? '50%' : '100%'
+                                                                                            }}
+                                                                                        />
+
+                                                                                        {/* Step 1: Ordered */}
+                                                                                        <div className="relative z-10 flex flex-col items-center">
+                                                                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 bg-white ${order.status === 'processing' || order.status === 'on-hold' || order.status === 'completed' ? 'border-black' : 'border-gray-300'}`}>
+                                                                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${order.status === 'processing' || order.status === 'on-hold' || order.status === 'completed' ? 'bg-black text-white' : 'bg-gray-100 text-gray-400'}`}>
+                                                                                                    <ShoppingBag size={20} />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="absolute top-12 text-center w-24">
+                                                                                                <p className="text-xs ">Ordered</p>
+                                                                                                <p className="text-[10px] text-gray-500">{new Date(order.date).toLocaleDateString()}</p>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        {/* Step 2: In-Transit */}
+                                                                                        <div className="relative z-10 flex flex-col items-center">
+                                                                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 bg-white ${order.status === 'on-hold' || order.status === 'completed' ? 'border-black' : 'border-gray-300'}`}>
+                                                                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${order.status === 'on-hold' || order.status === 'completed' ? 'bg-black text-white' : 'bg-gray-100 text-gray-400'}`}>
+                                                                                                    <Truck size={20} />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="absolute top-12 text-center w-24">
+                                                                                                <p className="text-xs ">In-Transit</p>
+                                                                                                {order.status === 'on-hold' && <p className="text-[10px] text-blue-600">On its way</p>}
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        {/* Step 3: Delivered */}
+                                                                                        <div className="relative z-10 flex flex-col items-center">
+                                                                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 bg-white ${order.status === 'completed' ? 'border-black' : 'border-gray-300'}`}>
+                                                                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${order.status === 'completed' ? 'bg-black text-white' : 'bg-gray-100 text-gray-400'}`}>
+                                                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="absolute top-12 text-center w-24">
+                                                                                                <p className="text-xs">Delivered</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
                                                                     </div>
                                                                 ))}
                                                             </div>

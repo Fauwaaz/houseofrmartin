@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       0
     );
 
-    const shippingCharge = subtotal >= 100 ? 0 : 8;
+    const shippingCharge = subtotal >= 150 ? 0 : 15;
     const codCharge = paymentMethod === "cod" ? 10 : 0;
 
     // ------------------------------------

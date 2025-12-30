@@ -14,7 +14,7 @@ const Checkout = () => {
   const { cartItems, totalPrice, setCartItems, discountAmount, coupon } = useStateContext();
 
   const [loading, setLoading] = useState(false);
-  const [shippingCharge, setShippingCharge] = useState(8);
+  const [shippingCharge, setShippingCharge] = useState(15);
   const [codCharge, setCodCharge] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("ccavenue");
   const [errors, setErrors] = useState({});
