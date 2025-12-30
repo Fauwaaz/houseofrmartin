@@ -86,9 +86,15 @@ const Contact = () => {
         return focusedField === fieldName || formData[fieldName];
     };
 
+    const details = [
+        { label: 'Email', value: 'support@houseofrmartin.com', href: 'mailto:support@houseofrmartin.com' },
+        { label: 'Phone', value: '054-2521000', href: 'tel:054-2521000' },
+        { label: 'Address', value: 'Warehouse no 239, Dubai Textile City, Dubai, United Arab Emirates', href: '' }
+    ]
+
     return (
         <Layout>
-            <div className="mt-[80px] lg:mt-[50px] py-6 px-4">
+            <div className="mt-[80px] lg:mt-[60px] py-6 px-4">
                 <div className="max-w-2xl mx-auto">
                     <div className="text-center mb-12">
                         <h1 className="roboto-condensed text-4xl md:text-6xl lg:text-6xl text-[#242222] pt-10">Get In Touch</h1>
@@ -221,9 +227,9 @@ const Contact = () => {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className={`group relative w-full sm:w-auto px-12 py-4 rounded-full text-white font-medium text-lg overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-opacity-50 ${isSubmitting
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-black hover:shadow-2xl focus:ring-black'
+                                className={`group relative w-full sm:w-auto px-12 text-center py-4 rounded-full text-white font-medium text-lg overflow-hidden transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-opacity-50 ${isSubmitting
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-black hover:shadow-2xl focus:ring-black'
                                     }`}
                             >
                                 <span className={`relative z-10 transition-transform duration-300 uppercase ${!isSubmitting ? 'group-hover:scale-110' : ''
@@ -246,6 +252,23 @@ const Contact = () => {
                             </button>
                         </div>
                     </form>
+
+                    <ul className='mt-6'>
+                        {details.map((detail, index) => (
+                            <li key={index} className="mt-2 text-center text-black">
+                                {detail.href ? (
+                                    <a href={detail.href} className="hover:underline" target="_blank" rel="noopener noreferrer">
+                                        <span>{detail.label}:</span> {detail.value}
+                                    </a>
+                                ) : (
+                                    <span>
+                                        <span>{detail.label}:</span> {detail.value}
+                                    </span>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+
                 </div>
 
                 <style jsx>{`

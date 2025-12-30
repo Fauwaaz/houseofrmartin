@@ -10,8 +10,11 @@ import { ChevronRight, HeartIcon, Tag } from "lucide-react";
 import ShareButton from "./common/ShareButton";
 import SizeChart from "./common/SizeChart";
 import { useWishlist } from "../context/WishListStateContext";
+import Review from "./common/Review";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
-const ProductInfo = ({ product, isMounted, onVariantChange }) => {
+const ProductInfo = ({ product, isMounted, onVariantChange, productId }) => {
   const { onAdd, qty, setShowCart } = useStateContext();
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [allVariants, setAllVariants] = useState([]);
@@ -19,6 +22,71 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   const [quantity, setQuantity] = useState(1);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const categories = product?.productCategories?.nodes || [];
+  const comments = product?.comments?.nodes || [];
+  const router = useRouter();
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [addedToBag, setAddedToBag] = useState(false);
+
+
+
+  useEffect(() => {
+    if (!allVariants.length) return;
+
+    const { attribute_pa_color, attribute_pa_size } = router.query;
+
+    const colorParam = attribute_pa_color?.toLowerCase();
+    const sizeParam = attribute_pa_size?.toUpperCase();
+
+    // ✅ Find matching variant strictly
+    const matching = allVariants.find((variant) => {
+      const color = variant.attributes?.nodes?.find(
+        (a) => a.name.toLowerCase() === "pa_color"
+      )?.value?.toLowerCase();
+
+      const size = variant.attributes?.nodes?.find(
+        (a) => a.name.toLowerCase() === "pa_size"
+      )?.value?.toUpperCase();
+
+      return (
+        (!colorParam || colorParam === color) &&
+        (!sizeParam || sizeParam === size)
+      );
+    });
+
+    if (matching) {
+      // ✅ Only update when variant actually changes
+      if (selectedVariation?.id !== matching.id) {
+        setSelectedVariation(matching);
+        setSelectedColor(
+          matching.attributes?.nodes?.find(
+            (a) => a.name.toLowerCase() === "pa_color"
+          )?.value
+        );
+        setSelectedSize(
+          matching.attributes?.nodes?.find(
+            (a) => a.name.toLowerCase() === "pa_size"
+          )?.value?.toUpperCase()
+        );
+
+        if (onVariantChange) onVariantChange(matching);
+      }
+    } else if (!selectedVariation && allVariants.length > 0) {
+      // ✅ Only default on very first render (no variant selected)
+      const first = allVariants[0];
+      setSelectedVariation(first);
+      setSelectedColor(
+        first.attributes?.nodes?.find((a) => a.name.toLowerCase() === "pa_color")
+          ?.value
+      );
+      setSelectedSize(
+        first.attributes?.nodes?.find((a) => a.name.toLowerCase() === "pa_size")
+          ?.value?.toUpperCase()
+      );
+      if (onVariantChange) onVariantChange(first);
+    }
+  }, [router.query, allVariants]);
+
+
 
   const keywords = ["jeans", "shirt", "tshirt", "trouser", "belt"];
 
@@ -27,6 +95,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
       cat?.name?.toLowerCase()?.includes(keyword)
     )
   );
+
 
   const categoryName = matchedCategory?.name || "";
 
@@ -72,7 +141,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
           );
           if (colorAttr && !colorMap.has(colorAttr.value.toLowerCase())) {
             colorMap.set(colorAttr.value.toLowerCase(), {
-              name: colorAttr.value,
+              name: colorAttr.label || colorAttr.value,
               variant: variant
             });
           }
@@ -82,6 +151,13 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
       setAvailableColors(colors);
     }
   }, [product]);
+
+  const formatColorName = (color) => {
+    return color
+      ?.replace(/-/g, " ")  // Replace slugs like "dark-green"
+      ?.replace(/\b\w/g, (l) => l.toUpperCase())  // Capitalize
+      ?.trim();
+  };
 
   const sizeOrder = ["S", "M", "L", "XL", "XXL"];
   let sizes =
@@ -122,12 +198,16 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
   };
 
   const getColorName = (variation) => {
+    const colorAttr = variation?.attributes?.nodes?.find(
+      (attr) => attr.name.toLowerCase() === "pa_color"
+    );
     return (
-      variation?.attributes?.nodes?.find(
-        (attr) => attr.name.toLowerCase() === "pa_color"
-      )?.value || "Unknown"
+      colorAttr?.label ||
+      colorAttr?.value ||
+      "Unknown"
     );
   };
+
 
   const getSize = (variation) => {
     return (
@@ -149,8 +229,11 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
 
       if (matchingVariant) {
         setSelectedVariation(matchingVariant);
+        if (onVariantChange && matchingVariant?.id !== selectedVariation?.id)
+          onVariantChange(matchingVariant);
       } else if (variantsForNewSize.length > 0) {
         setSelectedVariation(variantsForNewSize[0]);
+        if (onVariantChange) onVariantChange(variantsForNewSize[0]);
       } else {
         setSelectedVariation(null);
       }
@@ -158,30 +241,57 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
       const variantsForNewSize = getVariantsForSize(size);
       if (variantsForNewSize.length > 0) {
         setSelectedVariation(variantsForNewSize[0]);
+        if (onVariantChange) onVariantChange(variantsForNewSize[0]);
       }
     }
+
+    const color = selectedVariation ? getColorName(selectedVariation) : null;
+    router.replace(
+      {
+        pathname: `/products/${product.slug}/`,
+        query: {
+          ...(color ? { attribute_pa_color: color.toLowerCase() } : {}),
+          attribute_pa_size: size.toLowerCase(),
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
-  useEffect(() => {
-    if (allVariants.length > 0 && !selectedVariation) {
-      const variantsForSize = getVariantsForSize(selectedSize);
-      if (variantsForSize.length > 0) {
-        setSelectedVariation(variantsForSize[0]);
-      }
-    }
-  }, [allVariants, selectedSize]);
+  // useEffect(() => {
+  //   if (allVariants.length > 0 && !selectedVariation) {
+  //     const variantsForSize = getVariantsForSize(selectedSize);
+  //     if (variantsForSize.length > 0) {
+  //       setSelectedVariation(variantsForSize[0]);
+  //     }
+  //   }
+  // }, [allVariants, selectedSize]);
 
   const handleColorSelect = (colorName) => {
     const variantsForSize = getVariantsForSize(selectedSize);
     const matchingVariant = variantsForSize.find(
       variant => getColorName(variant).toLowerCase() === colorName.toLowerCase()
     );
+
     if (matchingVariant) {
       setSelectedVariation(matchingVariant);
-      if (onVariantChange) {
+      setSelectedColor(colorName);
+      if (onVariantChange && matchingVariant?.id !== selectedVariation?.id)
         onVariantChange(matchingVariant);
-      }
     }
+
+    router.replace(
+      {
+        pathname: `/products/${product.slug}/`,
+        query: {
+          attribute_pa_color: colorName.toLowerCase(),
+          attribute_pa_size: selectedSize.toLowerCase(),
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const isColorAvailableForSize = (colorName) => {
@@ -211,6 +321,12 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
       });
     }
   };
+
+  const scrollTop = () => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
 
 
   return (
@@ -288,6 +404,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
 
       <hr className="border-black/10 border-solid my-3" />
 
+
       <div className="flex flex-col md:flex-row gap-2 md:gap-5">
         <div>
           <p className="mt-2 text-sm">Select size</p>
@@ -320,6 +437,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
             <button
               className="px-3 py-3 border rounded bg-white text-center cursor-pointer"
               onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+              disabled={quantity <= 1}
             >
               <AiOutlineMinus />
             </button>
@@ -329,7 +447,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
               value={quantity}
               onChange={(e) => {
                 const val = parseInt(e.target.value, 10);
-                if (!isNaN(val) && val > 0) {
+                if (!isNaN(val) && val > 0 && val <= (selectedVariation?.stockQuantity || 99)) {
                   setQuantity(val);
                 }
               }}
@@ -337,24 +455,52 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
             />
             <button
               className="px-3 py-3 border rounded bg-white text-center cursor-pointer"
-              onClick={() => setQuantity(quantity + 1)}
+              onClick={() => {
+                if (!selectedVariation?.stockQuantity || quantity < selectedVariation.stockQuantity) {
+                  setQuantity(quantity + 1);
+                }
+              }}
+              disabled={
+                selectedVariation?.manageStock &&
+                selectedVariation?.stockQuantity &&
+                quantity >= selectedVariation.stockQuantity
+              }
             >
               <AiOutlinePlus />
             </button>
           </div>
+          {selectedVariation?.manageStock && selectedVariation?.stockQuantity > 0 ? (
+            <p className="text-xs text-green-600 mt-1">
+              Only {selectedVariation.stockQuantity} left in stock
+            </p>
+          ) : selectedVariation?.stockStatus === "OUT_OF_STOCK" ? (
+            <p className="text-xs text-red-600 mt-1">Out of stock</p>
+          ) : null}
         </div>
         <div>
           <SizeChart category={categoryName} />
         </div>
       </div>
 
-      <div className="mt-6">
+
+      <div className="mt-4">
         <button
           className={`${styles.button} ${styles.dark_button} uppercase hover:bg-gray-800 transition-colors flex items-center gap-2 justify-center ${!selectedSize || !selectedVariation ? "opacity-50 cursor-not-allowed" : ""
             }`}
-          disabled={!selectedSize || !selectedVariation}
+          disabled={
+            !selectedSize ||
+            !selectedVariation ||
+            selectedVariation?.stockStatus !== "IN_STOCK" ||
+            (selectedVariation?.manageStock && selectedVariation?.stockQuantity <= 0)
+          }
           onClick={() => {
-            if (!selectedVariation) return;
+            if (
+              selectedVariation?.manageStock &&
+              quantity > selectedVariation.stockQuantity
+            ) {
+              toast.error(`Only ${selectedVariation.stockQuantity} items in stock`);
+              return;
+            }
 
             const cartItem = {
               id: selectedVariation.databaseId || selectedVariation.id,
@@ -362,18 +508,40 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
               price: selectedVariation?.price || product.price,
               image: selectedVariation?.image?.sourceUrl || product?.featuredImage[0]?.node?.sourceUrl || "/placeholder.jpg",
               size: getSize(selectedVariation),
+              sku: selectedVariation?.sku,
               color: getColorName(selectedVariation),
               slug: product.slug,
               quantity,
+              stockQuantity: selectedVariation.stockQuantity,
+              manageStock: selectedVariation.manageStock,
+              stockStatus: selectedVariation.stockStatus,
             };
 
             onAdd(cartItem, quantity);
+            setAddedToBag(true);
+            setTimeout(() => setAddedToBag(false), 2000);
             toast.success('Item added to bag Successfully!')
           }}
         >
-          Add to Bag <FiShoppingBag size={18} />
+          {addedToBag ? (
+            <>
+              Added <FiShoppingBag size={18} />
+            </>
+          ) : (
+            <>
+              Add to Bag <FiShoppingBag size={18} />
+            </>
+          )}
         </button>
       </div>
+
+      {product?.productCategories?.nodes?.some(node =>
+        ['shirts', 't-shirts'].includes(node.slug) 
+      ) && (
+          <div className="mt-4">
+            <h3 className="text-xs">Suggestions: Please order one size higher than usual.</h3>
+          </div>
+        )}
 
       <hr className="border-black/10 border-solid my-3" />
 
@@ -391,7 +559,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
               return (
                 <div key={index} className="flex flex-col items-center">
                   <button
-                    onClick={() => isAvailable && handleColorSelect(color.name)}
+                    onClick={() => isAvailable && `${handleColorSelect(color.name)} ${scrollTop()}`}
                     className={`relative w-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${isSelected
                       ? "border-black shadow-md"
                       : isAvailable
@@ -431,7 +599,7 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                   {/* Color text below thumbnail */}
                   <p className={`text-xs text-center capitalize mt-1 font-medium ${isSelected ? 'font-bold' : isAvailable ? 'text-gray-600' : 'text-gray-400'
                     }`}>
-                    {color.name}
+                    {formatColorName(color.name)}
                   </p>
                 </div>
               );
@@ -485,14 +653,14 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
             content: (
               <>
                 <div className="">
-                  <p>
-                    Flat 10% off on minimum purchase of{" "}
-                    <span className="price-font">D</span>100
+                  No offers available at the moment.
+                  {/* <p>
+                    Buy 1 Get 1 Free {" "}
                   </p>
                   <p className="text-black font-geograph-md flex gap-2 items-center mt-2">
                     <Tag size={16} className="animate-pulse" />
-                    CODE: DIWALI10
-                  </p>
+                    CODE: B1G1
+                  </p> */}
                 </div>
               </>
             )
@@ -517,14 +685,32 @@ const ProductInfo = ({ product, isMounted, onVariantChange }) => {
                     className="object-contain"
                   />
                 </div>
-                <p className="mt-4 text-black"> Note: Orders less than <span className="price-font">D</span>100 will have shipping charge: <span className="price-font">+D</span>8</p>
+                <p className="mt-4 text-black"> Note: Orders under <span className="price-font">D</span>150 will have shipping charge: <span className="price-font">+D</span>15</p>
+              </>
+            )
+          },
+          {
+            title: "Returns & Exchange",
+            content: (
+              <>
+                <p className="text-black">
+                  Returns & Exchanges are accepted within 7 days of delivery. The products must be in original condition with tags intact. To initiate a return or exchange, kinldy read the <Link href='/shipping-return-refund' className="underline text-blue-600">policy</Link>.
+                </p>
               </>
             )
           },
           {
             title: "Reviews",
-            content: <p> Reviews here </p>,
-          },
+            content: (
+              <>
+                <Review
+                  productId={productId}
+                  productSlug={product.slug}
+                  comments={comments}
+                />
+              </>
+            )
+          }
         ]}
       />
     </div>

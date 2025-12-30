@@ -5,7 +5,6 @@ const accessCode = process.env.CCAVENUE_ACCESS_CODE;
 const workingKey = process.env.CCAVENUE_WORKING_KEY; // encryption key
 const transactionUrl = "https://secure.ccavenue.ae/transaction/transaction.do?command=initiateTransaction";
 
-// Encrypt function
 function encrypt(plainText, workingKey) {
   const m = crypto.createHash("md5").update(workingKey).digest();
   const key = Buffer.concat([m, m.slice(0, 8)]);
@@ -19,62 +18,39 @@ function encrypt(plainText, workingKey) {
   return encrypted;
 }
 
+const encodeField = (field) => encodeURIComponent(field || "");
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
   try {
-    const {
-      cartItems,
-      amount,
-      orderId,
-      redirectUrl,
-      user,
-    } = req.body;
+    const { amount, orderId, redirectUrl, cancelUrl, user } = req.body;
 
     if (!amount || !orderId || !user) {
       return res.status(400).json({ message: "Missing required parameters" });
     }
 
-    // user object example:
-    // {
-    //   name: "Fauwaaz Shaikh",
-    //   email: "fauwaaz@example.com",
-    //   phone: "971500000000",
-    //   address: "Flat 401, Dubai Marina",
-    //   city: "Dubai",
-    //   state: "Dubai",
-    //   zip: "00000",
-    //   country: "AE"
-    // }
+    let plainRequest = `merchant_id=${merchantId}&order_id=${orderId}&currency=AED&amount=${amount}&redirect_url=${redirectUrl}&cancel_url=${cancelUrl}&language=EN`;
 
-    // Build the request string
-    let plainRequest = `merchant_id=${merchantId}&order_id=${orderId}&currency=AED&amount=${amount}&redirect_url=${redirectUrl}&cancel_url=${redirectUrl}&language=EN`;
+    plainRequest += `&billing_name=${encodeField(user.name)}`;
+    plainRequest += `&billing_address=${encodeField(user.address)}`;
+    plainRequest += `&billing_city=${encodeField(user.city)}`;
+    plainRequest += `&billing_state=${encodeField(user.state)}`;
+    plainRequest += `&billing_zip=${encodeField(user.zip)}`;
+    plainRequest += `&billing_country=${encodeField(user.country)}`;
+    plainRequest += `&billing_tel=${encodeField(user.phone)}`;
+    plainRequest += `&billing_email=${encodeField(user.email)}`;
 
-    // Billing Info
-    plainRequest += `&billing_name=${encodeURIComponent(user.name)}`;
-    plainRequest += `&billing_address=${encodeURIComponent(user.address)}`;
-    plainRequest += `&billing_city=${encodeURIComponent(user.city)}`;
-    plainRequest += `&billing_state=${encodeURIComponent(user.state)}`;
-    plainRequest += `&billing_zip=${encodeURIComponent(user.zip)}`;
-    plainRequest += `&billing_country=${encodeURIComponent(user.country)}`;
-    plainRequest += `&billing_tel=${encodeURIComponent(user.phone)}`;
-    plainRequest += `&billing_email=${encodeURIComponent(user.email)}`;
+    plainRequest += `&delivery_name=${encodeField(user.name)}`;
+    plainRequest += `&delivery_address=${encodeField(user.address)}`;
+    plainRequest += `&delivery_city=${encodeField(user.city)}`;
+    plainRequest += `&delivery_state=${encodeField(user.state)}`;
+    plainRequest += `&delivery_zip=${encodeField(user.zip)}`;
+    plainRequest += `&delivery_country=${encodeField(user.country)}`;
+    plainRequest += `&delivery_tel=${encodeField(user.phone)}`;
 
-    // Delivery Info (optional)
-    plainRequest += `&delivery_name=${encodeURIComponent(user.name)}`;
-    plainRequest += `&delivery_address=${encodeURIComponent(user.address)}`;
-    plainRequest += `&delivery_city=${encodeURIComponent(user.city)}`;
-    plainRequest += `&delivery_state=${encodeURIComponent(user.state)}`;
-    plainRequest += `&delivery_zip=${encodeURIComponent(user.zip)}`;
-    plainRequest += `&delivery_country=${encodeURIComponent(user.country)}`;
-    plainRequest += `&delivery_tel=${encodeURIComponent(user.phone)}`;
-
-    // Order Items (optional notes)
-    plainRequest += `&merchant_param1=${encodeURIComponent(JSON.stringify(cartItems))}`;
-
-    // Encrypt
     const encRequest = encrypt(plainRequest, workingKey);
 
     return res.status(200).json({

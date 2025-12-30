@@ -5,17 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, Heart as HeartOutline } from "lucide-react";
 import { useWishlist } from "../context/WishListStateContext";
-
-// Utility functions
-const colorMap = {
-  red: "#FF0000",
-  blue: "#0000FF",
-  black: "#000000",
-  white: "#FFFFFF",
-  green: "#00FF00",
-  yellow: "#FFFF00",
-  // extend this map based on your WooCommerce color options
-};
+import toast from "react-hot-toast";
+import { colorMap } from "../utils/data";
 
 function getDiscountPercent(regular, sale) {
   if (!regular || !sale) return 0;
@@ -95,6 +86,7 @@ export default function BestsellerProducts({ products = [] }) {
           const handleWishlistClick = () => {
             if (inWishlist) {
               removeFromWishlist(product.id);
+              toast.success("Removed from wishlist",{duration:1000});
             } else {
               addToWishlist({
                 productId: product.id,
@@ -109,6 +101,7 @@ export default function BestsellerProducts({ products = [] }) {
                     : parseFloat(product.price || 0),
                 slug: product.slug,
               });
+              toast.success("Added to wishlist",{duration:1000});
             }
           };
 

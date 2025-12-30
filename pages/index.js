@@ -12,10 +12,13 @@ import stylesCommon from "../styles/common.module.css";
 import BeforeFooter from "../components/BeforeFooter";
 import { useEffect, useState } from "react";
 import { colorMap } from "../utils/data";
-import { Heart } from "lucide-react";
+import { Heart, Heart as HeartOutline } from "lucide-react";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 import BestsellerProducts from "../components/BestsellerProducts";
+import { useWishlist } from "../context/WishListStateContext";
+import Popup from "../components/common/Popup";
+// import ComingPopup from "../components/common/ComingPopup";
 
 export async function getStaticProps() {
   const { data } = await client.query({
@@ -44,19 +47,57 @@ const Home = ({ products }) => {
   const parentRef = useRef(null);
   const isInView = useInView(parentRef, { amount: 0.5, once: true });
   const [randomProducts, setRandomProducts] = useState([]);
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
-    if (products?.length > 0) {
-      const shuffled = [...products].sort(() => Math.random() - 0.5).slice(0, 4);
-      setRandomProducts(shuffled);
+    if (!products?.length) return;
+
+    const filtered = products.filter(
+      (product) =>
+        !product.productCategories?.nodes?.some(
+          (cat) => cat.slug === "belt" || cat.name?.toLowerCase() === "belt"
+        )
+    );
+
+    if (filtered.length < 4) {
+      console.warn("Not enough non-belt products");
+      setRandomProducts(filtered);
+      return;
     }
+
+    const shuffled = [...filtered]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 4);
+
+    setRandomProducts(shuffled);
   }, [products]);
+
+
+  const isNotBelt = (product) =>
+    !product.productCategories?.nodes?.some(
+      (cat) => cat.slug === "belt" || cat.name.toLowerCase() === "belt"
+    );
+
+  const shuffleArray = (arr) => {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+
+  const visibleProducts = shuffleArray(
+    randomProducts.filter(isNotBelt)
+  ).slice(0, 4);
+
+
 
   const categoriesSection = [
     { title: "Co-ord set", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/cord-set-scaled.jpg", link: "/products?category=Co-ord+Set" },
     { title: "Shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/shirt-scaled.jpg", link: "/products?category=Shirts" },
     { title: "Jeans", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/pant-scaled.jpg", link: "/products?category=Jeans" },
-    { title: "Tshirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "/products?category=T-shirts" },
+    { title: "T-shirts", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/t-shirt-scaled.jpg", link: "/products?category=T-shirts" },
     { title: "Accessories", img: "https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/MEN_S-BELT-R-M-777-1BLACK.jpg", link: "/products?category=Belt" },
   ];
 
@@ -67,11 +108,13 @@ const Home = ({ products }) => {
       <Layout>
         <Hero />
 
-        <section className="py-10 w-full category justify-items-center">
+        {/* <ComingPopup /> */}
+        {/* <Popup /> */}
+        <section className="py-6 w-full category justify-items-center">
           <div>
-            <h2 className="text-center uppercase text-4xl font-akkurat">
+            <h1 className="text-center uppercase text-4xl font-akkurat">
               Our Categories
-            </h2>
+            </h1>
             <p className="pt-1 text-sm lg:text-lg text-center">
               Explore styles for every mood and moment
             </p>
@@ -130,35 +173,15 @@ const Home = ({ products }) => {
           </div>
         </section>
 
-        {/* <section className="story-banner h-[500px] lg:min-h-screen bg-[url(/story/story-banner-bg.png)] bg-cover bg-no-repeat bg-center flex items-center justify-center w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 justify-items-center">
-            <div className="story-banner-image"></div>
-            <div className="story-banner-content w-3/4 ">
-              <h2 className="text-3xl lg:text-6xl font-geograph-md text-white mb-6 text-outline">
-                House of <span className="text-red-600 stroke-black">R-Martin</span> Wear Your Story
-              </h2>
-              <p className="text-white text-lg lg:text-xl mb-6">
-                Cloths just dont fit your body, they fit your ambition. Step out with confidence that&apos;s tailor made for you.
-              </p>
-              <Link
-                href="/about"
-                className={`text-black bg-white rounded-full py-3 px-[30px] uppercase ${stylesCommon["btn-outline-black"]}`}
-              >
-                Shop All
-              </Link>
-            </div>
-          </div>
-        </section> */}
-
         <section className="w-full">
           <Link href="/products">
             <div className="px-3 lg:px-5 grid grid-cols-1 lg:grid-cols-2 gap-3">
-              <div className="bg-gray-300 h-[245px] lg:h-[700px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-1.jpg)] bg-cover bg-center bg-no-repeat">
+              <div className="bg-gray-300 h-[245px] md:h[500px] lg:h-[600px] w-full rounded-lg bg-[url(https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-1.jpg)] bg-cover bg-bottom bg-no-repeat">
               </div>
               <div className="flex flex-col gap-3">
-                <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
+                <div className="bg-gray-300 h-[120px] lg:h-[295px] rounded-lg overflow-hidden">
                   <Image
-                    className="object-cover w-full h-full"
+                    className="object-cover object-bottom w-full h-full"
                     height={100}
                     width={100}
                     alt={'banner2'}
@@ -167,15 +190,15 @@ const Home = ({ products }) => {
                     src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-2.jpg'}
                   />
                 </div>
-                <div className="bg-gray-300 h-[120px] lg:h-[345px] rounded-lg overflow-hidden">
+                <div className="bg-gray-300 h-[120px] lg:h-[295px] rounded-lg overflow-hidden">
                   <Image
-                    className="object-cover object-top w-full h-full"
+                    className="object-cover object-center w-full h-full"
                     height={100}
                     width={100}
                     alt={'banner3'}
                     unoptimized
                     quality={100}
-                    src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-3-2.jpg'}
+                    src={'https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/banner-3-3.jpg'}
                   />
                 </div>
               </div>
@@ -194,7 +217,8 @@ const Home = ({ products }) => {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 items-center lg:px-6 max-w-1920 my-10">
-            {randomProducts.map((product) => {
+            {visibleProducts.map((product) => {
+              const inWishlist = isInWishlist(product.id);
               let firstVariation = null;
               if (
                 product.__typename === "VariableProduct" &&
@@ -205,6 +229,26 @@ const Home = ({ products }) => {
                 );
                 firstVariation = sorted[0];
               }
+
+              const handleWishlistClick = () => {
+                if (inWishlist) {
+                  removeFromWishlist(product.id);
+                } else {
+                  addToWishlist({
+                    productId: product.id,
+                    name: product.name,
+                    image: product.featuredImage?.node?.sourceUrl || "/placeholder.jpg",
+                    color: "",
+                    size: "",
+                    quantity: 1,
+                    price:
+                      product.__typename === "VariableProduct"
+                        ? parseFloat(product.variations?.nodes?.[0]?.price || 0)
+                        : parseFloat(product.price || 0),
+                    slug: product.slug,
+                  });
+                }
+              };
 
               return (
                 <div
@@ -218,8 +262,12 @@ const Home = ({ products }) => {
                   )}
 
                   <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
-                    <button>
-                      <Heart />
+                    <button onClick={handleWishlistClick}>
+                      {inWishlist ? (
+                        <Heart fill="red" stroke="red" />
+                      ) : (
+                        <HeartOutline className="text-gray-500" />
+                      )}
                     </button>
                   </div>
 
@@ -341,7 +389,7 @@ const Home = ({ products }) => {
           </div>
 
           <Link
-            href="/products"
+            href="/products?category=Bestseller"
             className="text-center bg-black text-white px-10 py-3 rounded-full uppercase border border-white hover:bg-gray-800 cursor-pointer "
           >
             Shop Best Seller
@@ -375,8 +423,8 @@ const Home = ({ products }) => {
             <div className="bg-white w-full h-full">
               <div className="grid grid-cols-2 h-screen">
                 <div className="pl-6 flex flex-col justify-center items-start">
-                  <h3 className="uppercase font-akkurat text-xl lg:text-4xl">10 years of comfort</h3>
-                  <p>Founded in 2020, House of R-Martin has come a long way from its beginnings. When we first started out, our passion for fashion drove us to start our own business.</p>
+                  <h3 className="uppercase font-akkurat text-xl lg:text-4xl">The New Masculine Code</h3>
+                  <p>House of R-Martin began as a legacy and evolved into a perspective , a bridge between generations. What started as a foundation of reliability has transformed into a new way of seeing style: one that understands how emotion, influence, and everyday life shape how men show up in the world</p>
                   <Link
                     href={'/about'}
                     className="text-white bg-black px-5 py-2 rounded-full mt-2 hover:bg-gray-800"

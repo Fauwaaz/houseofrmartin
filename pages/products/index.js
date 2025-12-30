@@ -2,17 +2,19 @@
 
 import { Layout } from "../../components";
 import { useStateContext } from "../../context/StateContext";
-import { Heart, Heart as HeartOutline } from "lucide-react";
+import { Heart, Heart as HeartOutline, Star } from "lucide-react";
 import client from "../../libs/apollo";
 import Image from "next/image";
 import Link from "next/link";
-import { GET_ALL } from "../../utils/queries";
-import { colorMap } from "../../utils/data";
 import Filter from "../../components/common/Filter";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useWishlist } from "../../context/WishListStateContext";
+import { GET_ALL } from "../../utils/queries";
+import { colorMap } from "../../utils/data";
+import Popup from "../../components/common/Popup";
+// import ComingPopup from "../../components/common/ComingPopup";
 
 export async function getStaticProps() {
   const { data } = await client.query({ query: GET_ALL });
@@ -33,7 +35,7 @@ const Products = ({ products }) => {
   const { onAdd, qty } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const [displayCount, setDisplayCount] = useState(8);
+  const [displayCount, setDisplayCount] = useState(4);
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
@@ -87,9 +89,9 @@ const Products = ({ products }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {
         setDisplayCount((prev) =>
-          prev < filteredProducts.length ? prev + 8 : prev
+          prev < filteredProducts.length ? prev + 4 : prev
         );
       }
     };
@@ -134,16 +136,18 @@ const Products = ({ products }) => {
   return (
     <Layout>
       <Head>
-        <title>Products | House of R-Martin</title>
+        <title>Products - House of R-Martin</title>
         <meta
           name="description"
           content="Shop all our designs in one place and discover the full story of R-Martin."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/11/favicon.png" />
       </Head>
 
-      <div className="mt-[140px] lg:mt-[120px] w-full">
+      {/* <ComingPopup /> */}
+      {/* <Popup />  */}
+      <div className="mt-[140px] lg:mt-[110px] w-full">
         <div className="flex flex-col gap-2 items-center justify-center pb-6">
           <h1 className="text-xl lg:text-3xl">Shop All</h1>
           <p className="text-center px-4">
@@ -163,7 +167,7 @@ const Products = ({ products }) => {
         />
 
         {/* ✅ Product Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 px-0 lg:px-6 mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0.5 lg:gap-3 px-0 lg:px-12 mb-10">
           {loading ? (
             <p className="col-span-full text-center min-h-screen">Loading...</p>
           ) : (
@@ -171,6 +175,7 @@ const Products = ({ products }) => {
               const inWishlist = isInWishlist(product.id);
               let displayPrice = null;
               let firstVariation = null;
+              const avgRating = parseFloat(product?.averageRating || 0);
 
               if (
                 product.__typename === "VariableProduct" &&
@@ -213,6 +218,16 @@ const Products = ({ products }) => {
                       {product.productTags.nodes[0].name}
                     </div>
                   )}
+{/* 
+                  {product.__typename === "VariableProduct" && firstVariation && (
+                    <span className="bg-gray-100 rounded-full py-1 px-2  text-sm text-gray-900 absolute top-2 left-2 z-10">
+                      {getDiscountPercent(
+                        firstVariation.regularPrice,
+                        firstVariation.salePrice
+                      )}
+                      % OFF
+                    </span>
+                  )} */}
 
                   <div className="bg-white/40 pt-2 px-2 rounded-full absolute z-10 uppercase top-2 right-2">
                     <button onClick={handleWishlistClick}>
@@ -223,6 +238,12 @@ const Products = ({ products }) => {
                       )}
                     </button>
                   </div>
+
+                  {/* <div className="absolute z-10 left-2 lg:left-3 bottom-[160px] lg:bottom-[130px] flex text-[10px] lg:text-sm items-center p-1 rounded bg-white/100 gap-1">
+                    <Star size={16} color="orange" fill="orange" /> 
+                    {avgRating > 0 ? `${avgRating}/5` : "No ratings yet"}
+                  </div> */}
+
 
                   <Link
                     href={`/products/${product.slug}`}
@@ -249,7 +270,7 @@ const Products = ({ products }) => {
                   <div className="flex w-full flex-col border-t lg:flex-row items-start lg:items-center lg:justify-between px-3">
                     <div className="flex flex-col gap-1">
                       <Link href={`/products/${product.slug}`} className="hover:underline">
-                        <h3 className="mt-4 text-left text-sm lg:text-lg font-semibold">
+                        <h3 className="mt-4 text-left text-sm lg:text-lg">
                           {product.name.length > 35
                             ? product.name.substring(0, 40) + "..."
                             : product.name}

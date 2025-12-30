@@ -12,7 +12,7 @@ export default function TermsAndConditions() {
             </Head>
             <Cart />
             <Navbar />
-            <div className="px-6 mt-[120px] lg:mt-[80px] py-6 text-left">
+            <div className="px-6 mt-[120px] lg:mt-[80px] py-6 text-left max-w-5xl mx-auto">
                 <h1 className="text-3xl font-bold mb-4">Terms & Conditions</h1>
                 <p>Welcome to House of R-Martin, a brand rooted in timeless elegance and refined craftsmanship. These Terms & Conditions govern your use of our website and purchase of products in the UAE.</p>
 

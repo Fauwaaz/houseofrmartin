@@ -29,7 +29,6 @@ const GET_CURRENT_USER = gql`
   }
 `;
 
-// Logout mutation (invalidate session)
 const LOGOUT = gql`
   mutation Logout {
     logout {
@@ -38,7 +37,6 @@ const LOGOUT = gql`
   }
 `;
 
-// 2. Get Page Slugs Only
 const GET_PAGE_SLUGS = gql`
   query PageSlugs {
     pages {
@@ -49,7 +47,6 @@ const GET_PAGE_SLUGS = gql`
   }
 `;
 
-// 3. Get Page Details by Slug
 const GET_PAGE_DETAILS = (slug) => gql`
   query PageDetails {
     page(id: "${slug}", idType: SLUG) {
@@ -69,7 +66,12 @@ const GET_PAGE_DETAILS = (slug) => gql`
 
 const GET_ALL = gql`
   query Products {
-    products(first: 100) {
+    products(
+    first: 1000
+    where: {
+      status: "publish"
+    }
+  ) {
       nodes {
         id
         name
@@ -120,7 +122,7 @@ const GET_ALL = gql`
             slug
           }
         }
-        productCategories(first: 10) {
+        productCategories {
           nodes {
             id
             name
@@ -159,15 +161,16 @@ const GET_ALL = gql`
             }
           }
         }
+        averageRating
+        reviewCount
       }
     }
   }
 `;
 
-
 const GET_SLUG = gql`
   query GetProductSlugs {
-    products(first: 100) {
+    products(first: 200) {
       nodes {
         slug
       }
@@ -179,6 +182,7 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
   query GetProductDetails {
     product(id: "${slug}", idType: SLUG) {
       id
+      databaseId
       name
       description
       slug
@@ -274,7 +278,7 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
             options
           }
         }
-        variations(first: 100) {
+        variations(first: 200) {
           nodes {
             id
             name
@@ -292,9 +296,24 @@ const GET_PRODUCT_DETAILS = (slug) => gql`
               key
               value
             }
+            stockQuantity
+            stockStatus
+            manageStock
+          }
+        }
+       comments {
+          nodes {
+            id
+            content
+            date
+            author {
+              name
+              email
+            }
           }
         }
       }
+      averageRating
 
       ... on ExternalProduct {
         price(format: RAW)
@@ -339,4 +358,82 @@ const GET_postId = gql`
     }
 `;
 
-export { GET_ALL_PAGES, GET_PAGE_SLUGS, GET_PAGE_DETAILS, GET_ALL, GET_SLUG, GET_PRODUCT_DETAILS, GET_postId, GET_CURRENT_USER, LOGOUT };
+const GET_ALL_REVIEWS = gql`
+  query GetProductReviews($slug: [String!]) {
+    products(where: { slugIn: $slug }) {
+      nodes {
+        id
+        name
+        reviewCount
+        comments {
+          nodes {
+            content
+            date
+            author {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const GET_PRODUCTS_BY_CATEGORY = gql`
+  query ProductsByCategory($slugs: [String!]!) {
+    products(
+      first: 8
+      where: {
+        categoryIn: $slugs
+        status: PUBLISH
+      }
+    ) {
+      nodes {
+        id
+        name
+        slug
+        __typename
+
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+
+        productCategories {
+          nodes {
+            slug
+          }
+        }
+
+        ... on SimpleProduct {
+          price(format: RAW)
+          salePrice(format: RAW)
+          regularPrice(format: RAW)
+        }
+
+        ... on VariableProduct {
+          price(format: RAW)
+          salePrice(format: RAW)
+          regularPrice(format: RAW)
+          variations(first: 1) {
+            nodes {
+              price(format: RAW)
+              regularPrice(format: RAW)
+              salePrice(format: RAW)
+            }
+          }
+        }
+
+        attributes {
+          nodes {
+            name
+            options
+          }
+        }
+      }
+    }
+  }
+`;
+
+export { GET_ALL_PAGES, GET_PAGE_SLUGS, GET_PAGE_DETAILS, GET_ALL, GET_SLUG, GET_PRODUCT_DETAILS, GET_postId, GET_CURRENT_USER, LOGOUT, GET_ALL_REVIEWS, GET_PRODUCTS_BY_CATEGORY };

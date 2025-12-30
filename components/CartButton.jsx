@@ -9,8 +9,10 @@ const CartButton = () => {
   const [isSSR, setIsSSR] = useState(true);
 
   useEffect(() => {
+    setShowCart(false);
     setIsSSR(false);
   }, []);
+
   return (
     <button className={styles.container} onClick={() => setShowCart(!showCart)}>
       <div className={styles.inner}>

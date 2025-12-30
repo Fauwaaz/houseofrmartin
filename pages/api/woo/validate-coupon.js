@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     res.status(200).json({
       success: true,
       coupon: {
-        id: coupon.id,
+        id: coupon.id,  
         code: coupon.code,
         amount: coupon.amount,
         discount_type: coupon.discount_type, // 'percent' or 'fixed_cart'

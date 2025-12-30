@@ -1,5 +1,6 @@
+"use client";
 import { useState, useEffect } from 'react';
-import { User, Mail, Lock, ArrowRight, CheckCircle, XCircle, Phone } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight, XCircle, Phone, Loader2 } from 'lucide-react';
 import { InputField } from '../components/InputField';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,316 +10,280 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 
 const AuthPage = () => {
-    const [isLogin, setIsLogin] = useState(true);
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState({});
-    const [success, setSuccess] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState('');
+  const router = useRouter();
+  const [countryCode, setCountryCode] = useState("+971");
 
-    const router = useRouter();
 
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: ''
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const COUNTRY_CODES = [
+    { code: "+971", country: "🇦🇪" },
+    { code: "+91", country: "🇮🇳" },
+    { code: "+966", country: "🇸🇦" },
+    { code: "+973", country: "🇧🇭" },
+    { code: "+974", country: "🇶🇦" },
+    { code: "+965", country: "🇰🇼" },
+    { code: "+968", country: "🇴🇲" },
+    { code: "+44", country: "🇬🇧" },
+    { code: "+1", country: "🇺🇸" },
+    { code: "+61", country: "🇦🇺" },
+  ];
+
+
+  useEffect(() => {
+    setFormData({
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: ''
     });
+    setErrors({});
+    setSuccess('');
+  }, [isLogin]);
 
-    useEffect(() => {
-        setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            password: '',
-            confirmPassword: ''
-        });
-        setErrors({});
-        setSuccess('');
-    }, [isLogin]);
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePassword = (password) => password.length >= 6;
 
-    useEffect(() => {
-        let timer;
-        const resetTimer = () => {
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-                document.cookie = 'session=; Max-Age=0; path=/'; // clear session
-                router.push('/auth') // redirect to login
-            }, 60 * 60 * 1000); // 1 hour
-        };
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.email) newErrors.email = 'Email is required';
+    else if (!validateEmail(formData.email)) newErrors.email = 'Invalid email';
 
-        window.addEventListener('mousemove', resetTimer);
-        window.addEventListener('keydown', resetTimer);
+    if (!formData.password) newErrors.password = 'Password is required';
+    else if (!validatePassword(formData.password)) newErrors.password = 'Password must be at least 6 characters';
 
-        resetTimer(); // start on mount
+    if (!isLogin) {
+      if (!formData.first_name) newErrors.first_name = 'First name required';
+      if (!formData.last_name) newErrors.last_name = 'Last name required';
+      if (!formData.phone) newErrors.phone = 'Phone number required';
+      else if (!/^\d{7,12}$/.test(formData.phone)) newErrors.phone = "Enter valid phone number";
+      if (!formData.confirmPassword) newErrors.confirmPassword = 'Confirm password required';
+      else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+    }
 
-        return () => {
-            clearTimeout(timer);
-            window.removeEventListener('mousemove', resetTimer);
-            window.removeEventListener('keydown', resetTimer);
-        };
-    }, []);
+    return newErrors;
+  };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+  };
 
-    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const validatePassword = (password) => password.length >= 6;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
-    const validateForm = () => {
-        const newErrors = {};
-        if (!formData.email) newErrors.email = 'Email is required';
-        else if (!validateEmail(formData.email)) newErrors.email = 'Please enter a valid email';
+    setLoading(true);
+    setErrors({});
 
-        if (!formData.password) newErrors.password = 'Password is required';
-        else if (!validatePassword(formData.password)) newErrors.password = 'Password must be at least 6 characters';
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          phone: `${countryCode}${formData.phone}`,
+          isLogin
+        }),
+      });
 
-        if (!isLogin) {
-            if (!formData.name) newErrors.name = 'Name is required';
-            if (!formData.phone) newErrors.phone = 'Phone number is required';
-            else if (!/^\d{10}$/.test(formData.phone)) newErrors.phone = 'Please enter a valid 10-digit phone number';
-            if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
-            else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+      const data = await res.json();
+      console.log("Auth API Response:", data);
+
+      if (!res.ok || !data.success) {
+        setErrors({ submit: data.message || 'Invalid credentials' });
+        return;
+      }
+
+      toast.success(data.message || 'Login successful');
+
+      if (isLogin) {
+        const lastPage = localStorage.getItem("lastVisited") || "/";
+
+        const me = await fetch("/api/me", { credentials: "include" })
+          .then(res => res.json());
+
+        if (me?.user?.id) {
+          const u = {
+            id: me.user.id,
+            email: me.user.email,
+            phone: me.user.meta?.billing_phone || null,
+            name: me.user.name,
+          };
+
+          localStorage.setItem("user", JSON.stringify(u));
+          window.dispatchEvent(new Event("user-ready"));
         }
-        return newErrors;
-    };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        router.push(lastPage);
+      }
 
-        if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: '' }));
-        }
-    };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const newErrors = validateForm();
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            return;
-        }
+    } catch (err) {
+      console.error("Auth error:", err);
+      setErrors({ submit: 'Something went wrong. Please try again.' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setLoading(true);
-        setErrors({});
-        try {
-            const res = await fetch('/api/auth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...formData, isLogin }),
-            });
+  return (
+    <>
+      <Head>
+        <title>{isLogin ? 'Sign In' : 'Sign Up'} - House Of R-Martin</title>
+        <meta name="description" content="Authentication page for House Of R-Martin" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
 
-            const data = await res.json();
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-gray-300 p-8">
+          <Link href="/" className="text-black hover:underline flex gap-1 items-center">
+            <HiOutlineChevronLeft size={20} /> Back
+          </Link>
 
-            if (!data.success) {
-                setErrors({ submit: data.message });
-            } else {
-                setSuccess(
-                    toast.success(data.message + ' Redirecting...')
-                );
+          <div className="text-center my-8">
+            <Image src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/logo.webp" alt="Logo" width={250} height={40} className='object-contain mx-auto' />
+            <h1 className="text-3xl font-bold text-black mb-2">
+              {isLogin ? 'Welcome Back' : 'Create Account'}
+            </h1>
+            <p className="text-gray-600">{isLogin ? 'Sign in to your account' : 'Join us today'}</p>
+          </div>
 
-                if (isLogin) {
-                    // Redirect to home after login
-                    setTimeout(() => {
-                        router.push('/');
-                    }, 1500);
-                } else {
-                    // Switch to login after signup
-                    setTimeout(() => setIsLogin(true), 1500);
-                    router.push('/');
-                }
-            }
-        } catch (err) {
-            setErrors({ submit: 'Something went wrong. Please try again.' });
-        } finally {
-            setLoading(false);
-        }
-    };
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-5">
+              {!isLogin && (
+                <>
+                  <InputField name="first_name" placeholder="First Name" icon={User} value={formData.first_name} onChange={handleInputChange} error={errors.first_name} />
+                  <InputField name="last_name" placeholder="Last Name" icon={User} value={formData.last_name} onChange={handleInputChange} error={errors.last_name} />
+                  <div>
+                    <div className="flex items-center gap-2 mt-1">
 
-    return (
-        <>
-            <Head>
-                <title>{isLogin ? 'Sign In' : 'Sign Up'} - House Of R-Martin</title>
-                <meta name="description" content={isLogin ? 'Sign in to your account - House Of R-Martin' : 'Create a new account - House Of R-Martin'} />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.png" />
-            </Head>
-            <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="w-full max-w-md">
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-300 p-8">
-                    <Link href="/" className="text-black hover:underline flex gap-1 items-center"><HiOutlineChevronLeft size={20}/> Back</Link>
-                    <div className="text-center my-8">
-                        <div className="inline-flex items-center justify-center rounded-full mb-4">
-                            <Image src="/logo.png" alt="Logo" width={250} height={40} className='object-contain' />
-                        </div>
-                        <h1 className="text-3xl font-bold text-black mb-2">
-                            {isLogin ? 'Welcome Back' : 'Create Account'}
-                        </h1>
-                        <p className="text-gray-600">
-                            {isLogin ? 'Sign in to your account' : 'Join us today'}
-                        </p>
+                      {/* Country code dropdown */}
+                      <select
+                        value={countryCode}
+                        onChange={(e) => {
+                          setCountryCode(e.target.value);
+                        }}
+                        className="border border-gray-400 p-2 rounded-md bg-white text-gray-600"
+                      >
+                        {COUNTRY_CODES.map((c) => (
+                          <option key={c.code} value={c.code}>
+                            {c.code} ({c.country})
+                          </option>
+                        ))}
+                      </select>
+
+                      {/* Actual phone input */}
+                      <input
+                        type="text"
+                        name="phone"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className={`border border-gray-400 p-2 rounded-md flex-1 min-w-[140px] ${errors.phone ? "border-red-500" : ""}`}
+                      />
                     </div>
 
-                    
-                    <form onSubmit={handleSubmit}>
-                        <div className="space-y-6">
-                            {/* Name (signup only) */}
-                            {!isLogin && (
-                                <InputField
-                                    type="text"
-                                    name="name"
-                                    placeholder="Full Name"
-                                    icon={User}
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    error={errors.name}
-                                />
-                            )}
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                    )}
+                  </div>
+                </>
+              )}
 
-                            {/* Email */}
-                            <InputField
-                                type="email"
-                                name="email"
-                                placeholder="Email Address"
-                                icon={Mail}
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                error={errors.email}
-                            />
+              <InputField type="email" name="email" placeholder="Email Address" icon={Mail} value={formData.email} onChange={handleInputChange} error={errors.email} />
+              {/* Password Field */}
+              <InputField
+                type="password"
+                name="password"
+                placeholder="Password"
+                icon={Lock}
+                value={formData.password}
+                onChange={handleInputChange}
+                error={errors.password}
+                showPasswordToggle={true}
+                showPassword={showPassword}
+                onTogglePassword={() => setShowPassword(!showPassword)}
+              />
 
-                            {!isLogin && (
-                                <InputField
-                                    type="number"
-                                    name="phone"
-                                    placeholder="Phone Number"
-                                    icon={Phone}
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    error={errors.phone}
-                                />
-                            )}
+              {/* Confirm Password Field (Signup only) */}
+              {!isLogin && (
+                <InputField
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  icon={Lock}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  error={errors.confirmPassword}
+                  showPasswordToggle={true}
+                  showPassword={showConfirmPassword}
+                  onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
+                />
+              )}
 
-
-                            {/* Password */}
-                            <InputField
-                                type="password"
-                                name="password"
-                                placeholder="Password"
-                                icon={Lock}
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                showPasswordToggle
-                                showPassword={showPassword}
-                                onTogglePassword={() => setShowPassword(!showPassword)}
-                                error={errors.password}
-                            />
-
-                            {/* Confirm Password (signup only) */}
-                            {!isLogin && (
-                                <InputField
-                                    type="password"
-                                    name="confirmPassword"
-                                    placeholder="Confirm Password"
-                                    icon={Lock}
-                                    value={formData.confirmPassword}
-                                    onChange={handleInputChange}
-                                    showPasswordToggle
-                                    showPassword={showConfirmPassword}
-                                    onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    error={errors.confirmPassword}
-                                />
-                            )}
-
-                            {/* Submit Error */}
-                            {errors.submit && (
-                                <div className="flex items-center text-red-600  text-sm">
-                                    <XCircle size={14} className="mr-1" />
-                                    {errors.submit}
-                                </div>
-                            )}
-
-                            {/* Forgot Password (login only) */}
-                            {isLogin && (
-                                <div className="text-left">
-                                    <button type="button" className="text-sm text-black hover:underline">
-                                        Forgot Password?
-                                    </button>
-                                </div>
-                            )}
-
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                onClick={handleSubmit}
-
-                                disabled={loading}
-                                className="w-full bg-black text-white py-3 cursor-pointer rounded-full font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-200 disabled:opacity-70 flex items-center justify-center"
-                            >
-                                {loading ? (
-                                    <div className="flex items-center">
-                                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                        {isLogin ? 'Signing In...' : 'Creating Account...'}
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center">
-                                        {isLogin ? 'Sign In' : 'Create Account'}
-                                        <ArrowRight size={18} className="ml-2" />
-                                    </div>
-                                )}
-                            </button>
-                        </div>
-                    </form>
-                    {/* Toggle */}
-                    <div className="mt-8 text-center">
-                        <span className="text-gray-600">
-                            {isLogin ? "Don't have an account?" : "Already have an account?"}
-                        </span>
-                        <button
-                            type="button"
-                            onClick={() => setIsLogin(!isLogin)}
-                            className="ml-2 text-black font-medium hover:underline cursor-pointer"
-                        >
-                            {isLogin ? 'Sign Up' : 'Sign In'}
-                        </button>
-                    </div>
-
-                    {/* Social */}
-                    {/* <div className="mt-8">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-400"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-              </div>
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className="w-full inline-flex justify-center py-2.5 px-4 border border-gray-400 rounded-full shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
-              >
-                Google
-              </button>
-              <button
-                type="button"
-                className="w-full inline-flex justify-center py-2.5 px-4 border border-gray-400 rounded-full shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
-              >
-                Facebook
-              </button>
-            </div>
-          </div> */}
+              {errors.submit && (
+                <div className="flex items-center text-red-600 text-sm">
+                  <XCircle size={14} className="mr-1" /> {errors.submit}
                 </div>
+              )}
 
-                <p className="text-center text-sm text-gray-500 mt-8">
-                    By {isLogin ? 'signing in' : 'creating an account'}, you agree to our{' '}
-                    <Link href="/terms-condition" className="text-black hover:underline">Terms of Service</Link> and{' '}
-                    <Link href="/privacy-policy" className="text-black hover:underline">Privacy Policy</Link>
-                </p>
+              {isLogin && (
+                <div className="text-left">
+                  <Link href='/forgot-password' className="text-sm text-black hover:underline">Forgot Password?</Link>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-black text-white py-3 rounded-full font-medium hover:bg-gray-800 focus:ring-2 focus:ring-black transition flex items-center justify-center"
+              >
+                {loading ? (
+                  <><Loader2 className="animate-spin mr-2" size={20} />{isLogin ? 'Signing In...' : 'Creating Account...'}</>
+                ) : (
+                  <>{isLogin ? 'Sign In' : 'Create Account'} <ArrowRight size={18} className="ml-2" /></>
+                )}
+              </button>
             </div>
-            </div>
-        </>
-    );
+          </form>
+
+          <div className="mt-8 text-center">
+            <span className="text-gray-600">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+            </span>
+            <button type="button" onClick={() => setIsLogin(!isLogin)} className="ml-2 text-black font-medium hover:underline">
+              {isLogin ? 'Sign Up' : 'Sign In'}
+            </button>
+          </div>
+        </div>
+        <p className="text-center text-sm text-gray-500 mt-8 px-4 pb-4">
+          By {isLogin ? 'signing in' : 'creating an account'}, you agree to our{' '}
+          <Link href="/terms-condition" className="text-black hover:underline">&nbsp;Terms of Service&nbsp;</Link> and{' '} <Link href="/privacy-policy" className="text-black hover:underline">&nbsp;Privacy Policy</Link> </p>
+      </div>
+    </>
+  );
 };
 
 export default AuthPage;

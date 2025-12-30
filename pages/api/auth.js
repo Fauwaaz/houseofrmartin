@@ -13,7 +13,7 @@ const WP_PREFIX = process.env.WP_TABLE_PREFIX || 'fxiEe_';
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).end();
 
-    const { isLogin, name, email, phone, password } = req.body || {};
+    const { isLogin, first_name, last_name, email, phone, password } = req.body || {};
 
     if (!email || !password) {
         return res.status(400).json({ success: false, message: 'Email and password are required' });
@@ -84,8 +84,8 @@ export default async function handler(req, res) {
 
         // Hash password using WordPress algorithm
         const wpHash = hasher.HashPassword(password);
-        const nickname = name 
-        const displayName = name || email.split('@')[0];
+        const nickname = first_name
+        const displayName = first_name
 
         // Insert user into users table
         const [result] = await conn.execute(
@@ -97,7 +97,21 @@ export default async function handler(req, res) {
 
         const userId = result.insertId;
 
-        if(nickname) {
+        if (first_name) {
+            await conn.execute(
+                `INSERT INTO \`${WP_PREFIX}usermeta\` (user_id, meta_key, meta_value) VALUES (?, ?, ?)`,
+                [userId, 'first_name', first_name]
+            );
+        }
+
+        if (last_name) {
+            await conn.execute(
+                `INSERT INTO \`${WP_PREFIX}usermeta\` (user_id, meta_key, meta_value) VALUES (?, ?, ?)`,
+                [userId, 'last_name', last_name]
+            );
+        }
+
+        if (nickname) {
             await conn.execute(
                 `INSERT INTO \`${WP_PREFIX}usermeta\` (user_id, meta_key, meta_value) VALUES (?, ?, ?)`,
                 [userId, 'nickname', nickname]
@@ -128,7 +142,6 @@ export default async function handler(req, res) {
             [userId, `${WP_PREFIX}user_level`, '0']
         );
 
-        // Auto-login: issue JWT cookie
         const token = jwt.sign({ id: userId, email }, SECRET_KEY, { expiresIn: '1h' });
         res.setHeader('Set-Cookie', serialize('session', token, {
             httpOnly: true,

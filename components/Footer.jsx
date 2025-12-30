@@ -21,8 +21,8 @@ const Footer = () => {
           <div className="flex justify-center md:justify-start">
             <Link href="/">
               <Image
-                src="/logo.png"
-                alt="House of RMartin"
+                src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/logo.webp"
+                alt="House of R-Martin"
                 width={250}
                 height={50}
                 className="mb-4 mx-auto md:mx-0"
@@ -45,8 +45,8 @@ const Footer = () => {
           <div className="">
             <h5 className="text-lg font-geograph-md uppercase">Shop</h5>
             <ul className="mt-4 space-y-2 text-black/90">
-              <li><Link href="/products?category=Bestseller">Best Seller</Link></li>
-              <li><Link href="/products">Sale</Link></li>
+              <li><Link href="/products?category=Bestseller " className="hover:underline">Best Seller</Link></li>
+              <li><Link href="/products" className="hover:underline">Sale</Link></li>
             </ul>
           </div>
 
@@ -61,7 +61,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="py-5 px-6 md:px-16 border-t border-dashed border-gray-300 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="py-5 px-6 mb-12 lg:mb-0 md:px-16 border-t border-dashed border-gray-300 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-gray-600 text-center md:text-left">
           &copy; {new Date().getFullYear()} House of R-Martin. All rights reserved.
         </p>
@@ -72,9 +72,9 @@ const Footer = () => {
           className="flex justify-center md:justify-end"
         >
           <Image
-            src="/footer/sparkcloud.png"
+            src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/SparkCloud.png"
             alt="sparkcloud"
-            width={170}
+            width={200}
             height={50}
             className="mt-2 md:mt-0"
             unoptimized

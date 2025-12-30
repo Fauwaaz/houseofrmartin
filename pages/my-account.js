@@ -6,7 +6,6 @@ import {
     LogOut,
     MapPin,
     Package,
-    Truck,
     Camera,
     Save,
     UserCircle,
@@ -52,20 +51,23 @@ const MyAccount = () => {
         same_as_billing: false,
     });
 
+
+
     const tabs = [
         { id: "profile", label: "Profile", icon: UserCircle },
         { id: "address", label: "Address", icon: MapPin },
         { id: "orders", label: "Your Orders", icon: Package },
-        { id: "tracking", label: "Track Order", icon: Truck },
+        // { id: "tracking", label: "Track Order", icon: Truck },
     ];
 
     // Fetch user data on mount
     useEffect(() => {
         async function fetchUserData() {
             try {
+                // Fetch user profile and orders in parallel
                 const [userRes, ordersRes] = await Promise.all([
                     fetch("/api/user/profile"),
-                    fetch("/api/user/orders")
+                    fetch("/api/user/orders"),
                 ]);
 
                 const userData = await userRes.json();
@@ -75,7 +77,6 @@ const MyAccount = () => {
                     const userInfo = userData.user;
                     setUser(userInfo);
 
-                    // Set profile form with WordPress user_meta
                     setProfileForm({
                         first_name: userInfo.meta?.first_name || "",
                         last_name: userInfo.meta?.last_name || "",
@@ -84,7 +85,6 @@ const MyAccount = () => {
                         profile_image: userInfo.meta?.profile_image || "",
                     });
 
-                    // Set address form with WooCommerce fields
                     setAddressForm({
                         billing_address_1: userInfo.meta?.billing_address_1 || "",
                         billing_address_2: userInfo.meta?.billing_address_2 || "",
@@ -103,7 +103,11 @@ const MyAccount = () => {
                 }
 
                 if (ordersData.success) {
-                    setOrders(ordersData.orders);
+                    // Sort orders by newest first
+                    const sortedOrders = ordersData.orders.sort(
+                        (a, b) => new Date(b.date) - new Date(a.date)
+                    );
+                    setOrders(sortedOrders);
                 }
             } catch (err) {
                 console.error("❌ fetchUserData error:", err);
@@ -111,8 +115,10 @@ const MyAccount = () => {
                 setLoading(false);
             }
         }
+
         fetchUserData();
     }, []);
+
 
     // Handle profile form changes
     const handleProfileChange = (e) => {
@@ -272,6 +278,57 @@ const MyAccount = () => {
             </Layout>
         );
     }
+
+    const canCancel = (status) =>
+        ["pending", "processing", "on-hold"].includes(status);
+
+    const canReturn = (status) =>
+        ["completed"].includes(status);
+
+    const handleOrderAction = async (orderId, action) => {
+        const actionLabel =
+            action === "cancel" ? "cancel this order" : "request a return";
+
+        const confirmed = window.confirm(
+            `Are you sure you want to ${actionLabel}? This action cannot be undone.`
+        );
+
+        if (!confirmed) return;
+
+        try {
+            const res = await fetch("/api/orders/update", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    order_id: orderId,
+                    action, 
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.success) {
+                alert(data.message || "Action failed");
+                return;
+            }
+
+            // ✅ Update UI without reload
+            setOrders((prev) =>
+                prev.map((o) =>
+                    o.id === orderId
+                        ? { ...o, status: data.newStatus }
+                        : o
+                )
+            );
+
+            alert(`Order ${data.newStatus} successfully.`);
+        } catch (err) {
+            console.error(err);
+            alert("Something went wrong. Try again.");
+        }
+    };
+
+
 
     if (!user) {
         return (
@@ -455,7 +512,7 @@ const MyAccount = () => {
                                                         disabled
                                                         className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50"
                                                     />
-                                                    <p className="text-xs text-gray-500 mt-1">To change your password, use the <Link href="/auth/forgot-password" className="text-blue-600 hover:underline">Forgot Password</Link> option.</p>
+                                                    <p className="text-xs text-gray-500 mt-1">To change your password, use the <Link href="/forgot-password" className="text-blue-600 hover:underline">Forgot Password</Link> option.</p>
                                                 </div>
                                             </div>
 
@@ -518,7 +575,7 @@ const MyAccount = () => {
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="block text-sm font-medium text-gray-700 mb-2">Postcode</label>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-2">PO Box (Optional)</label>
                                                         <input
                                                             type="text"
                                                             name="billing_postcode"
@@ -598,7 +655,7 @@ const MyAccount = () => {
                                                             />
                                                         </div>
                                                         <div>
-                                                            <label className="block text-sm font-medium text-gray-700 mb-2">Postcode</label>
+                                                            <label className="block text-sm font-medium text-gray-700 mb-2">PO Box (Optional)</label>
                                                             <input
                                                                 type="text"
                                                                 name="shipping_postcode"
@@ -633,63 +690,106 @@ const MyAccount = () => {
 
                                 {activeTab === "orders" && (
                                     <div>
-                                        <h2 className="text-xl font-semibold mb-6">Recent Orders</h2>
+                                        <h2 className="text-xl mb-6">Recent Orders</h2>
                                         {orders.length === 0 ? (
                                             <p className="text-gray-600">You have no recent orders.</p>
                                         ) : (
                                             <div className="space-y-6">
-                                                {orders.map((order) => (
-                                                    <div
-                                                        key={order.id}
-                                                        className="border border-gray-200 rounded-xl p-4"
-                                                    >
-                                                        <div className="flex items-center justify-between mb-4">
-                                                            <div>
-                                                                <h3 className="text-lg font-medium">Order #{order.id}</h3>
-                                                                <p className="text-sm text-gray-500">
-                                                                    Placed on {new Date(order.date).toLocaleDateString()}
-                                                                </p>
-                                                            </div>
-                                                            <span
-                                                                className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}
-                                                            >
-                                                                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                                                            </span>
-                                                        </div>
-                                                        <button
-                                                            onClick={() => handleTrackOrder(order.id)}
-                                                            className="text-blue-600 hover:underline text-sm"
-                                                        >
-                                                            Track Order
-                                                        </button>
-                                                        {trackingData[order.id] && (
-                                                            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                                                                <h4 className="font-medium mb-2">Tracking Information:</h4>
-                                                                <p className="text-sm text-gray-700"></p>
-                                                                <p className="text-sm text-gray-700">
-                                                                    Carrier: {trackingData[order.id].carrier || "N/A"}
-                                                                </p>
-                                                                <p className="text-sm text-gray-700">
-                                                                    Tracking Number: {trackingData[order.id].tracking_number || "N/A"}
-                                                                </p>
-                                                                <p className="text-sm text-gray-700">
-                                                                    Status: {trackingData[order.id].status || "N/A"}
-                                                                </p>
-                                                                {trackingData[order.id].estimated_delivery && (
-                                                                    <p className="text-sm text-gray-700">
-                                                                        Estimated Delivery: {new Date(trackingData[order.id].estimated_delivery).toLocaleDateString()}
-                                                                    </p>
-                                                                )}
+                                                {activeTab === "orders" && (
+                                                    <div>
+                                                        {orders.length === 0 ? (
+                                                            <p className="text-gray-600">You have no recent orders.</p>
+                                                        ) : (
+                                                            <div className="space-y-6">
+                                                                {orders.map((order) => (
+                                                                    <div
+                                                                        key={order.id}
+                                                                        className="border border-gray-200 rounded-xl p-4"
+                                                                    >
+                                                                        <div className="flex items-center justify-between mb-4">
+                                                                            <div>
+                                                                                <h3 className="text-lg font-medium">Order #{order.id}</h3>
+                                                                                <p className="text-sm text-gray-500">
+                                                                                    Placed on {new Date(order.date).toLocaleDateString()} - Total: <span className="price-font">D</span>{order.total}
+                                                                                </p>
+                                                                            </div>
+                                                                            <span
+                                                                                className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}
+                                                                            >
+                                                                                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                                                                            </span>
+                                                                        </div>
+
+                                                                        {/* Order Items */}
+                                                                        <div className="mt-4 space-y-4">
+                                                                            {order.items.map((item, idx) => (
+                                                                                <div key={idx} className="flex items-center gap-4 border-t pt-4">
+                                                                                    {item.image && (
+                                                                                        <Image
+                                                                                            src={item.image}
+                                                                                            alt={item.name}
+                                                                                            width={64}
+                                                                                            height={64}
+                                                                                            className="rounded-lg border"
+                                                                                        />
+                                                                                    )}
+                                                                                    <div className="flex-1">
+                                                                                        <h4 className="font-medium">{item.name}</h4>
+                                                                                        <p className="text-gray-500 text-sm">Price: <span className="price-font">D</span>{item.price}</p>
+                                                                                        {item.attributes && Object.keys(item.attributes).length > 0 && (
+                                                                                            <p className="text-gray-500 text-sm">
+                                                                                                {Object.entries(item.attributes)
+                                                                                                    .map(([key, value]) => `${key.replace("pa_", "")}: ${value}`)
+                                                                                                    .join(" | ")}
+                                                                                            </p>
+                                                                                        )}
+                                                                                        <p className="text-gray-500 text-sm">Quantity: {item.quantity}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                        {order.tracking?.number && (
+                                                                            <Link
+                                                                                href={order.tracking.url}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                                className="mt-2 inline-block text-blue-600 underline text-sm"
+                                                                            >
+                                                                                Track Order ({order.tracking.carrier.toUpperCase()})
+                                                                            </Link>
+                                                                        )}
+                                                                        <div className="mt-4 flex gap-3">
+                                                                            {canCancel(order.status) && (
+                                                                                <button
+                                                                                    onClick={() => handleOrderAction(order.id, "cancel")}
+                                                                                    className="px-4 py-2 border-2 border-red-800 text-sm rounded-lg text-red-600 bg-red-50 hover:bg-red-100"
+                                                                                >
+                                                                                    Cancel Item
+                                                                                </button>
+                                                                            )}
+
+                                                                            {canReturn(order.status) && (
+                                                                                <button
+                                                                                    onClick={() => handleOrderAction(order.id, "return")}
+                                                                                    className="px-4 py-2 text-sm rounded-lg text-yellow-600 bg-yellow-50  hover:bg-yellow-100"
+                                                                                >
+                                                                                    Return Item
+                                                                                </button>
+                                                                            )}
+                                                                        </div>
+
+                                                                    </div>
+                                                                ))}
                                                             </div>
                                                         )}
                                                     </div>
-                                                ))}
+                                                )}
                                             </div>
                                         )}
                                     </div>
                                 )}
 
-                                {activeTab === "tracking" && (
+                                {/* {activeTab === "tracking" && (
                                     <div>
                                         <h2 className="text-xl font-semibold mb-6">Track an Order</h2>
                                         <form onSubmit={handleManualTrack} className="space-y-4 max-w-md">
@@ -736,7 +836,7 @@ const MyAccount = () => {
                                             </div>
                                         )}
                                     </div>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </div>

@@ -7,17 +7,15 @@ import CartButton from "./CartButton";
 import {
   Heart,
   Menu,
-  Search,
   X,
+  Package,
   LogOut,
-  Info,
   UserCircle,
-  ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiFacebook, FiInstagram, FiLinkedin, FiYoutube } from "react-icons/fi";
+import { FiInstagram, FiLinkedin } from "react-icons/fi";
 import SearchBar from "./common/SearchBar";
 import client from "../libs/apollo";
 import { GET_ALL } from "../utils/queries";
@@ -101,25 +99,29 @@ export default function Navbar({ products = [] }) {
   }
 
   return (
-    <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50 justify-center flex flex-col lg:flex-row">
+    <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50 justify-center flex flex-col ">
+      {/* <div className="w-full bg-gray-200 text-black text-center text-xs lg:text-sm p-1">
+         Black Friday Sale is Live! ( Buy 1 Get 1 Free ) Use Code: B1G1
+      </div> */}
       <nav className="w-full flex justify-between items-center px-3 lg:px-6 py-3 max-w-1920">
         {/* Hamburger */}
         <button
-          className="text-2xl w-[40px] md:w-[200px] lg:w-[270px]"
+          className="text-2xl w-[40px] md:w-[50px] lg:w-[300px]"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
           {menuOpen ? <X /> : <Menu className="hover:bg-gray-100 p-2 rounded-full border border-gray-100" />}
         </button>
 
         {/* Logo */}
-        <Link href="/">
+        <Link href="/" >
           <Image
-            src="/logo.png"
+            src="https://dashboard.houseofrmartin.com/wp-content/uploads/2025/10/logo.webp"
             alt="Logo"
             width={120}
             height={60}
             unoptimized
             className="w-[180px] lg:w-[200px] h-auto"
+            fetchPriority="high"
           />
         </Link>
 
@@ -158,10 +160,10 @@ export default function Navbar({ products = [] }) {
                       <UserCircle size={18} className="mr-2" /> Edit profile
                     </Link>
                     <Link
-                      href="/support"
+                      href="/my-account"
                       className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md"
                     >
-                      <Info size={18} className="mr-2" /> Support
+                      <Package size={18} className="mr-2" /> Your Orders
                     </Link>
                     <Link href="/wishlist" className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
                       <Heart size={18} className="mr-2" /> Wishlist
@@ -180,6 +182,15 @@ export default function Navbar({ products = [] }) {
           ) : (
             <Link href="/auth" className="hidden lg:block">
               <UserCircle size={24} />
+            </Link>
+          )}
+          {user ? (
+            <Link href="/wishlist" className="hidden lg:block">
+              <Heart size={24} className="text-gray-600 hover:text-red-600" />
+            </Link>
+          ) : (
+            <Link href="/auth" className="hidden lg:block">
+              <Heart size={24} className="text-black hover:text-red-600" />
             </Link>
           )}
           <CartButton />
